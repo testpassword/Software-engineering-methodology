@@ -1,0 +1,118 @@
+<mxfile host="65bd71144e">
+    <diagram id="Rc9mrc5BCH0bYZ0IDgvS" name="Страница 1">
+        <mxGraphModel dx="2463" dy="1604" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Невеста" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-1106" y="-640" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Жених" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-1057" y="-748" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Сваха" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-1057" y="-640" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="Гость" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+                    <mxGeometry x="-1111" y="-750" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="104" value="Помощник" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+                    <mxGeometry x="-1120" y="-540" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" value="Супостатъ" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+                    <mxGeometry x="-1041" y="-540" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="182" value="Финист" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="-1111" y="-790" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="202" value="Регистрация" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-910" y="-780" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="203" value="Аутентификация" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-770" y="-780" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="204" value="Удаление пользовательских данных" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-910" y="-680" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="205" value="Выбор роли" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-760" y="-680" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="206" value="Заполнение анкеты хар-к и предпочтений" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-910" y="-570" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="207" value="Запуск стрелы" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-760" y="-570" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="208" value="Покупка стрел" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-910" y="-453" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="209" value="Просмотр анкет пользователей" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-760" y="-460" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="211" value="Выбор лучшей кандидатки" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-610" y="-770" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="212" value="Расслыка push-уведомлений о изменении статусов и приглашений" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-620" y="-670" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="213" value="Создание состязаний" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-620" y="-570" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="214" value="Назначение участников состязаний" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-620" y="-470" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="215" value="Просмотр списка состязаний" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-910" y="-350" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="216" value="Просмотр конкретного состязания" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-760" y="-350" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="217" value="Подписка на уведомления о состязании" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-610" y="-360" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="218" value="Получение индивидуальных заданий в рамках состязания" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-584" y="-250" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="219" value="Размещение заявки на участие в состязаниях" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-730" y="-250" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="220" value="Комментирование состязания" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-910" y="-250" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="221" value="Голосование за лучшую Невесту состязания" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-450" y="-533" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="222" value="Представление списка заявок на участие в состязании" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-464" y="-650" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="224" value="Оформление заявки на учвстие в состязании в соответствии с ролью" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-464" y="-770" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="225" value="Оценка прохождения состязания Жениха" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-430" y="-413" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="226" value="Бан пользователей" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-880" y="-140" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="227" value="Опубликование поста с свадьбы" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-430" y="-220" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="228" value="Формирование пары для свадьбы Свахой по результатам состязания" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-430" y="-320" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="229" value="Отказ от участия в состязании" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-720" y="-140" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="230" value="Создание отчётов по процессу выполнения состязания" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-560" y="-130" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="231" value="Смена роли" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-400" y="-130" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="232" value="Выход из аккаунта" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-310" y="-770" width="120" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
