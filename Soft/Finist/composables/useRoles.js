@@ -1,7 +1,15 @@
+const userRole = ref()
+
 const ROLES = [
+  {
+    name: undefined,
+    allowedPages: ['/login', '/register'],
+    isServiceRole: true
+  },
   {
     name: 'жених',
     description: 'Вы одинокий совершеннолетний мужчины, желающий создать семью.',
+    allowedPages: ['/login', '/register', '/account-settings', '/grooms_room'],
   },
   {
     name: 'невеста',
@@ -26,5 +34,6 @@ const ROLES = [
 ]
 
 export const useRoles = () => ({
+  userRole,
   ROLES
 })

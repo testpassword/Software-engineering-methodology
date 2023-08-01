@@ -1,54 +1,83 @@
 <script setup>
-const { ROLES } = useRoles()
+import cities from 'cities.json'
+import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 
-const selectedRole = ref(null)
+const ruCities = cities.filter( it => it.country === 'RU' ).map( it => it.name )
+const ROLES = useRoles().ROLES.filter( it => !it.isServiceRole )
+const form = ref({
+  role: '',
+  name: '',
+  city: '',
+  age: null,
+  education: '',
+  aboutSelf: '',
+  aboutPartner: ''
+})
+const education = ['Церковно-приходское', 'Среднее общее', 'Среднее профессиональное', 'Высшее']
 
 const selectRole = role => {
   // todo: саундтреки для других ролей
   new Audio(`/roles/${role}.mp3`).play()
-  selectedRole.value = role
+  form.value.role = role
 }
 
-watch(selectedRole, nv => {
-  if (nv) progress.value = 100
-  // todo: нормальное заполнение статистики
-})
+watch(
+  form,
+  () => {
+    nextTick(() => {
+      const kl = o => Object.keys(o.value).length
+      progress.value = 100 - Math.percentage(kl(form), kl(errorFields))
+    })
+  },
+  { deep: true }
+)
 
 const progress = ref(0)
 
-const pass = ref(true)
+const { pass, errorFields } = useAsyncValidator(
+  form,
+  {
+    role:         { type: 'enum',    required: true, enum: ROLES.map( it => it.name ) },
+    name:         { type: 'string',  required: true },
+    city:         { type: 'enum',    required: true, enum: ruCities },
+    age:          { type: 'integer', required: true, min: 18 },
+    education:    { type: 'enum',    required: true, enum: education },
+    aboutSelf:    { type: 'string',  required: true, min: 8 },
+    aboutPartner: { type: 'string',  required: true, min: 8 },
+  }
+)
 </script>
 
 <template>
   <div class="flex flex-col gap-8">
-    <div class="flex flex-row gap-4 sticky top-0 backdrop-blur-3xl z-10 rounded-xl p-4 drop-shadow-2xl">
-      <div class="flex flex-col justify-center">
-        <LazyIconUser />
+    <Header>
+      <div class="flex flex-col justify-center default-icon">
+        <LazyIconUser/>
       </div>
       <h2 class="font-bold w-3/5">
         Настройки аккаунта
       </h2>
       <progress
-        class="progress progress-primary w-full mt-3"
+        class="progress progress-primary w-full mt-4"
         :value="progress"
         max="100"
       />
       <button
-        class="btn btn-primary"
+        class="btn btn-primary min-h-0 h-10"
         :disabled="!pass"
+        @click="navigateTo('/run')"
       >
-        <LazyIconHeart />
         Далее
       </button>
-    </div>
+    </Header>
     <div class="flex flex-col gap-4">
       <h3>Роль</h3>
       <div class="flex flex-row overflow-scroll gap-3 w-full">
           <div
             class="card glass my-8 mx-2 flex transition-all"
             :class="{
-              'bg-primary': selectedRole === r.name,
-              'hover:scale-110 hover:bg-gradient-to-r from-transparent via-secondary to-primary-focus': selectedRole !== r.name
+              'bg-primary': form.role === r.name,
+              'hover:scale-110 hover:bg-gradient-to-r from-transparent via-secondary to-primary-focus': form.role !== r.name
             }"
             v-for="r in ROLES"
             @click="selectRole(r.name)"
@@ -63,11 +92,11 @@ const pass = ref(true)
             <div class="card-body p-2">
               <h2
                 class="capitalize card-title justify-center"
-                :class="{ 'text-grey-100': selectedRole === r.name }"
+                :class="{ 'text-grey-100': form.role === r.name }"
               >
                 {{ r.name }}
               </h2>
-              <p :class="{ 'text-grey-100': selectedRole === r.name }">
+              <p :class="{ 'text-grey-100': form.role === r.name }">
                 {{ r.description }}
               </p>
             </div>
@@ -77,7 +106,7 @@ const pass = ref(true)
       <div class="flex flex-row gap-4 flex-wrap">
         <img
           class="avatar rounded-full m-2 h-48 "
-          :src="`/placeholder.webp`"
+          src="/avatar-placeholder.webp"
           alt="avatar"
         />
         <div class="flex flex-col gap-4">
@@ -85,26 +114,61 @@ const pass = ref(true)
             type="text"
             placeholder="Имя"
             class="input input-bordered"
+            :class="{ 'input-error': errorFields?.name?.length }"
+            v-model="form.name"
           />
-          <input
-            type="text"
-            placeholder="Город"
-            class="input input-bordered"
-          />
+          <select
+            class="select select-bordered w-full max-w-xs"
+            :class="{ 'select-error': errorFields?.city?.length }"
+            v-model="form.city"
+          >
+            <option
+              disabled
+              selected
+              value
+            >
+              Город
+            </option>
+            <option v-for="c in ruCities">
+              {{ c }}
+            </option>
+          </select>
           <input
             type="number"
+            min="18"
             placeholder="Возраст (18+)"
             class="input input-bordered"
+            :class="{ 'input-error': errorFields?.age?.length }"
+            v-model="form.age"
           />
-          <select class="select select-bordered w-full max-w-xs">
-            <option>Церковно-приходское</option>
-            <option>Среднее общее</option>
-            <option>Среднее профессиональное</option>
-            <option>Высшее</option>
+          <select
+            class="select select-bordered w-full max-w-xs"
+            :class="{ 'select-error': errorFields?.education?.length }"
+            v-model="form.education"
+          >
+            <option
+              disabled
+              selected
+              value
+            >Образование
+            </option>
+            <option v-for="e in education">
+              {{ e }}
+            </option>
           </select>
         </div>
-        <textarea class="textarea textarea-bordered" placeholder="О себе"/>
-        <textarea class="textarea textarea-bordered" placeholder="О партнёре"/>
+        <textarea
+          class="textarea textarea-bordered"
+          placeholder="О себе"
+          :class="{ 'textarea-error': errorFields?.aboutSelf?.length }"
+          v-model="form.aboutSelf"
+        />
+        <textarea
+          class="textarea textarea-bordered"
+          placeholder="О партнёре"
+          :class="{ 'textarea-error': errorFields?.aboutPartner?.length }"
+          v-model="form.aboutPartner"
+        />
       </div>
     </div>
   </div>

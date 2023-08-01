@@ -1498,6 +1498,11 @@
   "resolved" "https://registry.npmjs.org/ci-info/-/ci-info-3.8.0.tgz"
   "version" "3.8.0"
 
+"cities.json@^1.1.22":
+  "integrity" "sha512-Buo3Hl/fqBvSlm86HkH6i+H6HK08kXjd9hiePEZXr7xjOiinaLToy0VVTn5iY+PWD07pwrB86MpuUSNTabItdg=="
+  "resolved" "https://registry.npmjs.org/cities.json/-/cities.json-1.1.22.tgz"
+  "version" "1.1.22"
+
 "citty@^0.1.1", "citty@^0.1.2":
   "integrity" "sha512-Me9nf0/BEmMOnuQzMOVXgpzkMUNbd0Am8lTl/13p0aRGAoLGk5T5sdet/42CrIGmWdG67BgHUhcKK1my1ujUEg=="
   "resolved" "https://registry.npmjs.org/citty/-/citty-0.1.2.tgz"

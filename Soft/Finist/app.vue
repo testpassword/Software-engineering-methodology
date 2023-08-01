@@ -28,7 +28,7 @@ a
   &:hover
     @apply text-red-400 underline decoration-red-400
 
-h1, h2, h3, h4, span, input, p, label
+h1, h2, h3, h4, span, input, p, label, option, .default-icon
   @apply text-grey-800
 
 h1
@@ -45,4 +45,10 @@ h1, h2, h3
 
 input::placeholder
   @apply text-grey-500
+
+button.btn-modal-close
+  @apply btn btn-sm btn-circle btn-ghost absolute right-2 top-2 hover:bg-red-600 hover:text-green-100
+
+.spacer
+  @apply flex flex-grow
 </style>

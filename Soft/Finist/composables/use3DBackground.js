@@ -1,4 +1,8 @@
-import * as THREE from 'three'
+import {
+  MeshBasicMaterial, ExtrudeGeometry, Mesh,
+  Group, Scene, Color,
+  Shape, PerspectiveCamera, WebGLRenderer
+} from 'three'
 
 const isBlurred = ref(false)
 
@@ -8,18 +12,17 @@ const init = () => {
   onMounted(() => {
     isBlurred.value = Boolean(localStorage.getItem('isBlurred'))
 
-
     const white = "#ffffff"
     const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
     const createRedMaterial = () =>
-      new THREE.MeshBasicMaterial({ color: "#" + Math.floor(randomNumber(128, 192)).toString(16) + "0000" })
+      new MeshBasicMaterial({ color: "#" + Math.floor(randomNumber(128, 192)).toString(16) + "0000" })
     const materials = [...Array(10)].map(() => createRedMaterial())
     const createHeart = (heartShape, extrudeSettings, isLeft, scale) => {
-      let geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings)
-      let mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: white }))
+      let geometry = new ExtrudeGeometry(heartShape, extrudeSettings)
+      let mesh = new Mesh(geometry, new MeshBasicMaterial({ color: white }))
       if (isLeft) {
-        mesh = new THREE.Mesh(geometry, materials[Math.floor(Math.random() * materials.length)])
+        mesh = new Mesh(geometry, materials[Math.floor(Math.random() * materials.length)])
         mesh.position.set(-1.67, -0.35, 0)
         mesh.rotation.set(0, 0, Math.PI + Math.PI / 7)
       } else {
@@ -31,11 +34,11 @@ const init = () => {
     }
 
     const createMartisor = (heartLeft, heartRight) => {
-      const heartGroup = new THREE.Group()
+      const heartGroup = new Group()
       heartGroup.add(heartLeft)
       heartGroup.add(heartRight)
       heartGroup.position.set(1, -1.65, -0.02)
-      const martisorGroup = new THREE.Group()
+      const martisorGroup = new Group()
       martisorGroup.add(heartGroup)
       martisorGroup.position.set(0, 0, 0)
       return martisorGroup
@@ -72,12 +75,12 @@ const init = () => {
       window.requestAnimationFrame(() => tick(renderer, scene, camera, martisoare))
     }
 
-    const scene = new THREE.Scene()
-    scene.background = new THREE.Color("#f8f2fb")
+    const scene = new Scene()
+    scene.background = new Color("#f8f2fb")
     const canvas = document.getElementById('background')
     const heartX = -25
     const heartY = -25
-    const heartShape = new THREE.Shape()
+    const heartShape = new Shape()
     heartShape.moveTo(25 + heartX, 25 + heartY)
     heartShape.bezierCurveTo(25 + heartX, 25 + heartY, 20 + heartX, 0 + heartY, 0 + heartX, 0 + heartY)
     heartShape.bezierCurveTo(-30 + heartX, 0 + heartY, -30 + heartX, 35 + heartY, -30 + heartX, 35 + heartY)
@@ -98,10 +101,7 @@ const init = () => {
     const martisor = createMartisor(heartRight, heartLeft)
     scene.add(martisor)
     const martisoare = spawnMartisoare(martisor, scene, 50)
-    const sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    }
+    const sizes = { width: window.innerWidth, height: window.innerHeight }
     window.addEventListener("resize", () => {
       sizes.width = window.innerWidth
       sizes.height = window.innerHeight
@@ -110,12 +110,10 @@ const init = () => {
       renderer.setSize(sizes.width, sizes.height)
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     })
-    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+    const camera = new PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
     camera.position.z = 30
     scene.add(camera)
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvas,
-    })
+    const renderer = new WebGLRenderer({ canvas: canvas })
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     tick(renderer, scene, camera, martisoare)

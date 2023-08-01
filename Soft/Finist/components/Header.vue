@@ -1,16 +1,5 @@
-<script setup>
-
-</script>
-
 <template>
-  <div class="flex flex-row gap-4 sticky bottom-0 p-6">
-    <div class="flex flex-col justify-center">
-      <LazyIconUser />
-    </div>
-    <h2 class="font-bold">Настройки аккаунта</h2>
+  <div class="flex flex-row gap-4 sticky top-0 backdrop-blur-3xl z-10 rounded-xl p-4 drop-shadow-2xl">
+    <slot name="default"/>
   </div>
 </template>
-
-<style scoped lang="sass">
-
-</style>

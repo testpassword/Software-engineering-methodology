@@ -3,20 +3,10 @@ import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 
 const form = ref({ phone: '', password: '' })
 
-const { pass, errorFields } = useAsyncValidator(
-  form,
-  {
-    phone: {
-      type: 'string',
-      required: true,
-      pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
-    },
-    password: {
-      type: 'string',
-      required: true
-    }
-  }
-)
+const { pass, errorFields } = useAsyncValidator(form, {
+  phone:    { type: 'string', required: true, pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im },
+  password: { type: 'string', required: true }
+})
 </script>
 
 <template>
@@ -41,7 +31,7 @@ const { pass, errorFields } = useAsyncValidator(
         class="btn btn-primary"
         :disabled="!pass"
       >
-        <LazyIconHeart />
+        <LazyIconHeart/>
         Найти любовь
       </button>
     </template>
