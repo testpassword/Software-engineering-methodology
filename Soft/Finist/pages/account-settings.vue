@@ -1,8 +1,7 @@
 <script setup>
-import cities from 'cities.json'
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
+const cities = useRUCities()
 
-const ruCities = cities.filter( it => it.country === 'RU' ).map( it => it.name )
 const ROLES = useRoles().ROLES.filter( it => !it.isServiceRole )
 const form = ref({
   role: '',
@@ -39,7 +38,7 @@ const { pass, errorFields } = useAsyncValidator(
   {
     role:         { type: 'enum',    required: true, enum: ROLES.map( it => it.name ) },
     name:         { type: 'string',  required: true },
-    city:         { type: 'enum',    required: true, enum: ruCities },
+    city:         { type: 'enum',    required: true, enum: cities },
     age:          { type: 'integer', required: true, min: 18 },
     education:    { type: 'enum',    required: true, enum: education },
     aboutSelf:    { type: 'string',  required: true, min: 8 },
@@ -50,13 +49,10 @@ const { pass, errorFields } = useAsyncValidator(
 
 <template>
   <div class="flex flex-col gap-8">
-    <Header>
-      <div class="flex flex-col justify-center default-icon">
-        <LazyIconUser/>
-      </div>
-      <h2 class="font-bold w-3/5">
-        Настройки аккаунта
-      </h2>
+    <Header
+      ico-name="User"
+      title="Настройки аккаунта"
+    >
       <progress
         class="progress progress-primary w-full mt-4"
         :value="progress"
@@ -74,7 +70,7 @@ const { pass, errorFields } = useAsyncValidator(
       <h3>Роль</h3>
       <div class="flex flex-row overflow-scroll gap-3 w-full">
           <div
-            class="card glass my-8 mx-2 flex transition-all"
+            class="card glass my-8 mx-2 flex transition-all min-w-[17rem]"
             :class="{
               'bg-primary': form.role === r.name,
               'hover:scale-110 hover:bg-gradient-to-r from-transparent via-secondary to-primary-focus': form.role !== r.name
@@ -129,7 +125,7 @@ const { pass, errorFields } = useAsyncValidator(
             >
               Город
             </option>
-            <option v-for="c in ruCities">
+            <option v-for="c in cities">
               {{ c }}
             </option>
           </select>
@@ -142,7 +138,7 @@ const { pass, errorFields } = useAsyncValidator(
             v-model="form.age"
           />
           <select
-            class="select select-bordered w-full max-w-xs"
+            class="select select-bordered w-full "
             :class="{ 'select-error': errorFields?.education?.length }"
             v-model="form.education"
           >

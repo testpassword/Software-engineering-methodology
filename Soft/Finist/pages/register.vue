@@ -63,7 +63,7 @@ const { pass, errorFields } = useAsyncValidator(
         class="btn btn-primary"
         :disabled="!pass"
       >
-        <LazyIconDoor />
+        <IconDoor />
         Открыть своё сердце
       </button>
     </template>

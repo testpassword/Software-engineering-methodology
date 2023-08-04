@@ -46,9 +46,11 @@ h1, h2, h3
 input::placeholder
   @apply text-grey-500
 
-button.btn-modal-close
-  @apply btn btn-sm btn-circle btn-ghost absolute right-2 top-2 hover:bg-red-600 hover:text-green-100
-
 .spacer
   @apply flex flex-grow
+
+.divider
+  @apply text-grey-700
+  &:before, &:after
+    @apply bg-grey-700
 </style>

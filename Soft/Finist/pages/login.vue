@@ -31,7 +31,7 @@ const { pass, errorFields } = useAsyncValidator(form, {
         class="btn btn-primary"
         :disabled="!pass"
       >
-        <LazyIconHeart/>
+        <IconHeart/>
         Найти любовь
       </button>
     </template>

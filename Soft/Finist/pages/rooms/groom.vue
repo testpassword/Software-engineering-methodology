@@ -9,19 +9,15 @@ const currentCompetition = ref(null)
 
 <template>
   <div>
-    <Header>
-      <div class="flex flex-col justify-center default-icon">
-        <LazyIconSimpleArrow/>
-      </div>
-      <h2 class="font-bold w-3/5">
-        Комната Жениха
-      </h2>
-    </Header>
+    <Header
+      ico-name="SimpleArrow"
+      title="Комната Жениха"
+    />
     <div class="flex flex-row mt-10 gap-8 flex-wrap">
       <div class="stats bg-primary text-primary-content">
         <div class="stat bg-secondary">
           <div class="stat-figure">
-            <LazyIconArrow class="w-32"/>
+            <IconArrow class="w-32"/>
           </div>
           <h3>
             Количество стрел
@@ -32,16 +28,16 @@ const currentCompetition = ref(null)
           <div class="stat-actions flex gap-4">
             <button
               class="btn btn-success btn-outline"
-              @click="buyArrowsModal.showModal()"
+              @click="buyArrowsModal.dialog.showModal"
             >
-              <LazyIconMoney/>
+              <IconMoney/>
               Купить
             </button>
             <button
               class="btn bg-primary"
               :disabled="numOfArrows === 0"
             >
-              <LazyIconPush/>
+              <IconPush/>
               Запуск
             </button>
           </div>
@@ -73,52 +69,16 @@ const currentCompetition = ref(null)
           </div>
         </div>
       </div>
-      <div class="flex flex-row gap-8">
-        <div class="stats bg-primary text-primary-content">
-          <div class="stat bg-secondary">
-            <h3>
-              Настройки
-            </h3>
-            <div class="flex flex-col w-full gap-4">
-              <button
-                class="btn btn-info btn-outline"
-                @click="navigateTo('/account-settings')"
-              >
-                <LazyIconUser/>
-                Настройки аккаунта
-              </button>
-              <button
-                class="btn btn-error btn-outline"
-              >
-                <LazyIconDelete/>
-                Удалить аккаунт
-              </button>
-              <button
-                class="btn text-black-100 btn-outline"
-                @click="navigateTo('/login')"
-              >
-                <LazyIconExit/>
-                Выйти
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ActionsPanel/>
     </div>
-    <dialog
+    <AcceptDialog
       ref="buyArrowsModal"
-      class="modal bg-transparent min-w-[750px]"
+      ultrawide
     >
-      <form
-        method="dialog"
-        class="modal-box min-w-full"
-      >
-        <button class="btn-modal-close">
-          ✕
-        </button>
-        <h2 class="py-4">
-          Купить стрелы
-        </h2>
+      <template #title>
+        Купить стрелы
+      </template>
+      <template #content>
         <div class="calc">
           <span>
             Цена стрелы: {{ arrowPrice }} *
@@ -137,14 +97,8 @@ const currentCompetition = ref(null)
             {{ arrowPrice * arrowsNum }} ₽
           </span>
         </div>
-        <div class="w-full justify-center flex pt-8">
-          <button class="btn btn-success">
-            <LazyIconApply/>
-            Подтвердить
-          </button>
-        </div>
-      </form>
-    </dialog>
+      </template>
+    </AcceptDialog>
   </div>
 </template>
 
