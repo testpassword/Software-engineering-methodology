@@ -1,6 +1,7 @@
 <script setup>
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 const cities = useRUCities()
+const { ROLES } = useRoles()
 
 const createCompetitionDial = ref()
 const form = ref({
@@ -15,6 +16,22 @@ const { pass, errorFields } = useAsyncValidator(
     city: { type: 'enum',   required: true, enum: cities },
   }
 )
+
+const rolesTasks = ref(
+  ROLES
+    .map( it => it.name )
+    .filter( it => it && !['сваха', 'гость'].includes(it) )
+    .map( it => ({ role: it, task: '', user: null }) )
+)
+const validated = computed(() => rolesTasks.value.filter( it => it.task && it.user ).length)
+const completed = computed(() => validated.value === rolesTasks.value.length)
+
+const assignTask = ut => {
+  const { user, task } = ut
+  const candidate = rolesTasks.value.find( it => it.role === user.role )
+  candidate.task = task
+  candidate.user = user
+}
 </script>
 
 <template>
@@ -43,6 +60,7 @@ const { pass, errorFields } = useAsyncValidator(
     <AcceptDialog
       ref="createCompetitionDial"
       ultrawide
+      :hide-accept="!completed || !pass"
     >
       <template #title>
         Создать испытание
@@ -73,6 +91,12 @@ const { pass, errorFields } = useAsyncValidator(
             </option>
           </select>
         </div>
+        <FormCandidateTask
+          v-for="{ role } in rolesTasks"
+          :candidate-role="role"
+          :city="form.city"
+          @completed="assignTask"
+        />
       </template>
     </AcceptDialog>
   </div>

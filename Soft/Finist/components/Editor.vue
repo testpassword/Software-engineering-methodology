@@ -6,8 +6,9 @@ const props = defineProps({
   value:       { type: String, required: true },
   showWarning: { type: Boolean, default: false }
 })
-
+const emits = defineEmits(['update:value'])
 const { value } = toRefs(props)
+const { innerValue } = useInnerValue(value, emits)
 
 const hideTooltip = ref(false)
 onMounted(() => hideTooltip.value = Boolean(localStorage.getItem('hideTooltip')))
@@ -34,7 +35,7 @@ watch(hideTooltip, nv => { if (nv) localStorage.setItem('hideTooltip', nv) })
     <MdEditor
       :preview="false"
       language="en-US"
-      v-model="value"
+      v-model="innerValue"
       :toolbarsExclude="['github', 'htmlPreview', 'catalog', 'fullscreen']"
       class="mt-8 rounded-xl"
     />

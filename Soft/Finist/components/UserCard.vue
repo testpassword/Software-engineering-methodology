@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps({
-  user: { type: Object, required: true }
+  user:       { type: Object,  required: true },
+  horizontal: { type: Boolean, required: false, default: false }
 })
 </script>
 
@@ -13,8 +14,11 @@ const props = defineProps({
         alt="avatar"
       />
     </div>
-    <div class="flex flex-col info gap-0.5">
-      <h3 class="pb-2">{{ user.name }}</h3>
+    <div
+      class="flex info gap-0.5"
+      :class="[ horizontal ? 'flex-row flex-wrap items-center' : 'flex-col' ]"
+    >
+      <h3 class="pb-2 pr-2">{{ user.name }}</h3>
       <div>
         <IconAge/>
         <span>{{ user.age }}</span>
