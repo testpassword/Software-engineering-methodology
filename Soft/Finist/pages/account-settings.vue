@@ -70,7 +70,7 @@ const { pass, errorFields } = useAsyncValidator(
       <h3>Роль</h3>
       <div class="flex flex-row overflow-scroll gap-3 w-full">
           <div
-            class="card glass my-8 mx-2 flex transition-all min-w-[17rem]"
+            class="card glass my-8 mx-2 flex transition-all min-w-[13rem]"
             :class="{
               'bg-primary': form.role === r.name,
               'hover:scale-110 hover:bg-gradient-to-r from-transparent via-secondary to-primary-focus': form.role !== r.name

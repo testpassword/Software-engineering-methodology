@@ -1,11 +1,12 @@
 <script setup>
-defineProps({
-  hideAccept: { type: Boolean, required: false, default: false },
-  hideClose:  { type: Boolean, required: false, default: false },
-  ultrawide:  { type: Boolean, required: false, default: false }
+const props = defineProps({
+  ultrawide:  { type: Boolean,  required: false, default: false },
+  hideAccept: { type: Boolean,  required: false, default: false },
+  onAccept:   { type: Function, required: false, default: () => {} },
+  onClose:    { type: Function, required: false, default: () => {} },
+  hideClose:  { type: Boolean,  required: false, default: false },
 })
-
-
+const { hideAccept, hideClose } = toRefs(props)
 const dialog = ref()
 
 defineExpose({ dialog })
@@ -19,11 +20,12 @@ defineExpose({ dialog })
     <form
       method="dialog"
       :class="{ 'min-w-full': ultrawide }"
-      class="modal-box"
+      class="modal-box flex flex-col gap-3"
     >
       <button
         class="btn-modal-close"
         v-if="!hideClose"
+        @click="onClose"
       >
         ✕
       </button>
@@ -35,7 +37,10 @@ defineExpose({ dialog })
         class="w-full justify-center flex pt-8"
         v-if="!hideAccept"
       >
-        <button class="btn btn-success">
+        <button
+          class="btn btn-success"
+          @click="onAccept"
+        >
           <IconApply/>
           Подтвердить
         </button>

@@ -27,7 +27,9 @@
             <IconExit/>
             Выйти
           </button>
-          <div class="divider" v-if="$slots.extra">Возможности роль</div>
+          <div class="divider" v-if="$slots.extra">
+            Ролевые
+          </div>
           <slot name="extra"/>
         </div>
       </div>
