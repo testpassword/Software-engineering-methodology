@@ -1,7 +1,6 @@
 export default defineNuxtRouteMiddleware(to => {
   if (
     useRuntimeConfig().public.environment !== 'DEV' &&
-    !useAuth().get() ||
-    !useRoles().userRole
+    !useAuth().get()
   ) return navigateTo(`/login`)
 })

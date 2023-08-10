@@ -22,6 +22,10 @@ const { pass, errorFields } = useAsyncValidator(
     }
   }
 )
+
+const register = () => {
+  // todo: отправить запрос на регистрацию
+}
 </script>
 
 
@@ -62,6 +66,7 @@ const { pass, errorFields } = useAsyncValidator(
       <button
         class="btn btn-primary"
         :disabled="!pass"
+        @click="register"
       >
         <IconDoor />
         Открыть своё сердце

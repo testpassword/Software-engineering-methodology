@@ -12,8 +12,10 @@ const { pass, errorFields } = useAsyncValidator(form, {
 const login = async () => {
   const { role } = await api.users.login(form.value)
   useAuth().set(form.value)
-  useRoles().userRole.value = role
-  navigateTo(`/rooms/${role}`)
+  if (role) {
+    useRoles().userRole.value = role
+    navigateTo(`/rooms/${role}`)
+  } else navigateTo('/account-settings')
 }
 </script>
 

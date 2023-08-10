@@ -47,6 +47,10 @@ const { pass, errorFields } = useAsyncValidator(
     aboutPartner: { type: 'string',  required: true, min: 8 },
   }
 )
+
+onMounted(() => {
+  // todo: получаем user-а и заполняем поля, требуем заполнить все
+})
 </script>
 
 <template>
