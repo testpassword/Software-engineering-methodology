@@ -1,8 +1,10 @@
 <script setup>
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
-const cities = useRUCities()
+definePageMeta({ middleware: ['auth'] })
 
-const ROLES = useRoles().ROLES.filter( it => !it.isServiceRole )
+const cities = useRUCities()
+const { ROLES } = useRoles()
+
 const form = ref({
   role: '',
   name: '',
@@ -90,7 +92,7 @@ const { pass, errorFields } = useAsyncValidator(
                 class="capitalize card-title justify-center"
                 :class="{ 'text-grey-100': form.role === r.name }"
               >
-                {{ r.name }}
+                {{ r.label }}
               </h2>
               <p :class="{ 'text-grey-100': form.role === r.name }">
                 {{ r.description }}

@@ -1,5 +1,6 @@
 <script setup>
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
+import api from '/api'
 
 const form = ref({ phone: '', password: '' })
 
@@ -7,6 +8,13 @@ const { pass, errorFields } = useAsyncValidator(form, {
   phone:    { type: 'string', required: true, pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im },
   password: { type: 'string', required: true }
 })
+
+const login = async () => {
+  const { role } = await api.users.login(form.value)
+  useAuth().set(form.value)
+  useRoles().userRole.value = role
+  navigateTo(`/rooms/${role}`)
+}
 </script>
 
 <template>
@@ -30,6 +38,7 @@ const { pass, errorFields } = useAsyncValidator(form, {
       <button
         class="btn btn-primary"
         :disabled="!pass"
+        @click="login"
       >
         <IconHeart/>
         Найти любовь

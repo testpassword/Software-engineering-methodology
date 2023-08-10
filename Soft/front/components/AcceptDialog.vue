@@ -2,12 +2,11 @@
 const props = defineProps({
   ultrawide:  { type: Boolean,  required: false, default: false },
   hideAccept: { type: Boolean,  required: false, default: false },
-  onAccept:   { type: Function, required: false, default: () => {} },
-  onClose:    { type: Function, required: false, default: () => {} },
   hideClose:  { type: Boolean,  required: false, default: false },
 })
 const { hideAccept, hideClose } = toRefs(props)
 const dialog = ref()
+const emits = defineEmits(['accept', 'close'])
 
 defineExpose({ dialog })
 </script>
@@ -25,7 +24,7 @@ defineExpose({ dialog })
       <button
         class="btn-modal-close"
         v-if="!hideClose"
-        @click="onClose"
+        @click="emits('close')"
       >
         ✕
       </button>
@@ -39,7 +38,7 @@ defineExpose({ dialog })
       >
         <button
           class="btn btn-success"
-          @click="onAccept"
+          @click="emits('accept')"
         >
           <IconApply/>
           Подтвердить

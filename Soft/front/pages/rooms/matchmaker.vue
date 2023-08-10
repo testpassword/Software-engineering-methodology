@@ -1,5 +1,7 @@
 <script setup>
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
+definePageMeta({ middleware: ['role', 'auth'] })
+
 const cities = useRUCities()
 const { ROLES } = useRoles()
 

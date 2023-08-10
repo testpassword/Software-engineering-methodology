@@ -1,37 +1,37 @@
 const ROLES = [
   {
-    name: undefined,
-    allowedPages: ['/login', '/register'],
-    isServiceRole: true
-  },
-  {
-    name: 'сваха',
+    name: 'matchmaker',
+    label: 'сваха',
     description: `От вас требуется обдуманно и ответственно находить пары участников, придумывать для них испытания.`,
   },
   {
-    name: 'жених',
+    name: 'groom',
+    label: 'жених',
     description: 'Вы одинокий совершеннолетний мужчины, желающий создать семью.',
-    allowedPages: ['/login', '/register', '/account-settings', '/grooms_room'],
   },
   {
-    name: 'невеста',
+    name: 'bride',
+    label: 'невеста',
     description: 'Вы одинокая совершеннолетние девушка, желающая создать семью.',
   },
   {
-    name: 'гость',
+    name: 'guest',
+    label: 'гость',
     description: 'Вы просто хотите весело провести время, наблюдая как другие ищут любовь.',
   },
   {
-    name: 'помощникъ',
+    name: 'assistant',
+    label: 'помощникъ',
     description: 'Вы хотите помогать в выполнении испытаний невесте.',
   },
   {
-    name: 'супостатъ',
+    name: 'enemy',
+    label: 'супостатъ',
     description: 'Вы хотите мешать жениху выполнять испытания.',
   },
 ]
 
-const userRole = ref(ROLES[1])
+const userRole = ref(ROLES[0].name)
 
 export const useRoles = () => ({
   userRole,

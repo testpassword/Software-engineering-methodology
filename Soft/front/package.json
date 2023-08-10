@@ -1,12 +1,13 @@
 {
-  "name": "nuxt-starter",
-  "version": "1.0.0",
+  "name": "finist-front-system",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "chrome_nocors": "open -n -a /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome http://localhost:5173 --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security\n"
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.2.0",
@@ -14,6 +15,7 @@
     "@vueuse/integrations": "^10.2.1",
     "async-validator": "^4.2.5",
     "cities.json": "^1.1.22",
+    "core-js": "^3.32.0",
     "daisyui": "^2.46.0",
     "md-editor-v3": "^4.2.2",
     "nuxt": "^3.6.3",

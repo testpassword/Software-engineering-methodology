@@ -1,10 +1,30 @@
 <script setup>
-const numOfArrows = ref(1)
+import api from '/api'
+
+definePageMeta({ middleware: ['role', 'auth'] })
+
+const currentAmount = ref(0)
+const buyDisabled = ref(false)
 const buyArrowsModal = ref()
-const arrowPrice = ref(1000)
+const arrowPrice = ref(1)
 const arrowsNum = ref(1)
+let arrowsApi
 
 const currentCompetition = ref(null)
+
+onMounted( async () => {
+  arrowsApi = api.users.for().arrows
+  currentAmount.value = await arrowsApi.get() ?? 0
+  try {
+    arrowPrice.value = await arrowsApi.price() ?? 1
+  } catch {
+    buyDisabled.value = true
+  }
+})
+
+const buy = () => {
+  alert(1)
+}
 </script>
 
 <template>
@@ -23,19 +43,29 @@ const currentCompetition = ref(null)
             Количество стрел
           </h3>
           <div class="stat-value text-grey-700">
-            {{ numOfArrows }}
+            {{ currentAmount }}
           </div>
           <div class="stat-actions flex gap-4">
+            <p v-if="buyDisabled">
+              Не удалось получить цену стрелы, попробуйте позже
+            </p>
             <button
               class="btn btn-success btn-outline"
               @click="buyArrowsModal.dialog.showModal"
+              :disabled="buyDisabled"
+              v-else
             >
               <IconMoney/>
               Купить
             </button>
+            <p v-if="currentAmount === 0">
+              Купить стрелу, чтобы запустить
+            </p>
             <button
+              v-else
               class="btn bg-primary"
-              :disabled="numOfArrows === 0"
+              :disabled="currentAmount === 0"
+              @click="api.users.for().arrows.push()"
             >
               <IconPush/>
               Запуск
@@ -74,6 +104,7 @@ const currentCompetition = ref(null)
     <AcceptDialog
       ref="buyArrowsModal"
       ultrawide
+      @accept="buy"
     >
       <template #title>
         Купить стрелы
@@ -109,4 +140,6 @@ const currentCompetition = ref(null)
     @apply pt-3 text-xl
   span.sum
     @apply pt-1 font-bold text-3xl text-green-600
+.stat-actions p
+    @apply text-error text-sm
 </style>
