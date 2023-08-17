@@ -1,21 +1,23 @@
 import { useApi } from '/composables/useApi'
 import basicInterface from './basic'
-import arrows from './arrows'
-
-const ENDPOINT = '/users/'
 
 export default function users() {
+  const ENDPOINT = '/users/'
+
   return {
     ENDPOINT,
 
-    ...basicInterface(ENDPOINT),
-
-    login: async ({ phone, password }) =>
-      await useApi(`${ENDPOINT}login/`, { body: { phone, password }, method: 'POST' }),
+    ...basicInterface(ENDPOINT, ['update']),
 
     register: async ({ phone, email, password }) =>
-      await useApi(`${ENDPOINT}`, { body: { phone, email, password }, method: 'POST' }),
+      await useApi(ENDPOINT, { body: { phone, email, password }, method: 'POST' }),
 
-    for: id => ({ arrows: arrows(`${ENDPOINT}${id ?? useAuth().get().phone}/`) })
+    for: id => {
+      const userEndpoint = `${ENDPOINT}${id ?? useAuth().get().phone}/`
+      return {
+        ENDPOINT: userEndpoint,
+        ...basicInterface(userEndpoint)
+      }
+    }
   }
 }

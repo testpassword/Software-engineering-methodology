@@ -30,9 +30,9 @@ const completed = computed(() => validated.value === rolesTasks.value.length)
 
 const assignTask = ut => {
   const { user, task } = ut
-  const candidate = rolesTasks.value.find( it => it.role === user.role )
-  candidate.task = task
-  candidate.user = user
+  const executor = rolesTasks.value.find( it => it.role === user.role )
+  executor.task = task
+  executor.user = user
 }
 </script>
 

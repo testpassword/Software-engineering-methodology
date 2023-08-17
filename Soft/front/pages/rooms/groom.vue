@@ -7,7 +7,7 @@ const currentAmount = ref(0)
 const buyDisabled = ref(false)
 const buyArrowsModal = ref()
 const arrowPrice = ref(1)
-const arrowsNum = ref(1)
+const arrowsWantToBuy = ref(1)
 let arrowsApi
 
 const currentCompetition = ref(null)
@@ -22,8 +22,10 @@ onMounted( async () => {
   }
 })
 
-const buy = () => {
-  alert(1)
+const buy = async () => {
+  const val = arrowsWantToBuy.value
+  await arrowsApi.buy(val)
+  alert(`Успешно приобретено ${val} стрел. Поздравляем!`)
 }
 </script>
 
@@ -47,7 +49,7 @@ const buy = () => {
           </div>
           <div class="stat-actions flex gap-4">
             <p v-if="buyDisabled">
-              Не удалось получить цену стрелы, попробуйте позже
+              Не удалось получить <br/> цену стрелы, <br/> попробуйте позже
             </p>
             <button
               class="btn btn-success btn-outline"
@@ -59,7 +61,7 @@ const buy = () => {
               Купить
             </button>
             <p v-if="currentAmount === 0">
-              Купить стрелу, чтобы запустить
+              Купить стрелу, <br/> чтобы запустить
             </p>
             <button
               v-else
@@ -119,13 +121,13 @@ const buy = () => {
             placeholder="Приобрести"
             class="input input-bordered"
             min="1"
-            v-model="arrowsNum"
+            v-model="arrowsWantToBuy"
           />
           <span>
             =
           </span>
           <span class="sum">
-            {{ arrowPrice * arrowsNum }} ₽
+            {{ arrowPrice * arrowsWantToBuy }} ₽
           </span>
         </div>
       </template>

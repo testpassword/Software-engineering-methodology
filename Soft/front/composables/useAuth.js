@@ -1,6 +1,7 @@
 import { useStorage } from '@vueuse/core'
 
 const secret = useStorage('secret', null)
+// todo: do not use phone as user id
 
 export const useAuth = () => ({
   getRaw: () => secret.value,
