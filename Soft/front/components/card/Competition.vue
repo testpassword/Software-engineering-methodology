@@ -49,7 +49,7 @@ const showMember = member => {
       hide-accept
     >
       <template #content>
-        <UserCard :user="showedMember"/>
+        <CardUser :user="showedMember"/>
       </template>
     </AcceptDialog>
   </div>

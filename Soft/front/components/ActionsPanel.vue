@@ -16,6 +16,7 @@
           </button>
           <button
             class="btn btn-error btn-outline"
+            @click="delUser"
           >
             <IconDelete/>
             Удалить аккаунт
@@ -36,3 +37,9 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import api from '/api'
+
+const delUser = async () => await api.users.for().del()
+</script>

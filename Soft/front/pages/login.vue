@@ -10,7 +10,7 @@ const { pass, errorFields } = useAsyncValidator(form, {
 })
 
 const login = async () => {
-  const { role } = await api.users.login(form.value)
+  const { role } = await api.session.login(form.value)
   useAuth().set(form.value)
   if (role) {
     useRoles().userRole.value = role

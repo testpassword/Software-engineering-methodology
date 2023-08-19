@@ -2,24 +2,18 @@
 // todo: использовать как фильтры для api
 const props = defineProps({
   candidateRole: { type: String, required: true },
-  city:          { type: String, required: true }
+  city:          { type: String, required: true },
+  users:         { type: Array, required: true }
 })
 
-const user = ref(null)
+const users = toRef(props, 'users')
+const filteredUsers = computed( () => users.value.filter( it => it.city === props.city && it.role === props.candidateRole ))
+
+const assignedUser = ref(null)
 const task = ref('')
-
-// todo: также выдавать в поиске только тех, кто подал заявку на участие в испытании
-// todo: удалить после создания api
-const demoUsers = computed(() => [
-  { name: 'kek', age: 14, role: 'жених', city: 'Zvony', education: 'высшее' },
-  { name: 'lol', age: 18, role: 'невеста', city: 'Zvony', education: 'среднее' },
-  { name: 'dsf', age: 22, role: 'помощникъ', city: 'Zvony', education: 'среднее' },
-  { name: 'dsf', age: 22, role: 'супостатъ', city: 'Zvony', education: 'среднее' }
-].filter( it => it.city === props.city && it.role === props.candidateRole ))
-
 const emits = defineEmits(['completed'])
-const completed = computed(() => user.value && task.value)
-watch(completed, nv => { if (nv) emits('completed', { task: task.value, user: user.value }) })
+const completed = computed(() => assignedUser.value && task.value)
+watch(completed, nv => { if (nv) emits('completed', { task: task.value, user: assignedUser.value }) })
 </script>
 
 <template>
@@ -33,7 +27,7 @@ watch(completed, nv => { if (nv) emits('completed', { task: task.value, user: us
         class="flex gap-4 capitalize"
         v-if="completed"
       >
-        <h3>{{ user.name }}</h3>
+        <h3>{{ assignedUser.name }}</h3>
         <span class="text-xl">|</span>
         <span class="truncate">{{ task.slice(0, 50) }}...</span>
       </div>
@@ -41,17 +35,19 @@ watch(completed, nv => { if (nv) emits('completed', { task: task.value, user: us
         class="text-error"
         v-else
       >
-        Задание не создано
+        Задание для роли
+        <span class="font-bold text-lg">{{ useRoles().ROLES.find( it => it.name === candidateRole ).label }}</span>
+        не создано
       </span>
     </div>
     <div class="collapse-content flex flex-col gap-8 overflow-scroll">
       <Editor v-model:value="task"/>
-      <UserCard
-        v-for="u in demoUsers"
+      <CardUser
+        v-for="u in filteredUsers"
         :user="u"
-        @click="user = u"
+        @click="assignedUser = u"
         horizontal
-        :class="{ 'bg-primary hover:bg-primary': user?.name === u.name }"
+        :class="{ 'bg-primary hover:bg-primary': assignedUser?.name === u.name }"
       />
     </div>
   </div>

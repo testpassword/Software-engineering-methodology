@@ -1,9 +1,15 @@
 <script setup>
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
+import api from '/api'
 definePageMeta({ middleware: ['role', 'auth'] })
 
 const cities = useRUCities()
-const { ROLES } = useRoles()
+const users = ref([])
+const coms = ref([])
+useMountedApi(async () => {
+  users.value = await api.users.get()
+  coms.value = await api.competitions.get()
+})
 
 const createCompetitionDial = ref()
 const form = ref({
@@ -19,20 +25,31 @@ const { pass, errorFields } = useAsyncValidator(
   }
 )
 
+// todo: не показывать в следующих выпадающих элементах тех, кто уже заассайнен
 const rolesTasks = ref(
-  ROLES
-    .map( it => it.name )
-    .filter( it => it && !['сваха', 'гость'].includes(it) )
-    .map( it => ({ role: it, task: '', user: null }) )
+  ['bride', 'bride', 'bride', 'groom', 'enemy', 'assistant']
+    .map(it => ({ task: '', user: null, role: it }))
 )
 const validated = computed(() => rolesTasks.value.filter( it => it.task && it.user ).length)
 const completed = computed(() => validated.value === rolesTasks.value.length)
 
 const assignTask = ut => {
   const { user, task } = ut
-  const executor = rolesTasks.value.find( it => it.role === user.role )
+  const executor = rolesTasks.value.find( it => it.role === user.role && !it.task )
   executor.task = task
   executor.user = user
+}
+
+const createCompetition = async () => {
+  const comApi = api.competitions.for((await api.competitions.create(form.value)).id)
+  await comApi.update({
+    tasks_ids: await Promise.all(
+      rolesTasks
+        .value
+        .map(async it => (await comApi.tasks.create({text: it.task, executor_id: it.user.phone})).id)
+    )
+  })
+  alert('Соревнование создано! Все участники получат приглашения в ближайшее время.')
 }
 </script>
 
@@ -43,7 +60,12 @@ const assignTask = ut => {
       title="Комната Свахи"
     />
     <div class="flex flex-row mt-10 gap-8 flex-wrap">
-      <h1 class="text-yellow-600">список испытания</h1>
+      <div class="flex flex-col">
+        <CardCompetition
+          v-for="c in coms"
+          :competition="c"
+        />
+      </div>
       <h1 class="text-yellow-600">список пользователей</h1>
       <h1 class="text-yellow-600">заявки</h1>
       <h1 class="text-yellow-600">обновления</h1>
@@ -63,6 +85,7 @@ const assignTask = ut => {
       ref="createCompetitionDial"
       ultrawide
       :hide-accept="!completed || !pass"
+      @accept="createCompetition"
     >
       <template #title>
         Создать испытание
@@ -94,6 +117,7 @@ const assignTask = ut => {
           </select>
         </div>
         <FormCandidateTask
+          :users="users"
           v-for="{ role } in rolesTasks"
           :candidate-role="role"
           :city="form.city"

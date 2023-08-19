@@ -3,29 +3,34 @@ import api from '/api'
 
 definePageMeta({ middleware: ['role', 'auth'] })
 
-const currentAmount = ref(0)
-const buyDisabled = ref(false)
+const currentAmount = ref()
 const buyArrowsModal = ref()
-const arrowPrice = ref(1)
-const arrowsWantToBuy = ref(1)
-let arrowsApi
+const price = ref(-1)
+const wantToBuy = ref(1)
 
+let userApi
+const user = ref(null)
 const currentCompetition = ref(null)
 
-onMounted( async () => {
-  arrowsApi = api.users.for().arrows
-  currentAmount.value = await arrowsApi.get() ?? 0
-  try {
-    arrowPrice.value = await arrowsApi.price() ?? 1
-  } catch {
-    buyDisabled.value = true
-  }
+const actualizeArrowsAmount = async () => currentAmount.value = (await userApi.arrows.get()).amount
+
+useMountedApi(async () => {
+  userApi = api.users.for()
+  user.value = await userApi.get()
+  price.value = (await api.arrows.price.get()).price
+  await actualizeArrowsAmount()
 })
 
 const buy = async () => {
-  const val = arrowsWantToBuy.value
-  await arrowsApi.buy(val)
+  const val = wantToBuy.value
+  await userApi.arrows.buy(val)
   alert(`Успешно приобретено ${val} стрел. Поздравляем!`)
+  await actualizeArrowsAmount()
+}
+
+const pushArrow = async () => {
+  await userApi.update({ is_pairing: true })
+  await actualizeArrowsAmount()
 }
 </script>
 
@@ -45,16 +50,15 @@ const buy = async () => {
             Количество стрел
           </h3>
           <div class="stat-value text-grey-700">
-            {{ currentAmount }}
+            {{ currentAmount ?? 'Error' }}
           </div>
           <div class="stat-actions flex gap-4">
-            <p v-if="buyDisabled">
+            <p v-if="!price">
               Не удалось получить <br/> цену стрелы, <br/> попробуйте позже
             </p>
             <button
               class="btn btn-success btn-outline"
               @click="buyArrowsModal.dialog.showModal"
-              :disabled="buyDisabled"
               v-else
             >
               <IconMoney/>
@@ -64,10 +68,9 @@ const buy = async () => {
               Купить стрелу, <br/> чтобы запустить
             </p>
             <button
-              v-else
+              :disabled="user?.is_pairing || currentAmount <= 0"
               class="btn bg-primary"
-              :disabled="currentAmount === 0"
-              @click="api.users.for().arrows.push()"
+              @click="pushArrow"
             >
               <IconPush/>
               Запуск
@@ -114,20 +117,20 @@ const buy = async () => {
       <template #content>
         <div class="calc">
           <span>
-            Цена стрелы: {{ arrowPrice }} *
+            Цена стрелы: {{ price }} *
           </span>
           <input
             type="number"
             placeholder="Приобрести"
             class="input input-bordered"
             min="1"
-            v-model="arrowsWantToBuy"
+            v-model="wantToBuy"
           />
           <span>
             =
           </span>
           <span class="sum">
-            {{ arrowPrice * arrowsWantToBuy }} ₽
+            {{ price * wantToBuy }} ₽
           </span>
         </div>
       </template>
