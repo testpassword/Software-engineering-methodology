@@ -29,7 +29,7 @@ const buy = async () => {
 }
 
 const pushArrow = async () => {
-  await userApi.update({ is_pairing: true })
+  await userApi.update({ isPairing: true })
   await actualizeArrowsAmount()
 }
 </script>
@@ -68,7 +68,7 @@ const pushArrow = async () => {
               Купить стрелу, <br/> чтобы запустить
             </p>
             <button
-              :disabled="user?.is_pairing || currentAmount <= 0"
+              :disabled="user?.isPairing || currentAmount <= 0"
               class="btn bg-primary"
               @click="pushArrow"
             >

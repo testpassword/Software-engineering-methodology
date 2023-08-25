@@ -5,11 +5,7 @@ definePageMeta({ middleware: ['role', 'auth'] })
 
 const cities = useRUCities()
 const users = ref([])
-const coms = ref([])
-useMountedApi(async () => {
-  users.value = await api.users.get()
-  coms.value = await api.competitions.get()
-})
+useMountedApi(async () => users.value = await api.users.get())
 
 const createCompetitionDial = ref()
 const form = ref({
@@ -43,32 +39,41 @@ const assignTask = ut => {
 const createCompetition = async () => {
   const comApi = api.competitions.for((await api.competitions.create(form.value)).id)
   await comApi.update({
-    tasks_ids: await Promise.all(
+    tasksIds: await Promise.all(
       rolesTasks
         .value
-        .map(async it => (await comApi.tasks.create({text: it.task, executor_id: it.user.phone})).id)
+        .map(async it => (await comApi.tasks.create({ text: it.task, executorId: it.user.phone })).id)
     )
   })
   alert('Соревнование создано! Все участники получат приглашения в ближайшее время.')
 }
+
+const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
 </script>
 
 <template>
+
+  <CardBrideVote
+    :com-id="1"
+    :bride-vote="{
+      candidates: [
+       { brideId: 1, points: 1   },
+       { brideId: 2, points: 132 },
+       { brideId: 3, points: 32  },
+      ],
+      endTime: tomorrow
+    }"/>
+
   <div>
     <Header
       ico-name="Gamepad"
       title="Комната Свахи"
     />
     <div class="flex flex-row mt-10 gap-8 flex-wrap">
-      <div class="flex flex-col">
-        <CardCompetition
-          v-for="c in coms"
-          :competition="c"
-        />
-      </div>
-      <h1 class="text-yellow-600">список пользователей</h1>
-      <h1 class="text-yellow-600">заявки</h1>
-      <h1 class="text-yellow-600">обновления</h1>
+      <ListCompetition/>
+      <h3 class="text-yellow-600">список пользователей</h3>
+      <h3 class="text-yellow-600">заявки</h3>
+      <h3 class="text-yellow-600">обновления</h3>
       <ActionsPanel>
         <template #extra>
           <button

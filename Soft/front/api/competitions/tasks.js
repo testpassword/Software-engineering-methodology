@@ -7,7 +7,7 @@ export default function tasks(parentEndpoint = '') {
   return {
     ...basicInterface(ENDPOINT, ['del', 'update']),
 
-    create: async({ text, executor_id }) => await useApi(ENDPOINT, { body: { text, executor_id }, method: 'POST' }),
+    create: async({ text, executorId }) => await useApi(ENDPOINT, { body: { text, executorId }, method: 'POST' }),
 
     for: id => {
       const taskEndpoint = `${ENDPOINT}${id}/`

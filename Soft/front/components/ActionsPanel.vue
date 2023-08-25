@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-8">
+  <div class="flex flex-row gap-8 h-fit">
     <div class="stats bg-primary text-primary-content">
       <div class="stat bg-secondary">
         <h3>

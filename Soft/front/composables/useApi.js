@@ -18,7 +18,7 @@ export const useApi = async (request, opts = {}) => {
   const err = resp.error.value
   if (err) {
     const e = JSON.stringify(err)
-    alert(e)
+    if (useRuntimeConfig().public.environment !== 'DEV') alert(e)
     throw Error(e)
   }
   return resp.data.value
