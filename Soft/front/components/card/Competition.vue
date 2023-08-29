@@ -8,9 +8,14 @@ const props = defineProps({
 
 const { competition } = toRefs(props)
 const members = ref([])
+const tasks = ref([])
 const progress = computed(() => STATUSES.findIndex(it => it.name === competition.value.status))
 
-await useMountedApi(async () => members.value = await api.competitions.for(competition.value.id).members.get())
+await useMountedApi(async () => {
+  const comApi = api.competitions[competition.value.id]
+  members.value = await comApi.members.get()
+  try { tasks.value = await comApi.tasks.get() } catch { /* ignore if not exist */ }
+})
 
 const memberDial = ref()
 const showedMember = ref({})
@@ -19,6 +24,11 @@ const showMember = member => {
   showedMember.value = member
   memberDial.value.dialog.showModal()
 }
+
+const getTaskByUserId = userId => tasks.value.find( it => it.executorId === userId )
+
+const bvDial = ref()
+const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
 </script>
 
 <template>
@@ -39,7 +49,11 @@ const showMember = member => {
           :data-tip="m.name"
           @click="showMember(m)"
         >
+
+          <!-- todo: id normal in getTaskByUserId() -->
+
           <img
+            :class="{ 'border-primary border-2': getTaskByUserId(1)?.completed }"
             class="avatar rounded-full h-12"
             src="/avatar-placeholder.webp"
             alt="avatar"
@@ -50,9 +64,16 @@ const showMember = member => {
       <AcceptDialog
         ref="memberDial"
         hide-accept
+        ultrawide
       >
         <template #content>
-          <CardUser :user="showedMember"/>
+          <CardUser :user="showedMember">
+            <CardTask
+              class="max-w-[350px]"
+              :com-id="competition.id"
+              :task="getTaskByUserId(1)"
+            />
+          </CardUser>
         </template>
       </AcceptDialog>
     </div>
@@ -60,11 +81,41 @@ const showMember = member => {
       <li
         class="step text-[8px] text-black-100"
         v-for="(it, i) in STATUSES"
-        :class="{ 'step-primary text-primary': progress >= i }"
+        @click="bvDial.dialog.showModal"
+        :class="{
+          'step-primary text-primary': progress >= i,
+          'animate-pulse': competition.status === it.name
+        }"
       >
         {{ it.label }}
       </li>
     </ul>
+    <AcceptDialog
+      ultrawide
+      ref="bvDial"
+      hide-accept
+    >
+      <template #title>
+        {{
+          {
+            IN_PROGRESS: 'Ваше задание',
+            VOTING: 'Кандидатки'
+          }[competition.status]
+        }}
+      </template>
+      <template #content>
+        <CardTask
+          :com-id="competition.id"
+          :task="getTaskByUserId(1)"
+          is-executor
+        />
+        <CardBrideVote
+          v-if="competition.status === 'VOTING'"
+          :com-id="competition.id"
+        />
+      </template>
+    </AcceptDialog>
+
   </div>
 </template>
 

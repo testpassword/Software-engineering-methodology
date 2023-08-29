@@ -1,11 +1,12 @@
 import basicInterface from '/api/basic'
 import candidates from './candidates'
 import vote from './vote'
+import idEndpointGetter from '../../idEndpointGetter'
 
 export default function brideVote(parentEndpoint = '') {
   const ENDPOINT = `${parentEndpoint}bride_vote/`
 
-  return {
+  return idEndpointGetter({
     ENDPOINT,
     ...basicInterface(ENDPOINT, ['del', 'update']),
     candidates: candidates(ENDPOINT),
@@ -16,5 +17,5 @@ export default function brideVote(parentEndpoint = '') {
         vote: vote(brideVoteIncEndpoint)
       }
     }
-  }
+  })
 }

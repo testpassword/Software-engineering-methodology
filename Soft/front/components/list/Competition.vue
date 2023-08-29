@@ -3,9 +3,8 @@ import api from '/api'
 
 const coms = ref([])
 
-useMountedApi(async () => {
-  coms.value = await api.competitions.get()
-})
+// todo: сделать компонент абстрактным, чтобы он мог быть листом для любых карточек
+useMountedApi(async () => coms.value = await api.competitions.get())
 </script>
 
 <template>

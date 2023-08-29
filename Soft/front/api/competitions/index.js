@@ -4,11 +4,12 @@ import tasks from './tasks'
 import marriage from './marriage'
 import members from './members'
 import brideVote from './brideVote'
+import idEndpointGetter from '/api/idEndpointGetter'
 
 export default function competitions(parentEndpoint = '') {
   const ENDPOINT = `/${parentEndpoint}competitions/`
 
-  return {
+  return idEndpointGetter({
     ENDPOINT,
 
     ...basicInterface(ENDPOINT, ['del', 'update']),
@@ -26,5 +27,5 @@ export default function competitions(parentEndpoint = '') {
         marriage: marriage(competitionEndpoint)
       }
     }
-  }
+  })
 }

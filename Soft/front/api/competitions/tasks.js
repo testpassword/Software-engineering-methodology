@@ -1,10 +1,11 @@
 import basicInterface from '../basic'
 import { useApi } from '/composables/useApi'
+import idEndpointGetter from '../idEndpointGetter'
 
 export default function tasks(parentEndpoint = '') {
   const ENDPOINT = `/${parentEndpoint}tasks/`
 
-  return {
+  return idEndpointGetter({
     ...basicInterface(ENDPOINT, ['del', 'update']),
 
     create: async({ text, executorId }) => await useApi(ENDPOINT, { body: { text, executorId }, method: 'POST' }),
@@ -16,5 +17,5 @@ export default function tasks(parentEndpoint = '') {
         ...basicInterface(taskEndpoint, ['del'])
       }
     }
-  }
+  })
 }

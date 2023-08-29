@@ -147,19 +147,13 @@ components:
               type: string
               default: ''
               description: Отчёт пользователя о выполнении задания, поле может быть изменено только `executor`-ом
-            acceptation:
-              type: boolean
-              default: false
-              description: |- 
-                Принятие задания к исполнению. Пока все пользователи не примут заданий, соревнование нельзя будет 
-                перевести из ACCEPTATION -> IN_PROGRESS. После установки в true нельзя изменить executor и text
             completed:
               type: boolean
               default: false
               description: Подтверждение выполнения задания, может быть установлено в true только `matchmaker`-ом и при наличии report
     COMP_STATUSES:
       type: string
-      enum: [ACCEPTATION, IN_PROGRESS, VOTING, WAITING_AGREEMENT, MARRIAGE] # [ПРИНИМАЕТСЯ, ВЫПОЛНЯЕТСЯ, ГОЛОСОВАНИЕ, ОЖИДАЕТ_СОГЛАСИЙ, СВАДЬБА]
+      enum: [IN_PROGRESS, VOTING, WAITING_AGREEMENT, MARRIAGE] # [ПРИНИМАЕТСЯ, ВЫПОЛНЯЕТСЯ, ГОЛОСОВАНИЕ, ОЖИДАЕТ_СОГЛАСИЙ, СВАДЬБА]
       default: IN_PROGRESS
       description: Статус испытания
     Competition:
@@ -216,6 +210,11 @@ components:
               type: string
               format: date
               description: Дата окончания голосования
+            userVote:
+              description: id невесты, за которую голосовая пользователь. По-умолчанию `null`, может быть изменено единожды
+              anyOf:
+                - $ref: '#/components/schemas/Entity'
+                - nullable: true
     Marriage:
       description: Информация о будущей/состоявшейся свадьбе `bride` и `groom`
       allOf:

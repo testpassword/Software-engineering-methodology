@@ -1,11 +1,12 @@
 import { useApi } from '/composables/useApi'
 import basicInterface from './basic'
 import { userArrows } from './arrows'
+import idEndpointGetter from './idEndpointGetter'
 
 export default function users() {
   const ENDPOINT = '/users/'
 
-  return {
+  return idEndpointGetter({
     ENDPOINT,
 
     ...basicInterface(ENDPOINT, ['update', 'del']),
@@ -21,5 +22,5 @@ export default function users() {
         arrows: userArrows(userEndpoint)
       }
     }
-  }
+  })
 }

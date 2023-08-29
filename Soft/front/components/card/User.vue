@@ -3,6 +3,8 @@ const props = defineProps({
   user:       { type: Object,  required: true },
   horizontal: { type: Boolean, required: false, default: false }
 })
+
+const { user } = toRefs(props)
 </script>
 
 <template>

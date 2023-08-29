@@ -37,7 +37,7 @@ const assignTask = ut => {
 }
 
 const createCompetition = async () => {
-  const comApi = api.competitions.for((await api.competitions.create(form.value)).id)
+  const comApi = api.competitions[(await api.competitions.create(form.value)).id]
   await comApi.update({
     tasksIds: await Promise.all(
       rolesTasks
@@ -47,33 +47,16 @@ const createCompetition = async () => {
   })
   alert('Соревнование создано! Все участники получат приглашения в ближайшее время.')
 }
-
-const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
 </script>
 
 <template>
-
-  <CardBrideVote
-    :com-id="1"
-    :bride-vote="{
-      candidates: [
-       { brideId: 1, points: 1   },
-       { brideId: 2, points: 132 },
-       { brideId: 3, points: 32  },
-      ],
-      endTime: tomorrow
-    }"/>
-
   <div>
     <Header
       ico-name="Gamepad"
       title="Комната Свахи"
     />
-    <div class="flex flex-row mt-10 gap-8 flex-wrap">
+    <div class="flex flex-row mt-10 gap-8">
       <ListCompetition/>
-      <h3 class="text-yellow-600">список пользователей</h3>
-      <h3 class="text-yellow-600">заявки</h3>
-      <h3 class="text-yellow-600">обновления</h3>
       <ActionsPanel>
         <template #extra>
           <button
