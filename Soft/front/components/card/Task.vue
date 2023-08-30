@@ -1,16 +1,22 @@
 <script setup>
 import api from '/api'
+import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 
 const props = defineProps({
-  comId:      { type: Number, required: true },
-  task:       { type: Object, required: true },
+  comId:      { type: Number,  required: true },
+  task:       { type: Object,  required: true },
   isExecutor: { type: Boolean, required: true, default: false }
 })
 
-const { comId, task } = toRefs(props)
-let taskApi = api.competitions[comId.value].tasks[task.value?.id]
+const emits = defineEmits(['completed'])
 
-const report = ref('')
+const { comId, task } = toRefs(props)
+const taskApi = computed(() => api.competitions[comId.value].tasks[task.value?.id])
+
+const form = ref({ report: '' })
+const { pass } = useAsyncValidator(form, {
+  report: { type: 'string', required: true, min: 10 }
+})
 </script>
 
 <template>
@@ -29,10 +35,23 @@ const report = ref('')
       Выполнено
     </div>
     <h3>Отчёт</h3>
-    <Editor
+    <div
       v-if="isExecutor && !task?.report"
-      :value="report"
-    />
+      class="flex flex-col gap-4"
+    >
+      <Editor v-model:value="form.report"/>
+      <button
+        class="btn btn-primary"
+        v-if="pass"
+        @click="async () => {
+          await taskApi.update(form.value)
+          emits('completed')
+        }"
+      >
+        <IconTaskSave/>
+        Отправить
+      </button>
+    </div>
     <template v-else>
       <p v-if="task?.report">
         {{ task.report }}

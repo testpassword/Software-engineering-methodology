@@ -1,3 +1,14 @@
+<script setup>
+import api from '/api'
+
+const delUser = async () => await api.users.for().del()
+
+const logout = () => {
+  useAuth().logout()
+  navigateTo('/login')
+}
+</script>
+
 <template>
   <div class="flex flex-row gap-8 h-fit">
     <div class="stats bg-primary text-primary-content">
@@ -23,12 +34,15 @@
           </button>
           <button
             class="btn text-black-100 btn-outline"
-            @click="navigateTo('/login')"
+            @click="logout"
           >
             <IconExit/>
             Выйти
           </button>
-          <div class="divider" v-if="$slots.extra">
+          <div
+            class="divider"
+            v-if="$slots.extra"
+          >
             Ролевые
           </div>
           <slot name="extra"/>
@@ -37,9 +51,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import api from '/api'
-
-const delUser = async () => await api.users.for().del()
-</script>

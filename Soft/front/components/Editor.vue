@@ -37,7 +37,7 @@ watch(hideTooltip, nv => { if (nv) localStorage.setItem('hideTooltip', nv) })
       language="en-US"
       v-model="innerValue"
       :toolbarsExclude="['github', 'htmlPreview', 'catalog', 'fullscreen']"
-      class="mt-8 rounded-xl"
+      class="rounded-xl"
     />
   </div>
 </template>

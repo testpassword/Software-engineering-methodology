@@ -29,13 +29,6 @@ const rolesTasks = ref(
 const validated = computed(() => rolesTasks.value.filter( it => it.task && it.user ).length)
 const completed = computed(() => validated.value === rolesTasks.value.length)
 
-const assignTask = ut => {
-  const { user, task } = ut
-  const executor = rolesTasks.value.find( it => it.role === user.role && !it.task )
-  executor.task = task
-  executor.user = user
-}
-
 const createCompetition = async () => {
   const comApi = api.competitions[(await api.competitions.create(form.value)).id]
   await comApi.update({
@@ -109,7 +102,11 @@ const createCompetition = async () => {
           v-for="{ role } in rolesTasks"
           :candidate-role="role"
           :city="form.city"
-          @completed="assignTask"
+          @completed="({ user, task }) => {
+            const executor = rolesTasks.find( it => it.role === user.role && !it.task )
+            executor.task = task
+            executor.user = user
+          }"
         />
       </template>
     </AcceptDialog>

@@ -3,7 +3,6 @@ import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 import api from '/api'
 
 const form = ref({ phone: '', password: '' })
-
 const { pass, errorFields } = useAsyncValidator(form, {
   phone:    { type: 'string', required: true, pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im },
   password: { type: 'string', required: true }

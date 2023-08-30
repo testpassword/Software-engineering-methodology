@@ -20,11 +20,6 @@ await useMountedApi(async () => {
 const memberDial = ref()
 const showedMember = ref({})
 
-const showMember = member => {
-  showedMember.value = member
-  memberDial.value.dialog.showModal()
-}
-
 const getTaskByUserId = userId => tasks.value.find( it => it.executorId === userId )
 
 const bvDial = ref()
@@ -47,7 +42,10 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
           class="tooltip -ml-2 tooltip-secondary"
           v-for="m in members"
           :data-tip="m.name"
-          @click="showMember(m)"
+          @click="() => {
+            showedMember = m
+            memberDial.dialog.showModal()
+          }"
         >
 
           <!-- todo: id normal in getTaskByUserId() -->
@@ -105,6 +103,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
       </template>
       <template #content>
         <CardTask
+          @completed="bvDial?.dialog?.close"
           :com-id="competition.id"
           :task="getTaskByUserId(1)"
           is-executor
