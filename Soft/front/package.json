@@ -7,7 +7,8 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "chrome_nocors": "open -n -a /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome http://localhost:5173 --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security\n"
+    "chrome_nocors": "open -n -a /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome http://localhost:5173 --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security\n",
+    "dump schema": "pg_dump finist > ../docs/finist.sql"
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.2.0",

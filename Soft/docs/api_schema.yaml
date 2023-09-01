@@ -182,7 +182,7 @@ components:
               type: integer
               format: int64
               default: 0
-              description: Количество наблюдателей за заданием, т.е. подсчёт `user.follows`
+              description: Количество наблюдателей за заданием, т.е. подсчёт `user.follows`. Пока реализовывать не нужно.
     BrideVote:
       type: object
       description: Голосование за невесту-победительницу соревнования
