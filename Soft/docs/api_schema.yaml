@@ -43,13 +43,6 @@ components:
         type: integer
         format: int64
         required: true
-    phone:
-      in: path
-      name: phone
-      schema:
-        type: integer
-        format: int64
-        required: true
     competitionId:
       in: path
       name: competitionId
@@ -76,6 +69,11 @@ components:
       type: string
       enum: ['matchmaker', 'groom', 'bride', 'guest', 'assistant', 'enemy'] # ['Сваха', 'Жених', 'Невеста', 'Гость', 'Помощникъ', 'Супостатъ']
 
+    id:
+      type: number
+      format: int64
+      description: Уникальный ID
+
     Entity:
       type: object
       properties:
@@ -83,6 +81,7 @@ components:
           type: number
           format: int64
           description: Уникальный ID
+
     User:
       description: |-
         Информация о пользователе. Первый раз (после регистрации), пользователь может изменить любое из этих полей.
@@ -141,7 +140,7 @@ components:
               type: string
               description: Описание задания - что пользователь должен будет сделать
             executorId:
-              $ref: '#/components/schemas/Entity'
+              $ref: '#/components/schemas/id'
               # Исполнитель задания, это может только пользователь с ролями из списка ['groom', 'bride', 'assistant', 'enemy']
             report:
               type: string
@@ -175,7 +174,7 @@ components:
                 Индивидуальные задания пользователей. Должны быть созданы task для 1 groom, 3 bride, 1 assistant, 1 enemy.
               type: array
               items:
-                $ref: '#/components/schemas/Entity'
+                $ref: '#/components/schemas/id'
             status:
               $ref: '#/components/schemas/COMP_STATUSES'
             followersAmount:
@@ -190,8 +189,8 @@ components:
         - $ref: '#/components/schemas/Entity'
         - type: object
           properties:
-            competition:
-              $ref: '#/components/schemas/Task'
+            competitionId:
+              $ref: '#/components/schemas/id'
               # Может быть только соревнование в статусе VOTING
             candidates:
               type: array
@@ -200,7 +199,7 @@ components:
                 type: object
                 properties:
                   brideId:
-                    $ref: '#/components/schemas/Entity'
+                    $ref: '#/components/schemas/id'
                     # Могут быть только пользователи с role == bride
                   points:
                     type: integer
@@ -210,10 +209,10 @@ components:
               type: string
               format: date
               description: Дата окончания голосования
-            userVote:
+            userVoteId:
               description: id невесты, за которую голосовая пользователь. По-умолчанию `null`, может быть изменено единожды
               anyOf:
-                - $ref: '#/components/schemas/Entity'
+                - $ref: '#/components/schemas/id'
                 - nullable: true
     Marriage:
       description: Информация о будущей/состоявшейся свадьбе `bride` и `groom`
@@ -222,17 +221,17 @@ components:
         - type: object
           properties:
             competitionId:
-              $ref: '#/components/schemas/Entity'
+              $ref: '#/components/schemas/id'
               # Ссылка на испытание, которое привело к свадьбе. Может ссылать только на испытания со статусами [WAITING_AGREEMENT, MARRIAGE]
             groomId:
-              $ref: '#/components/schemas/Entity'
+              $ref: '#/components/schemas/id'
               # Может быть только пользователь с role == groom и участник competition
             groomAgreement:
               type: boolean
               default: false
               description: Согласие `groom` на свадьбу, может быть изменено только groom, который участвовал в испытании
             brideId:
-              $ref: '#/components/schemas/Entity'
+              $ref: '#/components/schemas/id'
               # Может быть только пользователь с role == bride и победительница competition
             brideAgreement:
               type: boolean
@@ -328,13 +327,13 @@ paths:
           $ref: '#/components/responses/UNAUTH'
         409:
           $ref: '#/components/responses/CONFLICT'
-  /users/{phone}/:
+  /users/{userId}/:
     get:
       security:
         - basicAuth: []
       description: Получить конкретного пользователя
       parameters:
-        - $ref: '#/components/parameters/phone'
+        - $ref: '#/components/parameters/userId'
       responses:
         200:
           description: Пользователь
@@ -351,7 +350,7 @@ paths:
         - basicAuth: []
       description: Изменить данные о конкретном пользователе. Это может сделать только владелец аккаунта.
       parameters:
-        - $ref: '#/components/parameters/phone'
+        - $ref: '#/components/parameters/userId'
       requestBody:
         content:
           application/json:
@@ -373,7 +372,7 @@ paths:
         - basicAuth: []
       description: Удалить информацию о пользователе. Это может сделать только владелец аккаунта.
       parameters:
-        - $ref: '#/components/parameters/phone'
+        - $ref: '#/components/parameters/userId'
       responses:
         200:
           $ref: '#/components/responses/OK'
@@ -381,10 +380,12 @@ paths:
           $ref: '#/components/responses/UNAUTH'
         404:
           $ref: '#/components/responses/NOT_FOUND'
-  /users/{phone}/arrows/:
+  /users/{userId}/arrows/:
     get:
       security:
         - basicAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
       responses:
         200:
           description: |-
@@ -406,6 +407,8 @@ paths:
       description: Приобрести стрелы
       security:
         - basicAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
       requestBody:
         content:
           application/json:
