@@ -83,13 +83,26 @@ ALTER TABLE public.arrow_price OWNER TO pugalol;
 CREATE TABLE public.bride_votes (
     id integer NOT NULL,
     "competitionId" integer NOT NULL,
-    "brideId" integer NOT NULL,
-    points integer DEFAULT 0 NOT NULL,
     "endTime" timestamp without time zone DEFAULT (CURRENT_TIMESTAMP + '30 days'::interval) NOT NULL
 );
 
 
 ALTER TABLE public.bride_votes OWNER TO pugalol;
+
+--
+-- Name: candidates; Type: TABLE; Schema: public; Owner: pugalol
+--
+
+CREATE TABLE public.candidates (
+    id integer NOT NULL,
+    "brideId" integer NOT NULL,
+    points integer DEFAULT 0 NOT NULL,
+    "brideVoteId" integer NOT NULL,
+    CONSTRAINT candidates_points_check CHECK ((points > 0))
+);
+
+
+ALTER TABLE public.candidates OWNER TO pugalol;
 
 --
 -- Name: competitions; Type: TABLE; Schema: public; Owner: pugalol
@@ -174,6 +187,20 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO pugalol;
 
 --
+-- Name: users_votes; Type: TABLE; Schema: public; Owner: pugalol
+--
+
+CREATE TABLE public.users_votes (
+    id integer NOT NULL,
+    "voterId" integer NOT NULL,
+    "brideVoteId" integer NOT NULL,
+    "candidateId" integer NOT NULL
+);
+
+
+ALTER TABLE public.users_votes OWNER TO pugalol;
+
+--
 -- Data for Name: arrow_price; Type: TABLE DATA; Schema: public; Owner: pugalol
 --
 
@@ -185,7 +212,15 @@ COPY public.arrow_price (price) FROM stdin;
 -- Data for Name: bride_votes; Type: TABLE DATA; Schema: public; Owner: pugalol
 --
 
-COPY public.bride_votes (id, "competitionId", "brideId", points, "endTime") FROM stdin;
+COPY public.bride_votes (id, "competitionId", "endTime") FROM stdin;
+\.
+
+
+--
+-- Data for Name: candidates; Type: TABLE DATA; Schema: public; Owner: pugalol
+--
+
+COPY public.candidates (id, "brideId", points, "brideVoteId") FROM stdin;
 \.
 
 
@@ -230,11 +265,27 @@ COPY public.users (role, id, phone, name, "dateOfBirth", city, password, educati
 
 
 --
+-- Data for Name: users_votes; Type: TABLE DATA; Schema: public; Owner: pugalol
+--
+
+COPY public.users_votes (id, "voterId", "brideVoteId", "candidateId") FROM stdin;
+\.
+
+
+--
 -- Name: bride_votes bride_votes_pkey; Type: CONSTRAINT; Schema: public; Owner: pugalol
 --
 
 ALTER TABLE ONLY public.bride_votes
     ADD CONSTRAINT bride_votes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: candidates candidates_pkey; Type: CONSTRAINT; Schema: public; Owner: pugalol
+--
+
+ALTER TABLE ONLY public.candidates
+    ADD CONSTRAINT candidates_pkey PRIMARY KEY (id);
 
 
 --
@@ -270,11 +321,11 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: bride_votes bride_votes_brideId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pugalol
+-- Name: users_votes users_votes_pkey; Type: CONSTRAINT; Schema: public; Owner: pugalol
 --
 
-ALTER TABLE ONLY public.bride_votes
-    ADD CONSTRAINT "bride_votes_brideId_fkey" FOREIGN KEY ("brideId") REFERENCES public.users(id);
+ALTER TABLE ONLY public.users_votes
+    ADD CONSTRAINT users_votes_pkey PRIMARY KEY (id);
 
 
 --
@@ -283,6 +334,22 @@ ALTER TABLE ONLY public.bride_votes
 
 ALTER TABLE ONLY public.bride_votes
     ADD CONSTRAINT "bride_votes_competitionId_fkey" FOREIGN KEY ("competitionId") REFERENCES public.competitions(id);
+
+
+--
+-- Name: candidates candidates_brideId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pugalol
+--
+
+ALTER TABLE ONLY public.candidates
+    ADD CONSTRAINT "candidates_brideId_fkey" FOREIGN KEY ("brideId") REFERENCES public.users(id);
+
+
+--
+-- Name: candidates candidates_brideVoteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pugalol
+--
+
+ALTER TABLE ONLY public.candidates
+    ADD CONSTRAINT "candidates_brideVoteId_fkey" FOREIGN KEY ("brideVoteId") REFERENCES public.bride_votes(id);
 
 
 --
@@ -339,6 +406,30 @@ ALTER TABLE ONLY public.tasks
 
 ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT "tasks_executorId_fkey" FOREIGN KEY ("executorId") REFERENCES public.users(id);
+
+
+--
+-- Name: users_votes users_votes_brideVoteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pugalol
+--
+
+ALTER TABLE ONLY public.users_votes
+    ADD CONSTRAINT "users_votes_brideVoteId_fkey" FOREIGN KEY ("brideVoteId") REFERENCES public.bride_votes(id);
+
+
+--
+-- Name: users_votes users_votes_candidateId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pugalol
+--
+
+ALTER TABLE ONLY public.users_votes
+    ADD CONSTRAINT "users_votes_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES public.users(id);
+
+
+--
+-- Name: users_votes users_votes_voterId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pugalol
+--
+
+ALTER TABLE ONLY public.users_votes
+    ADD CONSTRAINT "users_votes_voterId_fkey" FOREIGN KEY ("voterId") REFERENCES public.users(id);
 
 
 --
