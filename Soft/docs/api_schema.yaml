@@ -5,6 +5,7 @@ info:
   title: Finist
   description: |-
     API спецификация бекенда приложения Finist и описание бизнес-процесса с точки зрения манипулирования моделью данных.
+    Везде в `PATCH` нельзя менять id самой сущности.
   contact:
     name: testpassword
     url: https://github.com/testpassword
@@ -43,9 +44,23 @@ components:
         type: integer
         format: int64
         required: true
+    candidateId:
+      in: path
+      name: candidateId
+      schema:
+        type: integer
+        format: int64
+        required: true
     competitionId:
       in: path
       name: competitionId
+      schema:
+        type: integer
+        format: int64
+        required: true
+    brideVoteId:
+      in: path
+      name: brideVoteId
       schema:
         type: integer
         format: int64
@@ -527,7 +542,7 @@ paths:
     post:
       security:
         - basicAuth: []
-      description: Создать задание
+      description: Создать задание. Это может сделать только сваха.
       parameters:
         - $ref: '#/components/parameters/competitionId'
       requestBody:
@@ -555,7 +570,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
         401:
           $ref: '#/components/responses/UNAUTH'
         404:
@@ -582,7 +599,7 @@ paths:
     patch:
       security:
         - basicAuth: []
-      description: Изменить данные о конкретном задании. Это может сделать только сваха.
+      description: Изменить данные о конкретном задании. Это может сделать сваха и тот, кому назначено задание.
       parameters:
         - $ref: '#/components/parameters/competitionId'
         - $ref: '#/components/parameters/taskId'
@@ -619,13 +636,14 @@ paths:
           $ref: '#/components/responses/UNAUTH'
         404:
           $ref: '#/components/responses/NOT_FOUND'
-  /competitions/{competitionId}/bride_vote/candidates/:
+  /competitions/{competitionId}/bride_vote/{brideVote}/candidates/:
     get:
       security:
         - basicAuth: []
       description: Получить невест-кандидаток данного соревнования
       parameters:
         - $ref: '#/components/parameters/competitionId'
+        - $ref: '#/components/parameters/brideVoteId'
       responses:
         200:
           description: Невесты-кандидатки данного соревнования
@@ -635,7 +653,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-  /competitions/{competitionId}/bride_vote/{userId}/vote/:
+  /competitions/{competitionId}/bride_vote/{candidateId}/vote/:
     patch:
       security:
         - basicAuth: []
@@ -644,7 +662,7 @@ paths:
         Проверять, что пользователь ещё этого не делал.
       parameters:
         - $ref: '#/components/parameters/competitionId'
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/candidateId'
       responses:
         200:
           $ref: '#/components/responses/OK'
@@ -675,7 +693,7 @@ paths:
     post:
       security:
         - basicAuth: []
-      description: Создать шаблон свадьбы
+      description: Создать шаблон свадьбы, это может сделать только сваха.
       parameters:
         - $ref: '#/components/parameters/competitionId'
       requestBody:
@@ -693,7 +711,9 @@ paths:
     patch:
       security:
         - basicAuth: []
-      description: Изменить информацию о свадьбе
+      description: |-
+        Изменить информацию о свадьбе, правила редактирования; `groomAgreement` - только назначенный Жених,
+        `brideAgreement` - только назначенная Невеста, а `report` - только Сваха.
       parameters:
         - $ref: '#/components/parameters/competitionId'
       requestBody:
@@ -713,6 +733,7 @@ paths:
           $ref: '#/components/responses/NOT_FOUND'
   /arrows/price/:
     get:
+      description: Задача с ⭐
       responses:
         200:
           description: Актуальная цена стрелы

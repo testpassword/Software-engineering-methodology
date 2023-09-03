@@ -112,7 +112,8 @@ CREATE TABLE public.competitions (
     id integer NOT NULL,
     name text DEFAULT ''::text NOT NULL,
     city text DEFAULT ''::text NOT NULL,
-    status public.comp_status DEFAULT 'IN_PROGRESS'::public.comp_status NOT NULL
+    status public.comp_status DEFAULT 'IN_PROGRESS'::public.comp_status NOT NULL,
+    "creatorId" integer NOT NULL
 );
 
 
@@ -165,6 +166,20 @@ CREATE TABLE public.tasks (
 ALTER TABLE public.tasks OWNER TO pugalol;
 
 --
+-- Name: user_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_seq
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_seq OWNER TO postgres;
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: pugalol
 --
 
@@ -180,7 +195,7 @@ CREATE TABLE public.users (
     "aboutSelf" text DEFAULT ''::text NOT NULL,
     "aboutPartner" text DEFAULT ''::text NOT NULL,
     "isPairing" boolean DEFAULT false NOT NULL,
-    arrows_amount integer DEFAULT 1 NOT NULL
+    "arrowsAmount" integer DEFAULT 1 NOT NULL
 );
 
 
@@ -228,7 +243,7 @@ COPY public.candidates (id, "brideId", points, "brideVoteId") FROM stdin;
 -- Data for Name: competitions; Type: TABLE DATA; Schema: public; Owner: pugalol
 --
 
-COPY public.competitions (id, name, city, status) FROM stdin;
+COPY public.competitions (id, name, city, status, "creatorId") FROM stdin;
 \.
 
 
@@ -260,7 +275,7 @@ COPY public.tasks (id, text, "executorId", report, completed, "competitionId") F
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: pugalol
 --
 
-COPY public.users (role, id, phone, name, "dateOfBirth", city, password, education, "aboutSelf", "aboutPartner", "isPairing", arrows_amount) FROM stdin;
+COPY public.users (role, id, phone, name, "dateOfBirth", city, password, education, "aboutSelf", "aboutPartner", "isPairing", "arrowsAmount") FROM stdin;
 \.
 
 
@@ -270,6 +285,13 @@ COPY public.users (role, id, phone, name, "dateOfBirth", city, password, educati
 
 COPY public.users_votes (id, "voterId", "brideVoteId", "candidateId") FROM stdin;
 \.
+
+
+--
+-- Name: user_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_seq', 1, false);
 
 
 --
@@ -350,6 +372,14 @@ ALTER TABLE ONLY public.candidates
 
 ALTER TABLE ONLY public.candidates
     ADD CONSTRAINT "candidates_brideVoteId_fkey" FOREIGN KEY ("brideVoteId") REFERENCES public.bride_votes(id);
+
+
+--
+-- Name: competitions competitions_creatorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pugalol
+--
+
+ALTER TABLE ONLY public.competitions
+    ADD CONSTRAINT "competitions_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES public.users(id);
 
 
 --
