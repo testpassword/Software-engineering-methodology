@@ -11,7 +11,7 @@ init()
       :class="{ 'blur-md': isBlurred }"
     />
     <NuxtPage
-      class="p-6"
+      class="p-3"
       @click="isBlurred = true"
     />
   </div>

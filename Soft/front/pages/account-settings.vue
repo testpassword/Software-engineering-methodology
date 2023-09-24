@@ -9,7 +9,7 @@ const form = ref({
   role: '',
   name: '',
   city: '',
-  age: null,
+  dateOfBirth: new Date(),
   education: '',
   aboutSelf: '',
   aboutPartner: ''
@@ -41,7 +41,9 @@ const { pass, errorFields } = useAsyncValidator(
     role:         { type: 'enum',    required: true, enum: ROLES.map( it => it.name ) },
     name:         { type: 'string',  required: true },
     city:         { type: 'enum',    required: true, enum: cities },
-    age:          { type: 'integer', required: true, min: 18 },
+    dateOfBirth:  { type: 'date',    required: true, min: 18,
+      validator: (_, v) => Math.floor((new Date() - new Date(v).getTime()) / 3.15576e+10) >= 18
+    },
     education:    { type: 'enum',    required: true, enum: education },
     aboutSelf:    { type: 'string',  required: true, min: 8 },
     aboutPartner: { type: 'string',  required: true, min: 8 },
@@ -136,12 +138,11 @@ onMounted(() => {
             </option>
           </select>
           <input
-            type="number"
-            min="18"
-            placeholder="Возраст (18+)"
+            type="date"
+            placeholder="Дата рождения (возраст 18+)"
             class="input input-bordered"
-            :class="{ 'input-error': errorFields?.age?.length }"
-            v-model="form.age"
+            :class="{ 'input-error': errorFields?.dateOfBirth?.length }"
+            v-model="form.dateOfBirth"
           />
           <select
             class="select select-bordered w-full "

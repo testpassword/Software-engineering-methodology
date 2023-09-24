@@ -1,5 +1,6 @@
 <script setup>
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
+import api from '/api'
 
 const form = ref({ phone: '', email: '', password: '' })
 
@@ -23,8 +24,9 @@ const { pass, errorFields } = useAsyncValidator(
   }
 )
 
-const register = () => {
-  // todo: отправить запрос на регистрацию
+const register = async () => {
+  await api.users.register(form.value)
+  navigateTo('/login')
 }
 </script>
 
@@ -64,7 +66,7 @@ const register = () => {
         </span>
       </label>
       <button
-        class="btn btn-primary"
+        class="btn btn-primary z-10"
         :disabled="!pass"
         @click="register"
       >

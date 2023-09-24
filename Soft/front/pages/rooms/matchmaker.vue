@@ -22,20 +22,31 @@ const { pass, errorFields } = useAsyncValidator(
 )
 
 // todo: не показывать в следующих выпадающих элементах тех, кто уже заассайнен
-const rolesTasks = ref(
-  ['bride', 'bride', 'bride', 'groom', 'enemy', 'assistant']
-    .map(it => ({ task: '', user: null, role: it }))
+const rolesTasks = ref(['bride', 'groom', 'enemy', 'assistant'].map(it => ({ task: '', users: [], role: it }))
 )
-const validated = computed(() => rolesTasks.value.filter( it => it.task && it.user ).length)
+const validated = computed(() =>
+  rolesTasks
+    .value
+    .filter( it => it.users.length > 0 && (['assistant', 'enemy'].includes(it.role) ? true : it.task) )
+    .length
+)
 const completed = computed(() => validated.value === rolesTasks.value.length)
 
 const createCompetition = async () => {
   const comApi = api.competitions[(await api.competitions.create(form.value)).id]
+  const rolesTasksWithUsers =
+    rolesTasks
+      .value
+      .map(it =>
+        it
+          .users
+          .map(u => ({ text: it.task, executorId: u.id }))
+      )
+      .flat()
   await comApi.update({
     tasksIds: await Promise.all(
-      rolesTasks
-        .value
-        .map(async it => (await comApi.tasks.create({ text: it.task, executorId: it.user.phone })).id)
+      rolesTasksWithUsers
+        .map(async it => (await comApi.tasks.create(it)).id)
     )
   })
   alert('Соревнование создано! Все участники получат приглашения в ближайшее время.')
@@ -100,12 +111,13 @@ const createCompetition = async () => {
         <FormCandidateTask
           :users="users"
           v-for="{ role } in rolesTasks"
+          :empty-task="['assistant', 'enemy'].includes(role)"
           :candidate-role="role"
           :city="form.city"
-          @completed="({ user, task }) => {
-            const executor = rolesTasks.find( it => it.role === user.role && !it.task )
-            executor.task = task
-            executor.user = user
+          @completed="({ users, task }) => {
+            const executorPrototype = rolesTasks.find( it => it.role === role)
+            executorPrototype.task = task
+            executorPrototype.users = users
           }"
         />
       </template>

@@ -47,9 +47,6 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
             memberDial.dialog.showModal()
           }"
         >
-
-          <!-- todo: id normal in getTaskByUserId() -->
-
           <img
             :class="{ 'border-primary border-2': getTaskByUserId(1)?.completed }"
             class="avatar rounded-full h-12"
@@ -103,6 +100,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
       </template>
       <template #content>
         <CardTask
+          v-if="competition?.status === IN_PROGRESS"
           @completed="bvDial?.dialog?.close"
           :com-id="competition.id"
           :task="getTaskByUserId(1)"

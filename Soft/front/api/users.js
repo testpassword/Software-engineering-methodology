@@ -15,7 +15,7 @@ export default function users() {
       await useApi(ENDPOINT, { body: { phone, email, password }, method: 'POST' }),
 
     for: id => {
-      const userEndpoint = `${ENDPOINT}${id ?? useAuth().get().phone}/`
+      const userEndpoint = `${ENDPOINT}${id ?? useAuth().get().id}/`
       return {
         ENDPOINT: userEndpoint,
         ...basicInterface(userEndpoint),
@@ -24,3 +24,4 @@ export default function users() {
     }
   })
 }
+
