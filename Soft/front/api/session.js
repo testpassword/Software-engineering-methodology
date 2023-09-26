@@ -6,7 +6,7 @@ export default function session() {
   return {
     ENDPOINT,
 
-    login: async ({ phone, password }) =>
-      await useApi(ENDPOINT, { body: { phone, password }, method: 'POST' }),
+    login: async ({ email, password }) =>
+      await useApi(ENDPOINT, { body: { email, password }, method: 'POST' }),
   }
 }

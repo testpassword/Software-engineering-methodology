@@ -1,5 +1,9 @@
 <script setup>
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
+import api from '/api'
+import { useAuth } from '/composables/useAuth'
+import { useRoles } from '/composables/useRoles'
+
 definePageMeta({ middleware: ['auth'] })
 
 const cities = useRUCities()
@@ -50,6 +54,14 @@ const { pass, errorFields } = useAsyncValidator(
   }
 )
 
+const completeRegister = async () => {
+  const userRole = form.value.role
+  await api.users[useAuth().userId.value].update(form.value)
+  useRoles().userRole.value = userRole
+  navigateTo(`/rooms/${userRole}`)
+}
+
+
 onMounted(() => {
   // todo: получаем user-а и заполняем поля, требуем заполнить все
 })
@@ -69,7 +81,7 @@ onMounted(() => {
       <button
         class="btn btn-primary min-h-0 h-10"
         :disabled="!pass"
-        @click="navigateTo('/run')"
+        @click="completeRegister"
       >
         Далее
       </button>

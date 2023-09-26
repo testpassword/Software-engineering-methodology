@@ -4,6 +4,7 @@ import finist.back.exceptions.CompetitionNotFoundException;
 import finist.back.exceptions.UserNotFoundException;
 import finist.back.model.User;
 import finist.back.model.dto.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.Optional;
 public interface CompetitionService {
     Optional<List<FullCompetitionDTO>> getAllCompetitions();
 
-    Optional<FullCompetitionDTO> addCompetition(NewCompetitionReqDTO newCompetitionReqDTO);
+    Optional<FullCompetitionDTO> addCompetition(NewCompetitionReqDTO newCompetitionReqDTO, UserDetails userDetails) throws UserNotFoundException;
 
     Optional<FullCompetitionDTO> getCompetition(Long competitionId);
 

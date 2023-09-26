@@ -6,7 +6,7 @@ export const useApi = async (request, opts = {}) => {
     if (!request.endsWith('/')) request = request + '/'
   }
   const creds = useAuth().getRaw()
-  if (creds) opts.headers = {...opts?.headers ?? {}, 'Authorization': creds }
+  if (creds) opts.headers = {...opts?.headers ?? {}, 'Authorization': creds}
   const resp = await useFetch(
     request,
     {

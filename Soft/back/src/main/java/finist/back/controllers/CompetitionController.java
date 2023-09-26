@@ -6,12 +6,15 @@ import finist.back.services.BrideVoteService;
 import finist.back.services.CompetitionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/competitions")
+@CrossOrigin
+@RequestMapping("/competitions/")
 public class CompetitionController {
     final CompetitionService competitionService;
     final BrideVoteService brideVoteService;
@@ -28,42 +31,43 @@ public class CompetitionController {
     }
 
     @PostMapping()
-    public ResponseEntity<FullCompetitionDTO> addNewCompetition(@RequestBody NewCompetitionReqDTO newCompetitionReqDTO){
-        return competitionService.addCompetition(newCompetitionReqDTO).map(ResponseEntity::ok)
+    public ResponseEntity<FullCompetitionDTO> addNewCompetition(@RequestBody NewCompetitionReqDTO newCompetitionReqDTO,
+                                                                @AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException {
+        return competitionService.addCompetition(newCompetitionReqDTO, userDetails).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/{competitionId}")
+    @GetMapping("/{competitionId}/")
     public ResponseEntity<FullCompetitionDTO> getAllCompetitions(@PathVariable(name = "competitionId") Long competitionId){
         return competitionService.getCompetition(competitionId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PatchMapping("/{competitionId}")
+    @PatchMapping("/{competitionId}/")
     public ResponseEntity<FullCompetitionDTO> updateUser(@PathVariable(name = "competitionId") Long competitionId, @RequestBody FullCompetitionDTO fullCompetitionDTO){
         return competitionService.updateCompetition(competitionId,fullCompetitionDTO).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/{competitionId}/tasks")
+    @GetMapping("/{competitionId}/tasks/")
     public ResponseEntity<List<FullTaskDTO>> getAllTasksInCompetition(@PathVariable(name = "competitionId") Long competitionId) throws CompetitionNotFoundException {
         return new ResponseEntity<>(competitionService.getTasksByCompetition(competitionId), HttpStatus.OK);
     }
 
-    @PostMapping("/{competitionId}/tasks")
+    @PostMapping("/{competitionId}/tasks/")
     public ResponseEntity<FullTaskDTO> addNewTask(@PathVariable(name = "competitionId") Long competitionId,
                                                   @RequestBody FullTaskDTO taskDTO) throws UserNotFoundException, CompetitionNotFoundException {
         return competitionService.addTask(competitionId, taskDTO).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/{competitionId}/members")
+    @GetMapping("/{competitionId}/members/")
     public ResponseEntity<List<FullUserDTO>> getCompetitionMembers(@PathVariable(name = "competitionId") Long competitionId) throws CompetitionNotFoundException {
         return competitionService.getMembersDTOByCompetition(competitionId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/{competitionId}/tasks/{taskId}")
+    @GetMapping("/{competitionId}/tasks/{taskId}/")
     public ResponseEntity<FullTaskDTO> getCompetitionMembers(@PathVariable(name = "competitionId") Long competitionId,
                                                                    @PathVariable(name = "taskId") Long taskId) throws CompetitionNotFoundException {
         return competitionService.getTaskByCompIdAndTaskId(competitionId, taskId).map(ResponseEntity::ok)
@@ -71,7 +75,7 @@ public class CompetitionController {
     }
 
 
-    @PatchMapping("/{competitionId}/tasks/{taskId}")
+    @PatchMapping("/{competitionId}/tasks/{taskId}/")
     public ResponseEntity<FullTaskDTO> updateTask(@PathVariable(name = "competitionId") Long competitionId,
                                                   @PathVariable(name = "taskId") Long taskId,
                                                   @RequestBody FullTaskDTO updatedTask) throws CompetitionNotFoundException, UserNotFoundException {
@@ -79,7 +83,7 @@ public class CompetitionController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/{competitionId}/bride_vote")
+    @GetMapping("/{competitionId}/bride_vote/")
     public ResponseEntity<FullBrideVoteDTO> getBrideVoteByCompetition(@PathVariable(name = "competitionId") Long competitionId) throws CompetitionNotFoundException {
         return competitionService.getBrideVoteByCompetition(competitionId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -94,7 +98,7 @@ public class CompetitionController {
 
 
     //todo переделать на PUT
-    @PatchMapping("/{competitionId}/bride_vote/{candidateId}/vote")
+    @PatchMapping("/{competitionId}/bride_vote/{candidateId}/vote/")
     public ResponseEntity<Void> makeVote(@PathVariable(name = "competitionId") Long competitionId,
                                      @PathVariable(name = "candidateId") Long candidateId) throws BrideVoteNotFoundException, CandidateNotFoundException, AlreadyMadeVoteException, CompetitionNotFoundException {
         brideVoteService.makeVote(competitionId, candidateId);

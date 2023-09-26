@@ -48,7 +48,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
           }"
         >
           <img
-            :class="{ 'border-primary border-2': getTaskByUserId(1)?.completed }"
+            :class="{ 'border-primary border-2': getTaskByUserId(m.id)?.completed }"
             class="avatar rounded-full h-12"
             src="/avatar-placeholder.webp"
             alt="avatar"
@@ -66,7 +66,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
             <CardTask
               class="max-w-[350px]"
               :com-id="competition.id"
-              :task="getTaskByUserId(1)"
+              :task="getTaskByUserId(showedMember.id)"
             />
           </CardUser>
         </template>
@@ -100,12 +100,15 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
       </template>
       <template #content>
         <CardTask
-          v-if="competition?.status === IN_PROGRESS"
+          v-if="competition?.status === IN_PROGRESS && ['bride, groom'].includes(useRoles().userRole)"
           @completed="bvDial?.dialog?.close"
           :com-id="competition.id"
-          :task="getTaskByUserId(1)"
+          :task="getTaskByUserId(useAuth().userId)"
           is-executor
         />
+        <div v-else>
+          Ваша роль не предусматривает задания
+        </div>
         <CardBrideVote
           v-if="competition.status === 'VOTING'"
           :com-id="competition.id"

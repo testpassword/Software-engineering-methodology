@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DebugController {
 
-    @GetMapping("api/debug/hello")
+    @GetMapping("api/debug/hello/")
     public ResponseEntity<String> sayHello(@RequestParam(name = "name") String name,
                                            @AuthenticationPrincipal UserDetails userDetails){
         return new ResponseEntity<>("hello, " + name + "\nyour email: " + userDetails.getUsername(), HttpStatus.OK);
 
     }
 
-    @GetMapping("/free")
+    @GetMapping("/free/")
     public ResponseEntity<String> sayFREEDOOOM(){
         return new ResponseEntity<>("FREEEEEEDOOOOOOOM", HttpStatus.OK);
 

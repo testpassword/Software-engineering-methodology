@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -32,20 +33,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/users", "/session").permitAll() // все могут зарегаться или залогиниться
-                .antMatchers(HttpMethod.GET, "/free", "/users/{userId}").permitAll() // Разрешить доступ без аутентификации
-                .antMatchers(HttpMethod.GET,  "/api/competitions/**").permitAll()
-                .antMatchers(HttpMethod.POST, "api/competitions/**").permitAll()
-                .antMatchers(HttpMethod.PATCH, "api/competitions/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/users/", "/session/").permitAll() // все могут зарегаться или залогиниться
+                .antMatchers(HttpMethod.GET, "/free/", "/users/{userId}/").permitAll() // Разрешить доступ без аутентификации
+                .antMatchers(HttpMethod.GET,  "/competitions/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/competitions/**").permitAll()
+                .antMatchers(HttpMethod.PATCH, "/competitions/**").permitAll()
 
 
-                .antMatchers(HttpMethod.PATCH,"/users/{userId}").hasAuthority("users:update") // Разрешить доступ к /free без аутентификации
-                .antMatchers(HttpMethod.DELETE,"/users/{userId}").hasAuthority("users:delete") // Разрешить доступ к /free без аутентификации
-                .antMatchers(HttpMethod.GET,"/users").hasAuthority("users:readAll") // Разрешить доступ к /free без аутентификации
-                .antMatchers(HttpMethod.GET, "/users/{userId}/arrows").hasAuthority("users:read:detailed")
+                .antMatchers(HttpMethod.PATCH,"/users/{userId}/").hasAuthority("users:update") // Разрешить доступ к /free без аутентификации
+                .antMatchers(HttpMethod.DELETE,"/users/{userId}/").hasAuthority("users:delete") // Разрешить доступ к /free без аутентификации
+                .antMatchers(HttpMethod.GET,"/users/").hasAuthority("users:readAll") // Разрешить доступ к /free без аутентификации
+                .antMatchers(HttpMethod.GET, "/users/{userId}/arrows/").hasAuthority("users:read:detailed")
                 .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
                 .and()
-                .httpBasic(); // Использовать Basic Auth
+                .httpBasic() // Использовать Basic Auth
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+                });
     }
 
 

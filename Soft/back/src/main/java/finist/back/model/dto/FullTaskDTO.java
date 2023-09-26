@@ -21,7 +21,7 @@ public class FullTaskDTO {
         this.id = task.getId();
         this.executorId = (task.getExecutor() != null) ? task.getExecutor().getId() : null;
         this.report = (task.getReport() != null) ? task.getReport() : null;
-        this.report = (task.getText() != null) ? task.getText() : null;
+        this.text = (task.getText() != null) ? task.getText() : null;
         this.completed = task.getCompleted();
     }
 }

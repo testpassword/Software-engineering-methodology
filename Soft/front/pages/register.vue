@@ -18,7 +18,7 @@ const { pass, errorFields } = useAsyncValidator(
     },
     password: {
       type: 'string',
-      min: 6,
+      min: 1,
       required: true
     }
   }
@@ -27,6 +27,7 @@ const { pass, errorFields } = useAsyncValidator(
 const register = async () => {
   await api.users.register(form.value)
   navigateTo('/login')
+
 }
 </script>
 

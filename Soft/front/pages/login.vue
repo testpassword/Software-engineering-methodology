@@ -2,14 +2,15 @@
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 import api from '/api'
 
-const form = ref({ phone: '', password: '' })
+const form = ref({ email: '', password: '' })
 const { pass, errorFields } = useAsyncValidator(form, {
-  phone:    { type: 'string', required: true, pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im },
+  email:     { type: 'email', required: true },
   password: { type: 'string', required: true }
 })
 
 const login = async () => {
-  const { role } = await api.session.login(form.value)
+  const { role, id } = await api.session.login(form.value)
+  useAuth().userId.value = id
   useAuth().set(form.value)
   if (role) {
     useRoles().userRole.value = role
@@ -23,11 +24,11 @@ const login = async () => {
     <template #content>
       <h2>Вход</h2>
       <input
-        type="tel"
-        placeholder="Номер телефона (+7...)"
+        type="email"
+        placeholder="Почта"
         class="input input-bordered"
-        :class="{ 'input-error': errorFields?.phone?.length }"
-        v-model="form.phone"
+        :class="{ 'input-error': errorFields?.email?.length }"
+        v-model="form.email"
       />
       <input
         type="password"

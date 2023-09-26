@@ -13,6 +13,7 @@ import finist.back.repositories.TaskRepository;
 import finist.back.repositories.UserRepository;
 import finist.back.services.BrideVoteService;
 import finist.back.services.CompetitionService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,10 +48,9 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Optional<FullCompetitionDTO> addCompetition(NewCompetitionReqDTO newCompetitionReqDTO) { // не записывается creatorId, доделать при добавлении авторизации
-        User creator = userRepository.findById(1L).get(); //заглушка, пока не добавлена авторизация
-        return Optional.of(new FullCompetitionDTO(
-                competitionRepository.save(new Competition(creator, newCompetitionReqDTO.getName(), newCompetitionReqDTO.getCity()))));
+    public Optional<FullCompetitionDTO> addCompetition(NewCompetitionReqDTO newCompetitionReqDTO, UserDetails userDetails) throws UserNotFoundException { // не записывается creatorId, доделать при добавлении авторизации
+        return Optional.ofNullable(userRepository.findByEmail(userDetails.getUsername()).map(user ->
+                new FullCompetitionDTO(competitionRepository.save(new Competition(user, newCompetitionReqDTO.getName(), newCompetitionReqDTO.getCity())))).orElseThrow(() -> new UserNotFoundException(userDetails.getUsername())));
     }
 
     @Override

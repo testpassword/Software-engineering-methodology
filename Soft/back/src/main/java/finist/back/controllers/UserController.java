@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class UserController {
     final UserService userService;
 
@@ -25,32 +26,32 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/session")
+    @PostMapping("/session/")
     public ResponseEntity<FullUserDTO> login(@RequestBody UserAuthRequestDTO userAuthRequestDTO) throws AuthUserException {
         return userService.login(userAuthRequestDTO).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/")
     public ResponseEntity<UserRegistrationResponseDTO> registerUser(@RequestBody UserAuthRequestDTO userAuthRequestDTO) throws InvalidEmailException {
         return userService.registerNewUser(userAuthRequestDTO).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users/")
     public ResponseEntity<List<FullUserDTO>> getAllUsers(){
         return userService.getAllUsers().map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/{userId}/")
     public ResponseEntity<FullUserDTO> getUser(@PathVariable(name = "userId") Long userId) throws UserNotFoundException {
         return userService.getUser(userId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PatchMapping("/users/{userId}")
+    @PatchMapping("/users/{userId}/")
     public ResponseEntity<FullUserDTO> updateUser(@PathVariable(name = "userId") Long userId,
                                                   @RequestBody FullUserDTO userDTO,
                                                   @AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException, ScenarioException {
@@ -58,7 +59,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/users/{userId}/")
     public ResponseEntity<Void> deleteUser(@PathVariable(name = "userId") Long userId,
                                            @AuthenticationPrincipal UserDetails userDetails) throws ScenarioException {
         try {
@@ -69,13 +70,13 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{userId}/arrows")
+    @GetMapping("/users/{userId}/arrows/")
     public ResponseEntity<Integer> getArrowsAmount(@PathVariable(name = "userId") Long userId){
         return userService.getArrowsAmount(userId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PostMapping("/users/{userId}/arrows")
+    @PostMapping("/users/{userId}/arrows/")
     public ResponseEntity<Void> getArrows(@PathVariable(name = "userId") Long userId, @RequestBody UserArrowsDTO amount){
         try {
             userService.addArrows(userId, amount.getAmount());

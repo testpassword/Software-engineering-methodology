@@ -2,6 +2,7 @@ package finist.back.model;
 
 import finist.back.model.enums.CompetitionStatus;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Table(name="competitions")
 public class Competition {
 
+    @Getter
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -46,14 +48,12 @@ public class Competition {
         this.creator = creator;
         this.name = name;
         this.city = city;
+        this.status = CompetitionStatus.IN_PROGRESS;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
 }
 
