@@ -1,0 +1,752 @@
+openapi: 3.0.3
+
+
+info:
+  title: Finist
+  description: |-
+    API спецификация бекенда приложения Finist и описание бизнес-процесса с точки зрения манипулирования моделью данных.
+    Везде в `PATCH` нельзя менять id самой сущности.
+  contact:
+    name: testpassword
+    url: https://github.com/testpassword
+    email: kulbakolearn@mail.ru
+  license:
+    name: European Union Public License 1.2
+    url: https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/eupl_v1.2_en.pdf
+  version: 0.1.0
+
+
+servers:
+  - url: https://se.ifmo.ru
+    description: Продакшн сервер
+    variables:
+      port:
+        default: '2222'
+  - url: localhost
+    variables:
+      port:
+        default: '8080'
+    description: Сервер разработки
+
+
+components:
+  securitySchemes:
+    # https://swagger.io/docs/specification/authentication/basic-authentication/
+    basicAuth:
+      type: http
+      scheme: basic
+
+  parameters:
+    userId:
+      in: path
+      name: userId
+      schema:
+        type: integer
+        format: int64
+        required: true
+    candidateId:
+      in: path
+      name: candidateId
+      schema:
+        type: integer
+        format: int64
+        required: true
+    competitionId:
+      in: path
+      name: competitionId
+      schema:
+        type: integer
+        format: int64
+        required: true
+    brideVoteId:
+      in: path
+      name: brideVoteId
+      schema:
+        type: integer
+        format: int64
+        required: true
+    taskId:
+      in: path
+      name: taskId
+      schema:
+        type: integer
+        format: int64
+        required: true
+    # todo: filter, sort
+
+  schemas:
+    EDUCATION:
+      description: Уровень образования пользователя
+      type: string
+      enum: ['Церковно-приходское', 'Среднее общее', 'Среднее профессиональное', 'Высшее']
+    ROLE:
+      description: Роль пользователя в системе
+      type: string
+      enum: ['matchmaker', 'groom', 'bride', 'guest', 'assistant', 'enemy'] # ['Сваха', 'Жених', 'Невеста', 'Гость', 'Помощникъ', 'Супостатъ']
+
+    id:
+      type: number
+      format: int64
+      description: Уникальный ID
+
+    Entity:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          description: Уникальный ID
+
+    User:
+      description: |-
+        Информация о пользователе. Первый раз (после регистрации), пользователь может изменить любое из этих полей.
+        После первоначальной установки значений, пользователь может менять только поля [`follows`, `isPairing`].
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            phone:
+              type: integer
+              format: int64
+              description: Мобильный телефон пользователя, уникальный
+            name:
+              type: string
+              minLength: 1
+              description: Фамилия и имя одной строкой
+            dateOfBirth:
+              type: string
+              format: date
+              description: Дата рождения, необходимо отказать пользователю в регистрации, если возраст меньше 18 полных лет
+            city:
+              type: string
+              description: Город где пользователь живёт и хочет искать себе половинку
+            education:
+              $ref: '#/components/schemas/EDUCATION'
+            role:
+              $ref: '#/components/schemas/ROLE'
+            followsIds:
+              type: array
+              default: []
+              minItems: 0
+              items:
+                $ref: '#/components/schemas/Entity'
+              description: Список испытаний, на которые подписался пользователь
+            aboutSelf:
+              type: string
+              minLength: 100
+              description: Любая дополнительная информация пользователя о себе. Должна содержать минимум 100 символов.
+            aboutPartner:
+              type: string
+              minLength: 100
+              description: Любая дополнительная информация пользователя о будущей паре.
+            isPairing:
+              type: boolean
+              default: false
+              description: |-
+                Ищет ли человек партнёра, может быть переведено в true только самим пользователем.
+                Разрешено только для пользователей с ролями ['groom', 'bride'].
+    Task:
+      description: Индивидуальное задание для пользователя
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            text:
+              type: string
+              description: Описание задания - что пользователь должен будет сделать
+            executorId:
+              $ref: '#/components/schemas/id'
+              # Исполнитель задания, это может только пользователь с ролями из списка ['groom', 'bride', 'assistant', 'enemy']
+            report:
+              type: string
+              default: ''
+              description: Отчёт пользователя о выполнении задания, поле может быть изменено только `executor`-ом
+            completed:
+              type: boolean
+              default: false
+              description: Подтверждение выполнения задания, может быть установлено в true только `matchmaker`-ом и при наличии report
+    COMP_STATUSES:
+      type: string
+      enum: [IN_PROGRESS, VOTING, WAITING_AGREEMENT, MARRIAGE] # [ПРИНИМАЕТСЯ, ВЫПОЛНЯЕТСЯ, ГОЛОСОВАНИЕ, ОЖИДАЕТ_СОГЛАСИЙ, СВАДЬБА]
+      default: IN_PROGRESS
+      description: Статус испытания
+    Competition:
+      description: Информация о главном бизнес-процессе системы - испытания, определяющих судьбы пользователей
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            name:
+              type: string
+              default: Названия испытания
+            city:
+              type: string
+              description: |-
+                Город, где будет проводится испытание. Все участники должны быть из этого города 
+                (т.е. должно быть tasks.user.city == competition.city).
+            tasksIds:
+              description: |-
+                Индивидуальные задания пользователей. Должны быть созданы task для 1 groom, 3 bride, 1 assistant, 1 enemy.
+              type: array
+              items:
+                $ref: '#/components/schemas/id'
+            status:
+              $ref: '#/components/schemas/COMP_STATUSES'
+            followersAmount:
+              type: integer
+              format: int64
+              default: 0
+              description: Количество наблюдателей за заданием, т.е. подсчёт `user.follows`. Пока реализовывать не нужно.
+    BrideVote:
+      type: object
+      description: Голосование за невесту-победительницу соревнования
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            competitionId:
+              $ref: '#/components/schemas/id'
+              # Может быть только соревнование в статусе VOTING
+            candidates:
+              type: array
+              description: Невесты-кандидатки, которые борются за сердце жениха в рамках соревнования
+              items:
+                type: object
+                properties:
+                  brideId:
+                    $ref: '#/components/schemas/id'
+                    # Могут быть только пользователи с role == bride
+                  points:
+                    type: integer
+                    format: int64
+                    default: 0
+            endTime:
+              type: string
+              format: date
+              description: Дата окончания голосования
+            userVoteId:
+              description: id невесты, за которую голосовая пользователь. По-умолчанию `null`, может быть изменено единожды
+              anyOf:
+                - $ref: '#/components/schemas/id'
+                - nullable: true
+    Marriage:
+      description: Информация о будущей/состоявшейся свадьбе `bride` и `groom`
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            competitionId:
+              $ref: '#/components/schemas/id'
+              # Ссылка на испытание, которое привело к свадьбе. Может ссылать только на испытания со статусами [WAITING_AGREEMENT, MARRIAGE]
+            groomId:
+              $ref: '#/components/schemas/id'
+              # Может быть только пользователь с role == groom и участник competition
+            groomAgreement:
+              type: boolean
+              default: false
+              description: Согласие `groom` на свадьбу, может быть изменено только groom, который участвовал в испытании
+            brideId:
+              $ref: '#/components/schemas/id'
+              # Может быть только пользователь с role == bride и победительница competition
+            brideAgreement:
+              type: boolean
+              default: false
+              description: Согласие `bride` на свадьбу, может быть изменено только `bride`, которая участвовала в испытании
+            report:
+              type: string
+              default: ''
+              description: |-
+                Отчёт о свадьбе, может быть изменено только matchmaker и если 
+                groomAgreement == true && brideAgreement == true.
+
+  responses:
+    OK:
+      description: Операция выполнена успешно
+    BAD_REQ:
+      description: Ошибка десериализации данных (отсутствуют необходимые поля или имеют неправильные значения)
+    UNAUTH:
+      description: Доступ к ресурсу ограничен, требуется авторизация
+    NOT_FOUND:
+      description: Сущность с указанным `id` не найдена
+    CONFLICT:
+      description: Сущность с указанным `id` уже существует
+    INTERNAL:
+      description: Непредвиденная ошибка, попробуйте повторить действие позже
+    FORBIDDEN:
+      description: Действие запрещено пользователю с данной ролью
+
+
+# Далее, подразумевается существование кода 500 для каждого метода каждого пути, он не указан во избежание излишнего дублирования
+paths:
+  /session/:
+    post:
+      description: Войти в сервис
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: integer
+                  format: int64
+                password:
+                  type: string
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          description: Пользователь с указанным `phone` найден, но пароль введён неверно
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /users/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить список всех пользователей
+      responses:
+        200:
+          description: Массив с пользователями
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+    post:
+      description: Регистрация
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: integer
+                  format: int64
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        409:
+          $ref: '#/components/responses/CONFLICT'
+  /users/{userId}/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить конкретного пользователя
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        200:
+          description: Пользователь
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+    patch:
+      security:
+        - basicAuth: []
+      description: Изменить данные о конкретном пользователе. Это может сделать только владелец аккаунта.
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Менять phone нельзя, но я не знаю, как исключить поле в OpenAPI
+              anyOf:
+                - $ref: '#/components/schemas/User'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+    delete:
+      security:
+        - basicAuth: []
+      description: Удалить информацию о пользователе. Это может сделать только владелец аккаунта.
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /users/{userId}/arrows/:
+    get:
+      security:
+        - basicAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        200:
+          description: |-
+            Получить количество стрел пользователя. Доступен только пользователям с ролью groom.
+            Первая стрела выдаётся при регистрации.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: integer
+                    format: int64
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        403:
+          $ref: '#/components/responses/FORBIDDEN'
+    post:
+      description: Приобрести стрелы
+      security:
+        - basicAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  format: int64
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        403:
+          $ref: '#/components/responses/FORBIDDEN'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /competitions/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить список всех соревнований
+      responses:
+        200:
+          description: Массив с соревнованиями
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Competition'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+    post:
+      security:
+        - basicAuth: []
+      description: Создать соревнование
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  default: Названия испытания
+                city:
+                  type: string
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+  /competitions/{competitionId}/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить конкретное соревнование
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      responses:
+        200:
+          description: Соревнование
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Competition'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+    patch:
+      security:
+        - basicAuth: []
+      description: Изменить данные о конкретном соревновании. Это может сделать только сваха.
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/Competition'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /competitions/{competitionId}/tasks/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить список заданий конкретного соревнование
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      responses:
+        200:
+          description: Список заданий
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+    post:
+      security:
+        - basicAuth: []
+      description: Создать задание. Это может сделать только сваха.
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+  /competitions/{competitionId}/members/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить участников соревнования.
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      responses:
+        200:
+          description: Участники соревнования
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /competitions/{competitionId}/tasks/{taskId}/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить конкретное задание конкретного соревнования
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        200:
+          description: Задание
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+    patch:
+      security:
+        - basicAuth: []
+      description: Изменить данные о конкретном задании. Это может сделать сваха и тот, кому назначено задание.
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/Task'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /competitions/{competitionId}/bride_vote/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить информацию о голосовании за лучшую невесту
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      responses:
+        200:
+          description: Голосование за невесту
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrideVote'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /competitions/{competitionId}/bride_vote/{brideVote}/candidates/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить невест-кандидаток данного соревнования
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+        - $ref: '#/components/parameters/brideVoteId'
+      responses:
+        200:
+          description: Невесты-кандидатки данного соревнования
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /competitions/{competitionId}/bride_vote/{candidateId}/vote/:
+    patch:
+      security:
+        - basicAuth: []
+      description: |-
+        Проголосовать за невесту (добавить ей 1 балл). 
+        Проверять, что пользователь ещё этого не делал.
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+        - $ref: '#/components/parameters/candidateId'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /competitions/{competitionId}/marriage/:
+    get:
+      security:
+        - basicAuth: []
+      description: Получить информацию о предстоящей свадьбе
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      responses:
+        200:
+          description: Информация о готовящейся свадьбе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Marriage'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+    post:
+      security:
+        - basicAuth: []
+      description: Создать шаблон свадьбы, это может сделать только сваха.
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Marriage'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+    patch:
+      security:
+        - basicAuth: []
+      description: |-
+        Изменить информацию о свадьбе, правила редактирования; `groomAgreement` - только назначенный Жених,
+        `brideAgreement` - только назначенная Невеста, а `report` - только Сваха.
+      parameters:
+        - $ref: '#/components/parameters/competitionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/Marriage'
+      responses:
+        200:
+          $ref: '#/components/responses/OK'
+        400:
+          $ref: '#/components/responses/BAD_REQ'
+        401:
+          $ref: '#/components/responses/UNAUTH'
+        404:
+          $ref: '#/components/responses/NOT_FOUND'
+  /arrows/price/:
+    get:
+      description: Задача с ⭐
+      responses:
+        200:
+          description: Актуальная цена стрелы
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  price:
+                    type: integer
+                    format: float
+
+
+externalDocs:
+  description: Бизнес-, дизайн-, технические- и другие документы по проекту
+  url: https://github.com/testpassword/Software-engineering-methodology
