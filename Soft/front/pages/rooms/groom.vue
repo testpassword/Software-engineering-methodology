@@ -12,7 +12,9 @@ let userApi
 const user = ref(null)
 const currentCompetition = ref(null)
 
-const actualizeArrowsAmount = async () => currentAmount.value = (await userApi.arrows.get()).amount
+const actualizeArrowsAmount = async () => currentAmount.value = (await userApi[useAuth().userId.value].arrows.get())
+
+watch(user, nv => currentAmount.value = nv?.arrowsAmount)
 
 useMountedApi(async () => {
   userApi = api.users.for()

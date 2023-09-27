@@ -14,7 +14,9 @@ const remainSec = ref({})
 const brides = ref([])
 useMountedApi(async () => {
   bv.value = bv.value ?? await bvApi.get()
-  setInterval(() => remainSec.value = Math.ceil((bv.value.endTime - new Date()) / 1000), 1000)
+  const parts = bv.value.endTime.split('-')
+  const endTime = new Date(parts[0], parts[1] - 1, parts[2])
+  setInterval(() => remainSec.value = Math.ceil((endTime - new Date()) / 1000), 1000)
   brides.value = (
     await bvApi
       .candidates
@@ -44,8 +46,10 @@ const vote = async () => {
   await bvApi[selectedBrideId.value].vote.inc()
   brides.value.find( it => it.id === selectedBrideId.value ).points++
   bv.value.userVote = selectedBrideId.value
-  alert(`Ващ голос засчитан!`)
+  alert(`Ваш голос засчитан!`)
 }
+
+// todo: починить подсветку выбранной невесты
 </script>
 
 <template>

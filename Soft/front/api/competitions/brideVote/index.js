@@ -4,6 +4,7 @@ import vote from './vote'
 import idEndpointGetter from '../../idEndpointGetter'
 
 export default function brideVote(parentEndpoint = '') {
+  // todo: remove id there on front and back
   const ENDPOINT = `${parentEndpoint}bride_vote/`
 
   return idEndpointGetter({

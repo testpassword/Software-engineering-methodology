@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
         if (!user.getEmail().equals(userDetails.getUsername()))
             throw new ScenarioException("пользователь может редактировать только свой аккаунт");
         updateUserAttributes(user, userDTO);
+        if (user.getRole() == UserRole.GROOM) user.setArrowsAmount(1);
         return Optional.of(convertUserToFullUserDTO(userRepository.save(user)));
     }
 

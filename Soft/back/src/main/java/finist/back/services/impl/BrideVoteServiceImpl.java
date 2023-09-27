@@ -6,6 +6,7 @@ import finist.back.exceptions.CandidateNotFoundException;
 import finist.back.exceptions.CompetitionNotFoundException;
 import finist.back.model.*;
 import finist.back.model.dto.FullUserDTO;
+import finist.back.model.enums.UserRole;
 import finist.back.repositories.*;
 import finist.back.services.BrideVoteService;
 import finist.back.services.CandidateService;
@@ -39,11 +40,12 @@ public class BrideVoteServiceImpl implements BrideVoteService {
     public void initBrideVoteForCompetition(Competition competition, List<User> competitionMembers) throws CompetitionNotFoundException {
         BrideVote brideVote = new BrideVote();
 
+        List<User> candidates = competitionMembers.stream().filter(member -> member.getRole().equals(UserRole.BRIDE)).collect(Collectors.toList());
         brideVote.setCompetition(competition);
         brideVote.setEndTime(LocalDate.now().plusDays(3));
         BrideVote savedBrideVote = brideVoteRepository.save(brideVote);
 
-        competitionMembers.forEach(member -> candidateService.addNewCandidate(savedBrideVote, member));
+        candidates.forEach(member -> candidateService.addNewCandidate(savedBrideVote, member));
 
     }
 
@@ -69,7 +71,7 @@ public class BrideVoteServiceImpl implements BrideVoteService {
         if (wrappedCompetition.isEmpty()) throw new CompetitionNotFoundException(competitionId);
         else if (wrappedCompetition.get().getBrideVote() == null)
             throw new BrideVoteNotFoundException(0L);
-        else if (wrappedCompetition.get().getBrideVote().getCandidates().stream().noneMatch(candidate -> candidate.getId().equals(candidateId)))
+        else if (wrappedCompetition.get().getBrideVote().getCandidates().stream().noneMatch(candidate -> candidate.getBride().getId().equals(candidateId)))
             throw new CandidateNotFoundException(candidateId);
 
         Long userId = 1L; // пока нет авторизации заменяет голосующего пользователя
@@ -77,7 +79,7 @@ public class BrideVoteServiceImpl implements BrideVoteService {
 
         if (!isAlreadyVote(userId, wrappedCompetition.get().getBrideVote().getId())) { //если еще не голосовал в этом соревновании
             Candidate candidate = wrappedCompetition.get().getBrideVote().getCandidates().stream()
-                    .filter(cndt -> cndt.getId().equals(candidateId))
+                    .filter(cndt -> cndt.getBride().getId().equals(candidateId))
                     .findAny().get();
 
 

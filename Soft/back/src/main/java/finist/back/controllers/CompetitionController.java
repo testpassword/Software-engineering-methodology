@@ -89,10 +89,11 @@ public class CompetitionController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/{competitionId}/bride_vote/{brideVote}/candidates/")
-    public ResponseEntity<List<FullUserDTO>> getCandidatesFromBrideVote(@PathVariable(name = "competitionId") Long competitionId,
-                                                                  @PathVariable(name = "brideVote") Long brideVoteId) throws CompetitionNotFoundException, BrideVoteNotFoundException {
-        return brideVoteService.getCandidatesFromBrideVote(competitionId, brideVoteId).map(ResponseEntity::ok)
+    @GetMapping("/{competitionId}/bride_vote/candidates/")
+    public ResponseEntity<List<FullUserDTO>> getCandidatesFromBrideVote(@PathVariable(name = "competitionId") Long competitionId
+                                                                  ) throws CompetitionNotFoundException, BrideVoteNotFoundException {
+        // todo: remove 1l
+        return brideVoteService.getCandidatesFromBrideVote(competitionId, 1l).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
