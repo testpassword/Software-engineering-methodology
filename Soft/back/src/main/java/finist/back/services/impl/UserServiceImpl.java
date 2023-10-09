@@ -53,8 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean isEmailUnique(String email) {
-        boolean reuslt = !userRepository.existsByEmail(email);
-        return reuslt;
+        return !userRepository.existsByEmail(email);
     }
 
     @Override
