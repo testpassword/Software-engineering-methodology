@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JavaScript-modules-diagram</ID>
+  <OriginalElement>/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/app.vue;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/plugins;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/middleware;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api;</OriginalElement>
+  <nodes>
+    <node x="885.0" y="924.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/ActionsPanel.vue#api#22;</node>
+    <node x="269.0" y="1080.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/BrideVote.vue#api#22;</node>
+    <node x="695.0" y="1023.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/list/Competition.vue#api#22;</node>
+    <node x="487.0" y="1176.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Competition.vue#api#22;</node>
+    <node x="-114.0" y="1570.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/Editor.vue#MdEditor#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/Editor.vue#style.css#55;</node>
+    <node x="486.0" y="981.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Task.vue#api#22;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Task.vue#useAsyncValidator#47;</node>
+    <node x="67.0" y="1313.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/User.vue</node>
+    <node x="20.0" y="783.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAsyncValidator#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAuth#122;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useRoles#169;</node>
+    <node x="390.0" y="1388.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/core-js/proposals/array-last.js</node>
+    <node x="757.0" y="609.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#arrows#38;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#userArrows#314;</node>
+    <node x="736.0" y="334.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;</node>
+    <node x="901.0" y="120.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/candidates.js#basicInterface#7;</node>
+    <node x="640.0" y="1388.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/cities.json/cities.json</node>
+    <node x="961.0" y="710.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/groom.vue#api#22;</node>
+    <node x="204.0" y="1670.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/core-js/actual/array/group.js</node>
+    <node x="448.0" y="202.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/idEndpointGetter.js</node>
+    <node x="-72.0" y="1388.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/md-editor-v3/lib/types/index.d.ts#MdEditor#17;</node>
+    <node x="-173.0" y="248.0">useStorage;</node>
+    <node x="685.0" y="26.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#candidates#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#idEndpointGetter#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#vote#85;</node>
+    <node x="501.0" y="273.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;</node>
+    <node x="563.0" y="756.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;</node>
+    <node x="222.0" y="945.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/login.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/login.vue#useAsyncValidator#24;</node>
+    <node x="912.0" y="348.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/marriage.js#basicInterface#7;</node>
+    <node x="313.0" y="825.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/matchmaker.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/matchmaker.vue#useAsyncValidator#24;</node>
+    <node x="779.0" y="509.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/members.js#basicInterface#7;</node>
+    <node x="331.0" y="1536.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/plugins/prototypes.js#array-last.js#36;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/plugins/prototypes.js#group.js#0;</node>
+    <node x="328.0" y="704.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/register.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/register.vue#useAsyncValidator#24;</node>
+    <node x="372.0" y="512.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/session.js#useApi#9;</node>
+    <node x="-247.0" y="1723.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/md-editor-v3/lib/style.css</node>
+    <node x="382.0" y="36.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#idEndpointGetter#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#useApi#47;</node>
+    <node x="1230.0" y="156.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Color#69;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#ExtrudeGeometry#30;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Group#55;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Mesh#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#MeshBasicMaterial#11;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#PerspectiveCamera#85;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Scene#62;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Shape#78;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#WebGLRenderer#104;</node>
+    <node x="253.0" y="307.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useApi#50;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useAuth#9;</node>
+    <node x="84.0" y="608.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/@vueuse/integrations/useAsyncValidator.d.ts#useAsyncValidator#1278;</node>
+    <node x="-31.0" y="409.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useAuth#141;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useStorage#9;</node>
+    <node x="633.0" y="1547.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useRUCities.js#cities#7;</node>
+    <node x="-247.0" y="832.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useRoles.js#useRoles#888;</node>
+    <node x="556.0" y="522.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#basicInterface#52;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#idEndpointGetter#127;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#useApi#9;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#userArrows#91;</node>
+    <node x="787.0" y="-116.0">/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/vote.js</node>
+    <node x="188.0" y="1202.0">/avatar-placeholder.webp</node>
+    <node x="1189.0" y="-116.0">Color;ExtrudeGeometry;Group;Mesh;MeshBasicMaterial;PerspectiveCamera;Scene;Shape;WebGLRenderer;</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/BrideVote.vue#api#22;" target="/avatar-placeholder.webp" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Color#69;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#ExtrudeGeometry#30;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Group#55;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Mesh#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#MeshBasicMaterial#11;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#PerspectiveCamera#85;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Scene#62;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#Shape#78;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/use3DBackground.js#WebGLRenderer#104;" target="Color;ExtrudeGeometry;Group;Mesh;MeshBasicMaterial;PerspectiveCamera;Scene;Shape;WebGLRenderer;" relationship="">
+      <point x="-43.11965577938757" y="0.0" />
+      <point x="-43.11965577938757" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#arrows#38;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#userArrows#314;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/BrideVote.vue#api#22;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#candidates#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#idEndpointGetter#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#vote#85;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/candidates.js#basicInterface#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#idEndpointGetter#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useApi#50;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useAuth#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#basicInterface#52;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#idEndpointGetter#127;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#useApi#9;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#userArrows#91;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/Editor.vue#MdEditor#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/Editor.vue#style.css#55;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/md-editor-v3/lib/types/index.d.ts#MdEditor#17;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/list/Competition.vue#api#22;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAsyncValidator#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAuth#122;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useRoles#169;" target="/avatar-placeholder.webp" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#candidates#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#idEndpointGetter#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#vote#85;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/idEndpointGetter.js" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#candidates#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#idEndpointGetter#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#vote#85;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Task.vue#api#22;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Task.vue#useAsyncValidator#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/@vueuse/integrations/useAsyncValidator.d.ts#useAsyncValidator#1278;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#basicInterface#52;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#idEndpointGetter#127;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#useApi#9;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#userArrows#91;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/idEndpointGetter.js" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#basicInterface#52;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#idEndpointGetter#127;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#useApi#9;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#userArrows#91;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useApi#50;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useAuth#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#arrows#38;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#userArrows#314;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useRUCities.js#cities#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/cities.json/cities.json" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#candidates#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#idEndpointGetter#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#vote#85;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/vote.js" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useApi#50;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useAuth#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAsyncValidator#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAuth#122;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useRoles#169;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#idEndpointGetter#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/idEndpointGetter.js" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/plugins/prototypes.js#array-last.js#36;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/plugins/prototypes.js#group.js#0;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/core-js/actual/array/group.js" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/Editor.vue#MdEditor#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/Editor.vue#style.css#55;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/md-editor-v3/lib/style.css" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAsyncValidator#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAuth#122;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useRoles#169;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useAuth#141;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useStorage#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/members.js#basicInterface#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/session.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#idEndpointGetter#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#idEndpointGetter#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/tasks.js#useApi#47;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Task.vue#api#22;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Task.vue#useAsyncValidator#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/session.js#useApi#9;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useApi#50;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useAuth#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Competition.vue#api#22;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/candidates.js#basicInterface#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAsyncValidator#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAuth#122;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useRoles#169;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/@vueuse/integrations/useAsyncValidator.d.ts#useAsyncValidator#1278;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/marriage.js#basicInterface#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useAuth#141;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useStorage#9;" target="useStorage;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/groom.vue#api#22;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/login.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/login.vue#useAsyncValidator#24;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/@vueuse/integrations/useAsyncValidator.d.ts#useAsyncValidator#1278;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/members.js#basicInterface#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#basicInterface#52;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#idEndpointGetter#127;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#useApi#9;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#userArrows#91;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#arrows#38;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/arrows.js#userArrows#314;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/plugins/prototypes.js#array-last.js#36;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/plugins/prototypes.js#group.js#0;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/core-js/proposals/array-last.js" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/matchmaker.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/matchmaker.vue#useAsyncValidator#24;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/@vueuse/integrations/useAsyncValidator.d.ts#useAsyncValidator#1278;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/User.vue" target="/avatar-placeholder.webp" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/ActionsPanel.vue#api#22;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useApi#50;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useAuth#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/idEndpointGetter.js" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/register.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/register.vue#useAsyncValidator#24;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/@vueuse/integrations/useAsyncValidator.d.ts#useAsyncValidator#1278;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#candidates#47;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#idEndpointGetter#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/brideVote/index.js#vote#85;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#basicInterface#52;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#idEndpointGetter#127;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#useApi#9;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/users.js#userArrows#91;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#basicInterface#7;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#brideVote#184;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#idEndpointGetter#220;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#marriage#118;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#members#152;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#tasks#90;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/index.js#useApi#47;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/register.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/register.vue#useAsyncValidator#24;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/login.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/login.vue#useAsyncValidator#24;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/components/card/Competition.vue#api#22;" target="/avatar-placeholder.webp" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useApi#50;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useApi.js#useAuth#9;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useAuth#141;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useAuth.js#useStorage#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/matchmaker.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/rooms/matchmaker.vue#useAsyncValidator#24;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#arrows#111;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#competitions#35;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#session#77;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/index.js#users#7;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#api#97;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAsyncValidator#24;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useAuth#122;/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/pages/account-settings.vue#useRoles#169;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/composables/useRoles.js#useRoles#888;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/competitions/marriage.js#basicInterface#7;" target="/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/api/basic.js#useApi#9;" relationship="">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.41450502911593434" showDependencies="false" x="648.0" y="828.5" />
+  <SelectedNodes>
+    <node>/Users/pugalol/itmo/5 course/software engineering methodology/Soft/front/node_modules/core-js/proposals/array-last.js</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>All</Category>
+  </Categories>
+  <VISIBILITY>Details</VISIBILITY>
+</Diagram>
+
