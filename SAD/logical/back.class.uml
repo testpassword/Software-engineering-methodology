@@ -3,12 +3,12 @@
   <ID>JAVA</ID>
   <OriginalElement>finist.back.model</OriginalElement>
   <nodes>
-    <node x="47.0" y="510.0">finist.back.model.Competition</node>
+    <node x="-86.0" y="705.0">finist.back.services.impl.CompetitionServiceImpl</node>
+    <node x="269.5" y="183.7459677419355">finist.back.services.impl.UserServiceImpl</node>
     <node x="143.0" y="69.0">finist.back.model.Role</node>
     <node x="139.5" y="178.0">finist.back.model.User</node>
-    <node x="269.5" y="183.7459677419355">finist.back.services.impl.UserServiceImpl</node>
-    <node x="-86.0" y="705.0">finist.back.services.impl.CompetitionServiceImpl</node>
     <node x="85.0" y="343.0">finist.back.model.Task</node>
+    <node x="47.0" y="510.0">finist.back.model.Competition</node>
   </nodes>
   <notes />
   <edges>
@@ -28,11 +28,19 @@
       <point x="0.0" y="-57.5" />
       <point x="0.0" y="57.5" />
     </edge>
+    <edge source="finist.back.model.Competition" target="finist.back.model.User" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
     <edge source="finist.back.services.impl.CompetitionServiceImpl" target="finist.back.model.Competition" relationship="CREATE">
       <point x="0.0" y="-99.5" />
       <point x="204.5" y="679.0" />
       <point x="148.5" y="679.0" />
       <point x="0.0" y="71.5" />
+    </edge>
+    <edge source="finist.back.model.User" target="finist.back.model.Competition" relationship="TO_MANY">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="finist.back.services.impl.CompetitionServiceImpl" target="finist.back.model.Task" relationship="CREATE">
       <point x="0.0" y="-99.5" />
@@ -42,12 +50,8 @@
       <point x="264.25" y="484.0" />
       <point x="59.75" y="57.5" />
     </edge>
-    <edge source="finist.back.model.User" target="finist.back.model.Role" relationship="TO_ONE">
-      <point x="0.0" y="-57.5" />
-      <point x="0.0" y="29.5" />
-    </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="0.8701754385964913" showDependencies="true" x="425.8850806451612" y="329.54435483870964" />
+  <settings layout="Hierarchic" zoom="0.8701754385964913" showDependencies="true" x="777.078629032258" y="472.5" />
   <SelectedNodes />
   <Categories>
     <Category>Fields</Category>
