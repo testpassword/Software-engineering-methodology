@@ -61,9 +61,13 @@ const completeRegister = async () => {
   navigateTo(`/rooms/${userRole}`)
 }
 
-
-onMounted(() => {
-  // todo: получаем user-а и заполняем поля, требуем заполнить все
+useMountedApi(async () => {
+  Object.entries(
+    await api
+      .users
+      [useAuth().userId.value]
+      .get()
+  ).forEach(([k, v]) => form.value[k] = v)
 })
 </script>
 

@@ -42,7 +42,7 @@ const pushArrow = async () => {
       ico-name="SimpleArrow"
       title="Комната Жениха"
     />
-    <div class="flex flex-row mt-10 gap-8 flex-wrap">
+    <div class="flex flex-row mt-10 gap-8 flex-wrap h-[90vh]">
       <div class="stats bg-primary text-primary-content">
         <div class="stat bg-secondary">
           <div class="stat-figure">

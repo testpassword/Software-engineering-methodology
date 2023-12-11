@@ -27,7 +27,7 @@ const { pass, errorFields } = useAsyncValidator(
 const register = async () => {
   await api.users.register(form.value)
   navigateTo('/login')
-
+  await Notification.requestPermission()
 }
 </script>
 

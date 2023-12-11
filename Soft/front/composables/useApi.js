@@ -1,4 +1,5 @@
 import { useAuth } from './useAuth'
+import { useWebNotification } from '@vueuse/core/index'
 
 export const useApi = async (request, opts = {}) => {
   if (typeof request === 'string') {
@@ -18,7 +19,7 @@ export const useApi = async (request, opts = {}) => {
   const err = resp.error.value
   if (err) {
     const e = JSON.stringify(err)
-    if (useRuntimeConfig().public.environment !== 'DEV') alert(e)
+    await useWebNotification({ title: 'Error', body: e }).show()
     throw Error(e)
   }
   return resp.data.value

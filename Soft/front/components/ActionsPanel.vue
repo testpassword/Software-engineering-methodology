@@ -1,7 +1,13 @@
 <script setup>
 import api from '/api'
 
-const delUser = async () => await api.users.for().del()
+const deleteAccount = async () => {
+  const res = confirm('Удалить аккаунт: вы уверены?')
+  if (res) {
+    await api.users.for().del()
+    navigateTo('/login')
+  }
+}
 
 const logout = () => {
   useAuth().logout()
@@ -27,7 +33,7 @@ const logout = () => {
           </button>
           <button
             class="btn btn-error btn-outline"
-            @click="delUser"
+            @click="deleteAccount"
           >
             <IconDelete/>
             Удалить аккаунт

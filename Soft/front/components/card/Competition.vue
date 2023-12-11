@@ -3,16 +3,16 @@ import api from '/api'
 
 const { STATUSES } = useCompetitionsStatues()
 const props = defineProps({
-  competition: { type: Object, required: true }
+  item: { type: Object, required: true }
 })
 
-const { competition } = toRefs(props)
+const { item } = toRefs(props)
 const members = ref([])
 const tasks = ref([])
-const progress = computed(() => STATUSES.findIndex(it => it.name === competition.value.status))
+const progress = computed(() => STATUSES.findIndex(it => it.name === item.value.status))
 
 await useMountedApi(async () => {
-  const comApi = api.competitions[competition.value.id]
+  const comApi = api.competitions[item.value.id]
   members.value = await comApi.members.get()
   try { tasks.value = await comApi.tasks.get() } catch { /* ignore if not exist */ }
 })
@@ -30,10 +30,10 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
   <div class="flex flex-col card glass">
     <div class="flex flex-row gap-8 py-3 px-6 capitalize">
       <div class="info">
-        <h3>{{ competition.name }}</h3>
+        <h3>{{ item.name }}</h3>
         <div class="flex flex-grow w-full">
           <IconCity/>
-          <span>{{ competition.city }}</span>
+          <span>{{ item.city }}</span>
         </div>
       </div>
       <div class="spacer"/>
@@ -62,10 +62,10 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
         ultrawide
       >
         <template #content>
-          <CardUser :user="showedMember">
+          <CardUser :item="showedMember">
             <CardTask
               class="max-w-[350px]"
-              :com-id="competition.id"
+              :com-id="item.id"
               :task="getTaskByUserId(showedMember.id)"
             />
           </CardUser>
@@ -79,7 +79,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
         @click="bvDial.dialog.showModal"
         :class="{
           'step-primary text-primary': progress >= i,
-          'animate-pulse': competition.status === it.name
+          'animate-pulse': item.status === it.name
         }"
       >
         {{ it.label }}
@@ -95,14 +95,14 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
           {
             IN_PROGRESS: 'Ваше задание',
             VOTING: 'Кандидатки'
-          }[competition.status]
+          }[item.status]
         }}
       </template>
       <template #content>
         <CardTask
-          v-if="competition?.status === IN_PROGRESS && ['bride, groom'].includes(useRoles().userRole)"
+          v-if="item?.status === IN_PROGRESS && ['bride, groom'].includes(useRoles().userRole)"
           @completed="bvDial?.dialog?.close"
-          :com-id="competition.id"
+          :com-id="item.id"
           :task="getTaskByUserId(useAuth().userId)"
           is-executor
         />
@@ -110,8 +110,8 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
           Ваша роль не предусматривает задания
         </div>
         <CardBrideVote
-          v-if="competition.status === 'VOTING'"
-          :com-id="competition.id"
+          v-if="item.status === 'VOTING'"
+          :com-id="item.id"
         />
       </template>
     </AcceptDialog>

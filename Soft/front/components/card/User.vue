@@ -1,10 +1,19 @@
 <script setup>
 const props = defineProps({
-  user:       { type: Object,  required: true },
+  item:       { type: Object,  required: true },
   horizontal: { type: Boolean, required: false, default: false }
 })
 
-const { user } = toRefs(props)
+const { item } = toRefs(props)
+
+function age(birthday) {
+  const today = new Date()
+  const birthDate = new Date(birthday)
+  let age = today.getFullYear() - birthDate.getFullYear()
+  if (today.getMonth() < birthDate.getMonth()) age--
+  if (today.getDay() < birthDate.getDay()) age--
+  return age
+}
 </script>
 
 <template>
@@ -20,22 +29,22 @@ const { user } = toRefs(props)
       class="flex info gap-0.5"
       :class="[ horizontal ? 'flex-row flex-wrap items-center' : 'flex-col' ]"
     >
-      <h3 class="pb-2 pr-2">{{ user.name }}</h3>
+      <h3 class="pb-2 pr-2">{{ item.name }}</h3>
       <div>
         <IconAge/>
-        <span>{{ user.age }}</span>
+        <span>{{ age(item.dateOfBirth) }}</span>
       </div>
       <div>
         <IconCity/>
-        <span>{{ user.city }}</span>
+        <span>{{ item.city }}</span>
       </div>
       <div>
         <IconEducation/>
-        <span>{{ user.education }}</span>
+        <span>{{ item.education }}</span>
       </div>
       <div>
         <IconMask/>
-        <span>{{ user.role }}</span>
+        <span>{{ item.role }}</span>
       </div>
     </div>
     <slot name="default"/>

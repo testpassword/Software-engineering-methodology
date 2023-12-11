@@ -50,7 +50,7 @@ watch(completed, nv => { if (nv) emits('completed', { task: task.value, users: a
       />
       <CardUser
         v-for="u in filteredUsers"
-        :user="u"
+        :item="u"
         @click="assignedUsers.push(u)"
         horizontal
         :class="{ 'bg-primary hover:bg-primary': assignedUsers?.map( it => it?.name )?.includes(u?.name) }"

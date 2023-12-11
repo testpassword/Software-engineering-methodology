@@ -60,7 +60,22 @@ const createCompetition = async () => {
       title="Комната Свахи"
     />
     <div class="flex flex-row mt-10 gap-8">
-      <ListCompetition/>
+      <AsyncDataTable
+        :api-fn="api.competitions"
+        item-component-name="Competition"
+      >
+        <template #title>
+          Список состязаний
+        </template>
+      </AsyncDataTable>
+      <AsyncDataTable
+        :api-fn="api.users"
+        item-component-name="User"
+      >
+        <template #title>
+          Список пользователей
+        </template>
+      </AsyncDataTable>
       <ActionsPanel>
         <template #extra>
           <button

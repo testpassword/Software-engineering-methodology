@@ -12,6 +12,7 @@ const login = async () => {
   const { role, id } = await api.session.login(form.value)
   useAuth().userId.value = id
   useAuth().set(form.value)
+  await Notification.requestPermission()
   if (role) {
     useRoles().userRole.value = role
     navigateTo(`/rooms/${role}`)
