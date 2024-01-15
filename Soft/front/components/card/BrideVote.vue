@@ -89,7 +89,7 @@ const vote = async () => {
         </div>
       </div>
     </div>
-  <AcceptDialog
+  <LazyDialogAccept
     ref="voteDial"
     @accept="vote"
   >
@@ -99,7 +99,7 @@ const vote = async () => {
     <template #content>
       Изменить свой голос будет нельзя
     </template>
-  </AcceptDialog>
+  </LazyDialogAccept>
 </template>
 
 <style lang="sass" scoped>

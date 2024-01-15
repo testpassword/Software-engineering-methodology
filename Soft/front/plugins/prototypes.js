@@ -7,9 +7,13 @@ export default defineNuxtPlugin(() => {
     return Math.round((part / total) * 100)
   }
 
-  Array.prototype.removeBy = function (k, v) {
-    const i = this.findIndex( it => it[k] === v )
+  Array.prototype.remove = function (v) {
+    const i = this.findIndex( it => JSON.stringify(it) === JSON.stringify(v) )
     if (i > -1) this.splice(i, 1)
     return this
+  }
+
+  String.prototype.capitalize = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1)
   }
 })

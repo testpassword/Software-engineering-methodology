@@ -88,7 +88,7 @@ const createCompetition = async () => {
         </template>
       </ActionsPanel>
     </div>
-    <AcceptDialog
+    <LazyDialogAccept
       ref="createCompetitionDial"
       ultrawide
       :hide-accept="!completed || !pass"
@@ -136,6 +136,6 @@ const createCompetition = async () => {
           }"
         />
       </template>
-    </AcceptDialog>
+    </LazyDialogAccept>
   </div>
 </template>

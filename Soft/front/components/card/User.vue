@@ -5,14 +5,24 @@ const props = defineProps({
 })
 
 const { item } = toRefs(props)
+const moreDial = ref()
 
-function age(birthday) {
+const age = birthday => {
   const today = new Date()
   const birthDate = new Date(birthday)
   let age = today.getFullYear() - birthDate.getFullYear()
   if (today.getMonth() < birthDate.getMonth()) age--
   if (today.getDay() < birthDate.getDay()) age--
   return age
+}
+
+const canSeeMore = computed(() => useRoles().userRole.value === 'matchmaker')
+
+const blockUser = async () => {
+  const res = confirm('Заблокировать пользователя? Он больше не сможет участвовать в состязания и оставлять комментарии.')
+  if (res) {
+    // todo: нет хватает вызова api
+  }
 }
 </script>
 
@@ -29,7 +39,26 @@ function age(birthday) {
       class="flex info gap-0.5"
       :class="[ horizontal ? 'flex-row flex-wrap items-center' : 'flex-col' ]"
     >
-      <h3 class="pb-2 pr-2">{{ item.name }}</h3>
+      <div class="flex flex-row">
+        <h3 class="pb-2 pr-2 flex items-center">
+          {{ item.name }}
+        </h3>
+        <slot name="actions">
+          <button
+            class="btn btn-secondary"
+            @click="blockUser"
+          >
+            <IconBlock/>
+          </button>
+          <button
+            v-if="canSeeMore"
+            class="btn btn-secondary"
+            @click="moreDial.dialog.showModal"
+          >
+            <IconMore/>
+          </button>
+        </slot>
+      </div>
       <div>
         <IconAge/>
         <span>{{ age(item.dateOfBirth) }}</span>
@@ -49,6 +78,17 @@ function age(birthday) {
     </div>
     <slot name="default"/>
   </div>
+  <LazyDialogAccept
+    ref="moreDial"
+    hide-accept
+  >
+    <template #title>
+      Подробнее
+    </template>
+    <template #content>
+      <PrettyJson :item="item"/>
+    </template>
+  </LazyDialogAccept>
 </template>
 
 <style lang="sass" scoped>

@@ -4,6 +4,7 @@ import api from '/api'
 const deleteAccount = async () => {
   const res = confirm('Удалить аккаунт: вы уверены?')
   if (res) {
+    // todo: не хватает id пользователя
     await api.users.for().del()
     navigateTo('/login')
   }

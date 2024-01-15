@@ -1,5 +1,6 @@
 <script setup>
 import api from '/api'
+import Commentary from '../icon/Commentary.vue'
 
 const { STATUSES } = useCompetitionsStatues()
 const props = defineProps({
@@ -24,6 +25,8 @@ const getTaskByUserId = userId => tasks.value.find( it => it.executorId === user
 
 const bvDial = ref()
 const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
+
+const commentsDial = ref()
 </script>
 
 <template>
@@ -56,7 +59,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
         </div>
       </div>
       <slot name="default"/>
-      <AcceptDialog
+      <LazyDialogAccept
         ref="memberDial"
         hide-accept
         ultrawide
@@ -70,7 +73,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
             />
           </CardUser>
         </template>
-      </AcceptDialog>
+      </LazyDialogAccept>
     </div>
     <ul class="steps">
       <li
@@ -85,7 +88,25 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
         {{ it.label }}
       </li>
     </ul>
-    <AcceptDialog
+    <div class="m-3">
+      <slot name="actions">
+        <button
+          class="btn text-purple-500 btn-outline w-fit hover:bg-purple-500"
+          v-if="useRoles().userRole.value === 'guest'"
+        >
+          <IconFollow/>
+          Подписаться
+        </button>
+        <button
+          class="btn btn-outline text-purple-600 hover:bg-purple-600"
+          @click="commentsDial.dialog.showModal"
+        >
+          <IconCommentary/>
+          Комментарии
+        </button>
+      </slot>
+    </div>
+    <LazyDialogAccept
       ultrawide
       ref="bvDial"
       hide-accept
@@ -100,7 +121,7 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
       </template>
       <template #content>
         <CardTask
-          v-if="item?.status === IN_PROGRESS && ['bride, groom'].includes(useRoles().userRole)"
+          v-if="item?.status === 'IN_PROGRESS' && ['bride, groom'].includes(useRoles().userRole.value)"
           @completed="bvDial?.dialog?.close"
           :com-id="item.id"
           :task="getTaskByUserId(useAuth().userId)"
@@ -114,8 +135,19 @@ const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
           :com-id="item.id"
         />
       </template>
-    </AcceptDialog>
-
+    </LazyDialogAccept>
+    <LazyDialogAccept
+      ultrawide
+      ref="commentsDial"
+      hide-accept
+    >
+      <template #title>
+        Комментарии
+      </template>
+      <template #content>
+        <LazyDialogComments/>
+      </template>
+    </LazyDialogAccept>
   </div>
 </template>
 

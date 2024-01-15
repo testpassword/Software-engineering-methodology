@@ -17,6 +17,18 @@ const task = ref('')
 const emits = defineEmits(['completed'])
 const completed = computed(() => assignedUsers.value.length > 0 && (props.emptyTask ? true : task.value))
 watch(completed, nv => { if (nv) emits('completed', { task: task.value, users: assignedUsers.value }) })
+
+const isCandidateAssign = candidate =>
+  assignedUsers
+    ?.value
+    .map( it => it?.name )
+    ?.includes(candidate?.name)
+
+const swapAssigment = candidate =>
+  assignedUsers
+    .value
+    ?.[isCandidateAssign(candidate) ? 'remove' : 'push']
+    ?.(candidate)
 </script>
 
 <template>
@@ -51,9 +63,9 @@ watch(completed, nv => { if (nv) emits('completed', { task: task.value, users: a
       <CardUser
         v-for="u in filteredUsers"
         :item="u"
-        @click="assignedUsers.push(u)"
+        @click="swapAssigment(u)"
         horizontal
-        :class="{ 'bg-primary hover:bg-primary': assignedUsers?.map( it => it?.name )?.includes(u?.name) }"
+        :class="{ 'bg-primary hover:bg-primary': isCandidateAssign(u) }"
       />
     </div>
   </div>
