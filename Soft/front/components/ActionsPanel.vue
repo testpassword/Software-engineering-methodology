@@ -26,21 +26,21 @@ const logout = () => {
         <div class="flex flex-col w-full gap-4">
           <div class="divider">Стандартные</div>
           <button
-            class="btn btn-info btn-outline"
+            class="btn btn-info btn-outline btn-sm"
             @click="navigateTo('/account-settings')"
           >
             <IconUser/>
             Настройки аккаунта
           </button>
           <button
-            class="btn btn-error btn-outline"
+            class="btn btn-error btn-outline btn-sm"
             @click="deleteAccount"
           >
             <IconDelete/>
             Удалить аккаунт
           </button>
           <button
-            class="btn text-black-100 btn-outline"
+            class="btn text-black-100 btn-outline btn-sm"
             @click="logout"
           >
             <IconExit/>

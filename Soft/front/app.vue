@@ -1,6 +1,6 @@
 <script setup>
 const { isBlurred, init } = use3DBackground()
-init()
+if (useRuntimeConfig().public.environment !== 'DEV') init()
 </script>
 
 <template>

@@ -1,7 +1,8 @@
 <script setup>
 const props = defineProps({
-  item:       { type: Object,  required: true },
-  horizontal: { type: Boolean, required: false, default: false }
+  item:        { type: Object,  required: true },
+  horizontal:  { type: Boolean, required: false, default: false },
+  hideActions: { type: Boolean, required: false, default: false },
 })
 
 const { item } = toRefs(props)
@@ -15,8 +16,6 @@ const age = birthday => {
   if (today.getDay() < birthDate.getDay()) age--
   return age
 }
-
-const canSeeMore = computed(() => useRoles().userRole.value === 'matchmaker')
 
 const blockUser = async () => {
   const res = confirm('Заблокировать пользователя? Он больше не сможет участвовать в состязания и оставлять комментарии.')
@@ -41,18 +40,23 @@ const blockUser = async () => {
     >
       <div class="flex flex-row">
         <h3 class="pb-2 pr-2 flex items-center">
-          {{ item.name }}
+          {{ item?.name }}
         </h3>
-        <slot name="actions">
+        <slot
+          name="actions"
+          v-if="!hideActions"
+        >
           <button
-            class="btn btn-secondary"
+            class="btn btn-secondary btn-xs tooltip tooltip-secondary"
+            data-tip="заблокировать"
             @click="blockUser"
           >
             <IconBlock/>
           </button>
           <button
-            v-if="canSeeMore"
-            class="btn btn-secondary"
+            v-if="useRoles().isMatchmaker"
+            class="btn btn-secondary btn-xs tooltip tooltip-secondary"
+            data-tip="подробнее"
             @click="moreDial.dialog.showModal"
           >
             <IconMore/>
@@ -61,19 +65,19 @@ const blockUser = async () => {
       </div>
       <div>
         <IconAge/>
-        <span>{{ age(item.dateOfBirth) }}</span>
+        <span>{{ age(item?.dateOfBirth) }}</span>
       </div>
       <div>
         <IconCity/>
-        <span>{{ item.city }}</span>
+        <span>{{ item?.city }}</span>
       </div>
       <div>
         <IconEducation/>
-        <span>{{ item.education }}</span>
+        <span>{{ item?.education }}</span>
       </div>
       <div>
         <IconMask/>
-        <span>{{ item.role }}</span>
+        <span>{{ item?.role }}</span>
       </div>
     </div>
     <slot name="default"/>

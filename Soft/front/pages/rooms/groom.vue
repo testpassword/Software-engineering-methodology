@@ -69,7 +69,7 @@ const dismiss = async () => {
               Не удалось получить <br/> цену стрелы, <br/> попробуйте позже
             </p>
             <button
-              class="btn btn-success btn-outline"
+              class="btn btn-success btn-outline btn-sm"
               @click="buyArrowsModal.dialog.showModal"
               v-else
             >
@@ -81,7 +81,7 @@ const dismiss = async () => {
             </p>
             <button
               :disabled="user?.isPairing || user?.arrowsAmount <= 0"
-              class="btn bg-primary"
+              class="btn bg-primary btn-sm"
               @click="pushArrow"
             >
               <IconPush/>
@@ -98,7 +98,7 @@ const dismiss = async () => {
       </div>
       <div class="flex flex-row gap-8 h-fit">
         <div class="stats bg-primary text-primary-content w-full">
-          <div class="stat bg-secondary">k
+          <div class="stat bg-secondary">
             <h3>
               Ваше состязание
             </h3>
@@ -106,7 +106,7 @@ const dismiss = async () => {
               <CardCompetition :item="currentCompetition">
                 <template #actions>
                   <button
-                    class="btn btn-warning btn-outline w-fit"
+                    class="btn btn-warning btn-outline w-fit btn-sm"
                     @click="dismiss"
                   >
                     <IconDismiss/>

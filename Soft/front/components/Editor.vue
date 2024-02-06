@@ -3,8 +3,9 @@ import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 
 const props = defineProps({
-  value:       { type: String, required: true },
-  showWarning: { type: Boolean, default: false }
+  value:       { type: String,  required: true },
+  disabled:    { type: Boolean, required: false, default: false },
+  showWarning: { type: Boolean, default: false },
 })
 const emits = defineEmits(['update:value'])
 const { value } = toRefs(props)
@@ -33,6 +34,7 @@ watch(hideTooltip, nv => { if (nv) localStorage.setItem('hideTooltip', nv) })
   </div>
   <div class="flex gap-4 flex-col">
     <MdEditor
+      :disabled="disabled"
       :preview="false"
       language="en-US"
       v-model="innerValue"

@@ -79,7 +79,7 @@ const createCompetition = async () => {
       <ActionsPanel>
         <template #extra>
           <button
-            class="btn text-purple-500 btn-outline"
+            class="btn text-purple-500 btn-outline btn-sm"
             @click="createCompetitionDial.dialog.showModal"
           >
             <IconCreateCompetition/>

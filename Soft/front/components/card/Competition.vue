@@ -4,7 +4,8 @@ import Commentary from '../icon/Commentary.vue'
 
 const { STATUSES } = useCompetitionsStatues()
 const props = defineProps({
-  item: { type: Object, required: true }
+  item: { type: Object, required: true },
+  hideActions: { type: Boolean, required: false, default: false },
 })
 
 const { item } = toRefs(props)
@@ -89,21 +90,30 @@ const commentsDial = ref()
       </li>
     </ul>
     <div class="m-3">
-      <slot name="actions">
-        <button
-          class="btn text-purple-500 btn-outline w-fit hover:bg-purple-500"
-          v-if="useRoles().userRole.value === 'guest'"
-        >
-          <IconFollow/>
-          Подписаться
-        </button>
-        <button
-          class="btn btn-outline text-purple-600 hover:bg-purple-600"
-          @click="commentsDial.dialog.showModal"
-        >
-          <IconCommentary/>
-          Комментарии
-        </button>
+      <slot
+        name="actions"
+        v-if="!hideActions"
+      >
+        <div class="flex flex-row gap-3">
+          <button class="btn text-purple-500 btn-outline w-fit hover:bg-purple-500 btn-sm">
+            <IconFollow/>
+            Подписаться
+          </button>
+          <button
+            class="btn btn-outline text-purple-600 hover:bg-purple-600 btn-sm"
+            @click="commentsDial.dialog.showModal"
+          >
+            <IconCommentary/>
+            Комментарии
+          </button>
+          <button
+            class="btn btn-outline btn-sm text-red-600 hover:bg-red-600"
+            data-tip="Принять участие на роли помощника или супостата"
+          >
+            <IconTakePart/>
+            Вписаться
+          </button>
+        </div>
       </slot>
     </div>
     <LazyDialogAccept

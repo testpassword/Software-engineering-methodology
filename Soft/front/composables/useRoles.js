@@ -31,9 +31,13 @@ const ROLES = [
   },
 ]
 
+// will be set after login.vue
 const userRole = ref(ROLES[0].name)
+
+const isMatchmaker = computed(() => userRole.value === ROLES[0].name)
 
 export const useRoles = () => ({
   userRole,
-  ROLES
+  ROLES,
+  isMatchmaker
 })
