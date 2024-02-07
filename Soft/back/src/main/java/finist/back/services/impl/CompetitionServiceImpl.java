@@ -1,6 +1,7 @@
 package finist.back.services.impl;
 
 import finist.back.exceptions.CompetitionNotFoundException;
+import finist.back.exceptions.ScenarioException;
 import finist.back.exceptions.UserNotFoundException;
 import finist.back.model.BrideVote;
 import finist.back.model.Competition;
@@ -173,6 +174,17 @@ public class CompetitionServiceImpl implements CompetitionService {
                     return new FullBrideVoteDTO(brideVote);
                 })
                 .orElseThrow(() -> new CompetitionNotFoundException(competitionId)));
+    }
+
+    @Override
+    public void deleteCompetition(Long competitionId, UserDetails userDetails) throws ScenarioException, UserNotFoundException {
+        Optional<Competition> compOptional = competitionRepository.findById(competitionId);
+        if (compOptional.isPresent()) {
+            Competition competition = compOptional.get();
+            competitionRepository.delete(competition);
+        } else {
+            throw new UserNotFoundException(competitionId);
+        }
     }
 
     private FullCompetitionDTO convertCompetitionToFullCompetitionDTO(Competition competition) {

@@ -74,7 +74,7 @@ public class BrideVoteServiceImpl implements BrideVoteService {
         else if (wrappedCompetition.get().getBrideVote().getCandidates().stream().noneMatch(candidate -> candidate.getBride().getId().equals(candidateId)))
             throw new CandidateNotFoundException(candidateId);
 
-        Long userId = 1L; // пока нет авторизации заменяет голосующего пользователя
+        Long userId = 39L; // пока нет авторизации заменяет голосующего пользователя
         User voter = userRepository.findById(userId).get();
 
         if (!isAlreadyVote(userId, wrappedCompetition.get().getBrideVote().getId())) { //если еще не голосовал в этом соревновании

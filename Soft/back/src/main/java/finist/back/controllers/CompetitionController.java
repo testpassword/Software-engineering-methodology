@@ -75,6 +75,17 @@ public class CompetitionController {
     }
 
 
+    @DeleteMapping("/{competitionId}/")
+    public ResponseEntity<Void> deleteCompetition(@PathVariable(name = "competitionId") Long competitionId,
+                                           @AuthenticationPrincipal UserDetails userDetails) throws ScenarioException {
+        try {
+            competitionService.deleteCompetition(competitionId, userDetails);
+            return ResponseEntity.ok().build();
+        } catch (UserNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PatchMapping("/{competitionId}/tasks/{taskId}/")
     public ResponseEntity<FullTaskDTO> updateTask(@PathVariable(name = "competitionId") Long competitionId,
                                                   @PathVariable(name = "taskId") Long taskId,

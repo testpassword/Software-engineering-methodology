@@ -1,6 +1,7 @@
 package finist.back.services;
 
 import finist.back.exceptions.CompetitionNotFoundException;
+import finist.back.exceptions.ScenarioException;
 import finist.back.exceptions.UserNotFoundException;
 import finist.back.model.User;
 import finist.back.model.dto.*;
@@ -31,4 +32,6 @@ public interface CompetitionService {
     Optional<FullTaskDTO> updateTask(Long competitionId, Long taskId, FullTaskDTO updatedTask) throws CompetitionNotFoundException, UserNotFoundException;
 
     Optional<FullBrideVoteDTO> getBrideVoteByCompetition(Long competitionId) throws CompetitionNotFoundException;
+
+    void deleteCompetition(Long competitionId, UserDetails userDetails) throws ScenarioException, UserNotFoundException;
 }

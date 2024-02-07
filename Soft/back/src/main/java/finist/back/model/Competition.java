@@ -31,7 +31,7 @@ public class Competition {
     @Column(name = "status")
     private CompetitionStatus status;
 
-    @ManyToOne (optional=false, cascade=CascadeType.ALL)
+    @ManyToOne (optional=false, cascade=CascadeType.PERSIST)
     @JoinColumn (name="creator_id")
     private User creator; // создатель соревнования
 
