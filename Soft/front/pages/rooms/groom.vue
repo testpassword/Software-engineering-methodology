@@ -41,6 +41,7 @@ const dismiss = async () => {
   вы автоматически будет признаны проигравшим и забанены. Продолжить?
   `)
   if (res) {
+    currentCompetition.value = null
     // todo: отправить на api
   }
 }
@@ -106,6 +107,7 @@ const dismiss = async () => {
               <CardCompetition :item="currentCompetition">
                 <template #actions>
                   <button
+                    id="dismissRooms"
                     class="btn btn-warning btn-outline w-fit btn-sm"
                     @click="dismiss"
                   >

@@ -107,8 +107,10 @@ const commentsDial = ref()
             Комментарии
           </button>
           <button
+            id="participateRooms"
             class="btn btn-outline btn-sm text-red-600 hover:bg-red-600"
             data-tip="Принять участие на роли помощника или супостата"
+            @click="participate"
           >
             <IconTakePart/>
             Вписаться

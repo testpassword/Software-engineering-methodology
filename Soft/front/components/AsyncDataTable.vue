@@ -20,7 +20,10 @@ const itemComponent = computed(() => (
 </script>
 
 <template>
-  <div class="stats bg-primary text-primary-content h-fit max-h-[80vh]">
+  <div
+    class="stats bg-primary text-primary-content h-fit max-h-[80vh]"
+    :class="`asyncDataTable${itemComponentName}`"
+  >
     <div class="stat bg-secondary gap-4">
       <h3>
         <slot name="title"/>

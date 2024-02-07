@@ -37,6 +37,7 @@ const register = async () => {
     <template #content>
       <h2>Регистрация</h2>
       <input
+        id="phoneRegister"
         type="tel"
         placeholder="Номер телефона (+7...)"
         class="input input-bordered"
@@ -44,6 +45,7 @@ const register = async () => {
         :class="{ 'input-error': errorFields?.phone?.length }"
       />
       <input
+        id="emailRegister"
         type="email"
         placeholder="Почта"
         class="input input-bordered"
@@ -51,23 +53,26 @@ const register = async () => {
         :class="{ 'input-error': errorFields?.phone?.length }"
       />
       <input
+        id="passwordRegister"
         type="password"
         placeholder="Пароль"
-        class="input input-bordered"
+        class="input input-bordered z-50"
         v-model="form.password"
         :class="{ 'input-error': errorFields?.phone?.length }"
       />
       <label class="label cursor-pointer">
         <input
+          id="agreeRegister"
           type="checkbox"
-          class="checkbox checkbox-primary mr-4"
+          class="checkbox checkbox-primary mr-4 z-50"
         />
         <span class="label-text text-grey-800">
           Я согласен с политикой обработки персональных данных
         </span>
       </label>
       <button
-        class="btn btn-primary z-10"
+        id="register"
+        class="btn btn-primary z-50"
         :disabled="!pass"
         @click="register"
       >

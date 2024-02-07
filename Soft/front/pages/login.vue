@@ -25,6 +25,7 @@ const login = async () => {
     <template #content>
       <h2>Вход</h2>
       <input
+        id="emailLogin"
         type="email"
         placeholder="Почта"
         class="input input-bordered"
@@ -32,6 +33,7 @@ const login = async () => {
         v-model="form.email"
       />
       <input
+        id="passwordLogin"
         type="password"
         placeholder="Пароль"
         class="input input-bordered"
@@ -39,6 +41,7 @@ const login = async () => {
         v-model="form.password"
       />
       <button
+        id="login"
         class="btn btn-primary"
         :disabled="!pass"
         @click="login"
@@ -50,7 +53,7 @@ const login = async () => {
     <template #link>
       <span class="text-center w-full">
       Ещё нет аккаунта?
-      <NuxtLink to="/register">
+      <NuxtLink id="toRegister" to="/register">
         Зарегистрироваться!
       </NuxtLink>
     </span>
