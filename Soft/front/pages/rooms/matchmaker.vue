@@ -79,6 +79,7 @@ const createCompetition = async () => {
       <ActionsPanel>
         <template #extra>
           <button
+            id="createCompetitionRooms"
             class="btn text-purple-500 btn-outline btn-sm"
             @click="createCompetitionDial.dialog.showModal"
           >
@@ -100,6 +101,7 @@ const createCompetition = async () => {
       <template #content>
         <div class="flex gap-3">
           <input
+            id="competitionCreationName"
             type="text"
             placeholder="Название"
             class="input input-bordered w-full"
@@ -107,6 +109,7 @@ const createCompetition = async () => {
             v-model="form.name"
           />
           <select
+            id="competitionCreationCity"
             class="select select-bordered w-full max-w-xs"
             :class="{ 'select-error': errorFields?.city?.length }"
             v-model="form.city"

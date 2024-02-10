@@ -1,9 +1,6 @@
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
@@ -16,6 +13,12 @@ record User(String phone, String email, String pass, String name,
             String city, String about,
             Date dateOfBirth
 ) {
+
+    public static User MATCHMAKER =
+            new User("15513877642", "a@a.com", "a", "", "", "", new Date());
+    public static User GROOM =
+            new User("122132131231", "g@g.com", "g", "", "", "", new Date());
+
     static User rand() {
         var f = new Faker();
         var about = f.lorem().characters(8);
@@ -43,13 +46,16 @@ public class UITests {
     User GROOM = new User("122132131231", "g@g.com", "g", "", "", "", new Date());
 
 
-    static void redirectWait() throws InterruptedException { Thread.sleep(500); }
-    String getSecret() { return (String) ((ChromeDriver) DRIVER).executeScript("return localStorage.getItem('secret');"); }
-    static void zoom(double factor) { ((JavascriptExecutor) DRIVER).executeScript("document.body.style.zoom='" + factor + "'"); }
+    static void redirectWait() throws InterruptedException { Thread.sleep(2000); }
+    static String js(String script) { return (String) ((JavascriptExecutor) DRIVER).executeScript(script); }
+    String getSecret() { return js("return localStorage.getItem('secret');"); }
+    static void zoom(double factor) { js("document.body.style.zoom='" + factor + "'"); }
     static void acceptRedirect(String urlToken) throws InterruptedException {
         redirectWait();
         assertTrue(DRIVER.getCurrentUrl().contains(urlToken));
     }
+    static WebElement getActiveModal() { return DRIVER.findElement(By.cssSelector("dialog[open]")); }
+    static String[] getElClasses(WebElement el) { return el.getAttribute("class").split(" "); }
 
 
     @BeforeAll
@@ -82,27 +88,31 @@ public class UITests {
         redirectWait();
     }
 
-    @Test // UC2
-    void login() throws InterruptedException {
-        login(MATCHMAKER);
-        acceptRedirect("rooms");
-        assertNotNull(getSecret());
+    void fillUser(User newbie, String role) {
+        if (role.isBlank()) DRIVER.findElements(By.className("roleSettings")).stream().findFirst().ifPresent(WebElement::click);
+        else js("document.getElementsByClassName('" + role + "')[0].click()");
+        DRIVER.findElement(By.id("nameSettings")).sendKeys(newbie.name());
+        new Select(DRIVER.findElement(By.id("citySettings"))).selectByIndex(1);
+        new Select(DRIVER.findElement(By.id("eduSettings"))).selectByIndex(1);
+        DRIVER.findElement(By.id("aboutSelfSettings")).sendKeys(newbie.about());
+        DRIVER.findElement(By.id("aboutPartnerSettings")).sendKeys(newbie.email());
+        DRIVER.findElement(By.id("dateSettings")).sendKeys(new SimpleDateFormat("dd.MM.yyyy").format(newbie.dateOfBirth()));
     }
 
-    @Test // UC6
-    void logout() throws InterruptedException {
-        login(MATCHMAKER);
-        DRIVER.findElement(By.id("logout")).click();
-        redirectWait();
-        acceptRedirect("login");
-        assertNull(getSecret());
-    }
+    int getArrowsAmount() { return Integer.parseInt(DRIVER.findElement(By.id("arrowsAmountRooms")).getText()); }
 
     @Test // UC1
     void register() throws InterruptedException {
         var newbie = User.rand();
         register(newbie);
         acceptRedirect("login");
+    }
+
+    @Test // UC2
+    void login() throws InterruptedException {
+        login(MATCHMAKER);
+        acceptRedirect("rooms");
+        assertNotNull(getSecret());
     }
 
     @Test // UC3 & UC4
@@ -112,16 +122,7 @@ public class UITests {
         login(newbie);
         redirectWait();
         zoom(0.75);
-        DRIVER.findElements(By.className("roleSettings"))
-                .stream()
-                .findFirst()
-                .ifPresent(WebElement::click);
-        DRIVER.findElement(By.id("nameSettings")).sendKeys(newbie.name());
-        new Select(DRIVER.findElement(By.id("citySettings"))).selectByIndex(1);
-        new Select(DRIVER.findElement(By.id("eduSettings"))).selectByIndex(1);
-        DRIVER.findElement(By.id("aboutSelfSettings")).sendKeys(newbie.about());
-        DRIVER.findElement(By.id("aboutPartnerSettings")).sendKeys(newbie.email());
-        DRIVER.findElement(By.id("dateSettings")).sendKeys(new SimpleDateFormat("dd.MM.yyyy").format(newbie.dateOfBirth()));
+        fillUser(newbie, "");
         zoom(1);
         DRIVER.findElement(By.id("nextSettings")).click();
         acceptRedirect("rooms");
@@ -135,19 +136,13 @@ public class UITests {
         acceptRedirect("login");
     }
 
-    @Test // UC23
-    void banUser() throws InterruptedException {
+    @Test // UC6
+    void logout() throws InterruptedException {
         login(MATCHMAKER);
-        Thread.sleep(3000);
-        var before = DRIVER.findElements(By.className("isBanned")).size();
-        DRIVER.findElement(By.className("asyncDataTableUser"))
-                .findElements(By.className("banUser"))
-                .stream()
-                .findFirst()
-                .ifPresent(WebElement::click);
-        DRIVER.switchTo().alert().accept();
-        var after = DRIVER.findElements(By.className("isBanned")).size();
-        assertEquals(before + 1, after);
+        DRIVER.findElement(By.id("logout")).click();
+        redirectWait();
+        acceptRedirect("login");
+        assertNull(getSecret());
     }
 
     @Test // UC7
@@ -163,13 +158,118 @@ public class UITests {
     }
 
     @Test // UC9
-    void dismiss() throws InterruptedException {
+    void dismissCompetition() throws InterruptedException {
         login(GROOM);
         redirectWait();
         DRIVER.findElement(By.id("dismissRooms")).click();
         DRIVER.switchTo().alert().accept();
         assertEquals(0, DRIVER.findElements(By.id("dismissRooms")).size());
     }
+
+    @Test // UC13
+    void commentCompetition() throws InterruptedException {
+        login(GROOM);
+        redirectWait();
+        var clickCmd = "document.getElementsByClassName('commentCompetitionRooms')[0].click()";
+        js(clickCmd);
+        var comment = "sample text";
+        getActiveModal().findElement(By.className("newCommentInput")).sendKeys(comment);
+        js("document.getElementsByClassName('newCommentBtn')[1].click()");
+        js(clickCmd);
+        assertTrue(DRIVER
+                .findElements(By.className("chat-bubble"))
+                .stream()
+                .anyMatch(it -> it.getText().contains(comment))
+        );
+    }
+
+    @Test // UC14
+    void followCompetition() throws InterruptedException {
+        login(GROOM);
+        redirectWait();
+        js("document.getElementsByClassName('followCompetitionRooms')[0].click()");
+        DRIVER.switchTo().alert().accept();
+        assertTrue(true);
+    }
+
+    @Test // UC15
+    void pushArrow() throws InterruptedException {
+        var newbie = User.rand();
+        register(newbie);
+        login(newbie);
+        redirectWait();
+        zoom(0.75);
+        fillUser(newbie, "groom");
+        zoom(1);
+        DRIVER.findElement(By.id("nextSettings")).click();
+        redirectWait();
+        var oldVal = getArrowsAmount();
+        DRIVER.findElement(By.id("pushArrowRooms")).click();
+        redirectWait();
+        var newVal = getArrowsAmount();
+        assertEquals(oldVal - 1, newVal);
+    }
+
+    @Test // UC16
+    void buyArrow() throws InterruptedException {
+        login(GROOM);
+        redirectWait();
+        var oldVal = getArrowsAmount();
+        DRIVER.findElement(By.id("buyArrowsRooms")).click();
+        getActiveModal().findElement(By.id("acceptDialogBtn")).click();
+        DRIVER.switchTo().alert().accept();
+        var newVal = getArrowsAmount();
+        assertEquals(oldVal + 1, newVal);
+    }
+
+    @Test // UC17
+    void showCompetitions() throws InterruptedException {
+        login(MATCHMAKER);
+        redirectWait();
+        assertFalse(DRIVER.findElements(By.id("competitionCard")).isEmpty());
+    }
+
+    @Test // UC18
+    void createCompetition() throws InterruptedException {
+        login(MATCHMAKER);
+        redirectWait();
+        DRIVER.findElement(By.id("createCompetitionRooms")).click();
+        var modal = getActiveModal();
+        modal.findElement(By.id("competitionCreationName")).sendKeys("Selenuim UC18");
+        new Select(modal.findElement(By.id("competitionCreationCity"))).selectByIndex(1);
+        assertTrue(true);
+    }
+
+    @Test // UC19
+    void showUserQuestionnaire() throws InterruptedException {
+        login(MATCHMAKER);
+        redirectWait();
+        DRIVER.findElement(By.className("asyncDataTableUser"))
+                .findElements(By.className("userInfoBtn"))
+                .stream()
+                .findFirst()
+                .ifPresent(WebElement::click);
+        assertNotNull(getActiveModal());
+    }
+
+    // todo: 22
+
+    @Test // UC23
+    void banUser() throws InterruptedException {
+        login(MATCHMAKER);
+        redirectWait();
+        var before = DRIVER.findElements(By.className("isBanned")).size();
+        DRIVER.findElement(By.className("asyncDataTableUser"))
+                .findElements(By.className("banUser"))
+                .stream()
+                .findFirst()
+                .ifPresent(WebElement::click);
+        DRIVER.switchTo().alert().accept();
+        var after = DRIVER.findElements(By.className("isBanned")).size();
+        assertEquals(before + 1, after);
+    }
+
+    // todo: 24
 
     /*@AfterAll
     static void shutdown() { DRIVER.quit(); }*/

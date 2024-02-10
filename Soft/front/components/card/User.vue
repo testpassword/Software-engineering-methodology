@@ -60,7 +60,7 @@ const blockUser = async () => {
           </button>
           <button
             v-if="useRoles().isMatchmaker"
-            class="btn btn-secondary btn-xs tooltip tooltip-secondary"
+            class="btn btn-secondary btn-xs tooltip tooltip-secondary userInfoBtn"
             data-tip="подробнее"
             @click="moreDial.dialog.showModal"
           >

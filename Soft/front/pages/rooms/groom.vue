@@ -62,7 +62,10 @@ const dismiss = async () => {
           <h3>
             Количество стрел
           </h3>
-          <div class="stat-value text-grey-700">
+          <div
+            id="arrowsAmountRooms"
+            class="stat-value text-grey-700"
+          >
             {{ user?.arrowsAmount ?? 'Error' }}
           </div>
           <div class="stat-actions flex gap-4">
@@ -70,6 +73,7 @@ const dismiss = async () => {
               Не удалось получить <br/> цену стрелы, <br/> попробуйте позже
             </p>
             <button
+              id="buyArrowsRooms"
               class="btn btn-success btn-outline btn-sm"
               @click="buyArrowsModal.dialog.showModal"
               v-else
@@ -83,6 +87,7 @@ const dismiss = async () => {
             <button
               :disabled="user?.isPairing || user?.arrowsAmount <= 0"
               class="btn bg-primary btn-sm"
+              id="pushArrowRooms"
               @click="pushArrow"
             >
               <IconPush/>
@@ -152,6 +157,7 @@ const dismiss = async () => {
             Цена стрелы: {{ price }} *
           </span>
           <input
+            id="buyArrowsInputRooms"
             type="number"
             placeholder="Приобрести"
             class="input input-bordered"
