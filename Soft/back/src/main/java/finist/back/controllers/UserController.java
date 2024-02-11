@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/")
     public ResponseEntity<FullUserDTO> getUser(@PathVariable(name = "userId") Long userId) throws UserNotFoundException {
-        return userService.getUser(userId).map(ResponseEntity::ok)
+        return userService.getUserAsDTO(userId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 

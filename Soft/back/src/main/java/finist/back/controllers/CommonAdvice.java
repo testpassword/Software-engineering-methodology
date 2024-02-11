@@ -3,6 +3,7 @@ package finist.back.controllers;
 import finist.back.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -12,8 +13,14 @@ import java.util.Arrays;
 @ControllerAdvice
 public class CommonAdvice {
 
-    @ExceptionHandler({UserNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, UsernameNotFoundException.class})
     public ResponseEntity<String> handleNoSuchElementException(UserNotFoundException exception){
+        System.err.println(Arrays.toString(exception.getStackTrace()));
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({LoveRequestNotFoundException.class})
+    public ResponseEntity<String> handleLoveRequestNotFoundException(LoveRequestNotFoundException exception){
         System.err.println(Arrays.toString(exception.getStackTrace()));
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
