@@ -1,15 +1,14 @@
 package finist.back.services.impl;
 
-import finist.back.exceptions.AlreadyMadeVoteException;
-import finist.back.exceptions.BrideVoteNotFoundException;
-import finist.back.exceptions.CandidateNotFoundException;
-import finist.back.exceptions.CompetitionNotFoundException;
+import finist.back.exceptions.*;
 import finist.back.model.*;
+import finist.back.model.dto.FullCompetitionDTO;
 import finist.back.model.dto.FullUserDTO;
 import finist.back.model.enums.UserRole;
 import finist.back.repositories.*;
 import finist.back.services.BrideVoteService;
 import finist.back.services.CandidateService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -49,12 +48,11 @@ public class BrideVoteServiceImpl implements BrideVoteService {
 
     }
 
-
     @Override
-    public Optional<List<FullUserDTO>> getCandidatesFromBrideVote(Long competitionId, Long brideVoteId) throws CompetitionNotFoundException, BrideVoteNotFoundException {
+    public Optional<List<FullUserDTO>> getCandidatesFromBrideVote(Long competitionId) throws CompetitionNotFoundException, BrideVoteNotFoundException {
         Optional<Competition> wrappedCompetition = competitionRepository.findById(competitionId);
         if (wrappedCompetition.isEmpty()) throw new CompetitionNotFoundException(competitionId);
-        else if (wrappedCompetition.get().getBrideVote() == null) throw new BrideVoteNotFoundException(brideVoteId);
+        else if (wrappedCompetition.get().getBrideVote() == null) throw new BrideVoteNotFoundException(competitionId);
 
         return Optional.ofNullable(competitionRepository.findById(competitionId)
                 .map(competition -> competition.getBrideVote().getCandidates().stream()
@@ -66,7 +64,7 @@ public class BrideVoteServiceImpl implements BrideVoteService {
     }
 
     @Override
-    public void makeVote(Long competitionId, Long candidateId) throws CompetitionNotFoundException, BrideVoteNotFoundException, CandidateNotFoundException, AlreadyMadeVoteException {
+    public void makeVote(Long competitionId, Long candidateId, UserDetails userDetails) throws CompetitionNotFoundException, BrideVoteNotFoundException, CandidateNotFoundException, AlreadyMadeVoteException, UserNotFoundException {
         Optional<Competition> wrappedCompetition = competitionRepository.findById(competitionId);
         if (wrappedCompetition.isEmpty()) throw new CompetitionNotFoundException(competitionId);
         else if (wrappedCompetition.get().getBrideVote() == null)
@@ -74,10 +72,9 @@ public class BrideVoteServiceImpl implements BrideVoteService {
         else if (wrappedCompetition.get().getBrideVote().getCandidates().stream().noneMatch(candidate -> candidate.getBride().getId().equals(candidateId)))
             throw new CandidateNotFoundException(candidateId);
 
-        Long userId = 39L; // пока нет авторизации заменяет голосующего пользователя
-        User voter = userRepository.findById(userId).get();
+        User voter = getUserByUserDetails(userDetails);
 
-        if (!isAlreadyVote(userId, wrappedCompetition.get().getBrideVote().getId())) { //если еще не голосовал в этом соревновании
+        if (!isAlreadyVote(voter.getId(), wrappedCompetition.get().getBrideVote().getId())) { //если еще не голосовал в этом соревновании
             Candidate candidate = wrappedCompetition.get().getBrideVote().getCandidates().stream()
                     .filter(cndt -> cndt.getBride().getId().equals(candidateId))
                     .findAny().get();
@@ -94,9 +91,14 @@ public class BrideVoteServiceImpl implements BrideVoteService {
             userVoteRepository.save(userVote);
 
         }
-        else throw new AlreadyMadeVoteException(userId, competitionId);
+        else throw new AlreadyMadeVoteException(voter.getId(), competitionId);
     }
 
+
+    private User getUserByUserDetails(UserDetails userDetails) throws UserNotFoundException {
+        return userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UserNotFoundException(userDetails.getUsername()));
+    }
     private boolean isAlreadyVote(Long voterId, Long brideVoteId) {
         return userVoteRepository.existsByVoterIdAndBrideVoteId(voterId,brideVoteId);
     }

@@ -6,4 +6,5 @@ import lombok.Data;
 public class NewCompetitionReqDTO {
     String name;
     String city;
+    Long loveRequestId;
 }

@@ -32,14 +32,14 @@ public class CompetitionController {
 
     @PostMapping()
     public ResponseEntity<FullCompetitionDTO> addNewCompetition(@RequestBody NewCompetitionReqDTO newCompetitionReqDTO,
-                                                                @AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException {
+                                                                @AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException, LoveRequestNotFoundException, InvalidRequestParamsException {
         return competitionService.addCompetition(newCompetitionReqDTO, userDetails).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/{competitionId}/")
     public ResponseEntity<FullCompetitionDTO> getAllCompetitions(@PathVariable(name = "competitionId") Long competitionId){
-        return competitionService.getCompetition(competitionId).map(ResponseEntity::ok)
+        return competitionService.getCompetitionAsDTO(competitionId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
@@ -103,8 +103,7 @@ public class CompetitionController {
     @GetMapping("/{competitionId}/bride_vote/candidates/")
     public ResponseEntity<List<FullUserDTO>> getCandidatesFromBrideVote(@PathVariable(name = "competitionId") Long competitionId
                                                                   ) throws CompetitionNotFoundException, BrideVoteNotFoundException {
-        // todo: remove 1l
-        return brideVoteService.getCandidatesFromBrideVote(competitionId, 1l).map(ResponseEntity::ok)
+        return brideVoteService.getCandidatesFromBrideVote(competitionId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
@@ -112,9 +111,9 @@ public class CompetitionController {
     //todo переделать на PUT
     @PatchMapping("/{competitionId}/bride_vote/{candidateId}/vote/")
     public ResponseEntity<Void> makeVote(@PathVariable(name = "competitionId") Long competitionId,
-                                     @PathVariable(name = "candidateId") Long candidateId) throws BrideVoteNotFoundException, CandidateNotFoundException, AlreadyMadeVoteException, CompetitionNotFoundException {
-        brideVoteService.makeVote(competitionId, candidateId);
+                                         @PathVariable(name = "candidateId") Long candidateId,
+                                         @AuthenticationPrincipal UserDetails userDetails) throws BrideVoteNotFoundException, CandidateNotFoundException, AlreadyMadeVoteException, CompetitionNotFoundException, UserNotFoundException {
+        brideVoteService.makeVote(competitionId, candidateId, userDetails);
         return ResponseEntity.ok().build();
     }
-
 }

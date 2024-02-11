@@ -1,25 +1,18 @@
 package finist.back.services.impl;
 
-import finist.back.exceptions.CompetitionNotFoundException;
-import finist.back.exceptions.ScenarioException;
-import finist.back.exceptions.UserNotFoundException;
-import finist.back.model.BrideVote;
-import finist.back.model.Competition;
-import finist.back.model.Task;
-import finist.back.model.User;
+import finist.back.exceptions.*;
+import finist.back.model.*;
 import finist.back.model.dto.*;
 import finist.back.model.enums.CompetitionStatus;
-import finist.back.repositories.CompetitionRepository;
-import finist.back.repositories.TaskRepository;
-import finist.back.repositories.UserRepository;
+import finist.back.model.enums.UserRole;
+import finist.back.repositories.*;
 import finist.back.services.BrideVoteService;
 import finist.back.services.CompetitionService;
+import finist.back.services.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,12 +25,21 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     final BrideVoteService brideVoteService;
 
+    final RoleRepository roleRepository;
 
-    public CompetitionServiceImpl(CompetitionRepository competitionRepository, UserRepository userRepository, TaskRepository taskRepository, BrideVoteService brideVoteService) {
+    final LoveRequestRepository loveRequestRepository;
+    final UserService userService;
+
+
+
+    public CompetitionServiceImpl(CompetitionRepository competitionRepository, UserRepository userRepository, TaskRepository taskRepository, BrideVoteService brideVoteService, RoleRepository roleRepository, LoveRequestRepository loveRequestRepository, UserService userService) {
         this.competitionRepository = competitionRepository;
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
         this.brideVoteService = brideVoteService;
+        this.roleRepository = roleRepository;
+        this.loveRequestRepository = loveRequestRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -49,15 +51,32 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Optional<FullCompetitionDTO> addCompetition(NewCompetitionReqDTO newCompetitionReqDTO, UserDetails userDetails) throws UserNotFoundException { // не записывается creatorId, доделать при добавлении авторизации
-        return Optional.ofNullable(userRepository.findByEmail(userDetails.getUsername()).map(user ->
-                new FullCompetitionDTO(competitionRepository.save(new Competition(user, newCompetitionReqDTO.getName(), newCompetitionReqDTO.getCity())))).orElseThrow(() -> new UserNotFoundException(userDetails.getUsername())));
+    public Optional<FullCompetitionDTO> addCompetition(NewCompetitionReqDTO newCompetitionReqDTO, UserDetails userDetails) throws UserNotFoundException, InvalidRequestParamsException, LoveRequestNotFoundException { // не записывается creatorId, доделать при добавлении авторизации
+        Long loveRequestId = newCompetitionReqDTO.getLoveRequestId();
+        if (loveRequestId == null)
+            throw new InvalidRequestParamsException("не указана заявка на поиск пары");
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        LoveRequest loveRequest = getLoveRequest(loveRequestId);
+        return Optional.of(new Competition(user, newCompetitionReqDTO.getName(), newCompetitionReqDTO.getCity(), loveRequest))
+                .map(competition -> {
+                 loveRequest.setCompetition(competition);
+                 return competition;
+                })
+                .map(competitionRepository::save)
+                .map(FullCompetitionDTO::new);
     }
 
     @Override
-    public Optional<FullCompetitionDTO> getCompetition(Long competitionId) {
+    public Optional<FullCompetitionDTO> getCompetitionAsDTO(Long competitionId) {
         return competitionRepository.findById(competitionId)
                 .map(this::convertCompetitionToFullCompetitionDTO);
+    }
+
+    @Override
+    public Competition getCompetition(Long competitionId) throws CompetitionNotFoundException {
+        return competitionRepository.findById(competitionId)
+                .orElseThrow(() ->
+                        new CompetitionNotFoundException(competitionId));
     }
 
     @Override
@@ -108,6 +127,8 @@ public class CompetitionServiceImpl implements CompetitionService {
         Optional<User> executorWrapper = userRepository.findById(taskDTO.getExecutorId());
         if (executorWrapper.isEmpty())
             throw new UserNotFoundException(taskDTO.getExecutorId());
+
+
 
        return Optional.of(
                new FullTaskDTO(competitionRepository.findById(competitionId)
@@ -185,6 +206,88 @@ public class CompetitionServiceImpl implements CompetitionService {
         } else {
             throw new UserNotFoundException(competitionId);
         }
+    }
+
+////////////////////////////////////////////////////////////////
+
+    public Optional<FullLoveRequestDTO> registerNewLoveRequest(FullLoveRequestDTO loveRequestDTO, UserDetails userDetails) throws UserNotFoundException, ScenarioException {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new UserNotFoundException(userDetails.getUsername()));
+        if (!isAllCompCompleted(user)) {
+            throw new ScenarioException("У пользователя есть незавершенные состязания");
+        }
+        LoveRequest loveRequest = new LoveRequest().withGroom(user);
+        user.addLoveRequests(loveRequest);
+        LoveRequest savedLoveRequest = loveRequestRepository.save(loveRequest);
+        return Optional.of(new FullLoveRequestDTO(savedLoveRequest));
+    }
+
+    private boolean isAllCompCompleted(User user) {
+        return user.getMyLoveRequests() == null || user.getMyLoveRequests().isEmpty() ||
+                user.getMyLoveRequests().stream()
+                        .map(LoveRequest::getCompetition)
+                        .filter(Objects::nonNull)
+                        .allMatch(competition -> competition.getStatus() == CompetitionStatus.COMPLETED);
+    }
+
+    @Override
+    public Optional<List<FullLoveRequestDTO>> getAllLoveRequests() {
+        List<LoveRequest> loveRequests = loveRequestRepository.findAll();
+        return Optional.of(loveRequests.stream()
+                .map(this::convertToFullLoveRequestDTO)
+                .collect(Collectors.toList()));
+    }
+
+    @Override
+    public Optional<List<FullLoveRequestDTO>> getAllUnassignedLoveRequests() {
+        List<LoveRequest> loveRequests = loveRequestRepository.findAllByIsAssignedFalse();
+        return Optional.of(loveRequests.stream()
+                .map(this::convertToFullLoveRequestDTO)
+                .collect(Collectors.toList()));
+    }
+
+
+    @Override
+    public Optional<FullLoveRequestDTO> getLoveRequestAsDTO(Long requestId) throws LoveRequestNotFoundException {
+        return Optional.ofNullable(loveRequestRepository.findById(requestId)
+                .map(this::convertToFullLoveRequestDTO)
+                .orElseThrow(() ->
+                        new LoveRequestNotFoundException(requestId)));
+    }
+
+    @Override
+    public LoveRequest getLoveRequest(Long requestId) throws LoveRequestNotFoundException {
+        return loveRequestRepository.findById(requestId)
+                .orElseThrow(() ->
+                        new LoveRequestNotFoundException(requestId));
+    }
+
+    @Override
+    public Optional<FullLoveRequestDTO> updateLoveRequest(Long requestId, FullLoveRequestDTO loveRequestDTO, UserDetails userDetails) throws UserNotFoundException, CompetitionNotFoundException, ScenarioException {
+        Optional<LoveRequest> wrappedRequest = loveRequestRepository.findById(requestId);
+        if (wrappedRequest.isEmpty()) throw new NoSuchElementException();
+        LoveRequest loveRequest = wrappedRequest.get();
+        updateLoveRequestAttributes(loveRequest, loveRequestDTO);
+        return Optional.of(convertToFullLoveRequestDTO(loveRequestRepository.save(loveRequest)));
+    }
+
+
+    private void updateLoveRequestAttributes(LoveRequest loveRequest, FullLoveRequestDTO loveRequestDTO) throws CompetitionNotFoundException, UserNotFoundException, ScenarioException {
+        if (loveRequestDTO.getCompetition_id() != null) {
+            Competition competition = this.getCompetition(loveRequestDTO.getCompetition_id());
+            loveRequest.setCompetition(competition);
+        }
+        if (loveRequestDTO.getMatchmaker_id() != null){
+            User matchmaker = userService.getUser(loveRequestDTO.getMatchmaker_id());
+            if (!matchmaker.getRole().equals(UserRole.MATCHMAKER))
+                throw new ScenarioException("пользователь не является свахой");
+            loveRequest.setAssigned(true);
+            loveRequest.setMatchmaker(matchmaker);
+        }
+    }
+
+    private FullLoveRequestDTO convertToFullLoveRequestDTO(LoveRequest loveRequest) {
+        return new FullLoveRequestDTO(loveRequest);
     }
 
     private FullCompetitionDTO convertCompetitionToFullCompetitionDTO(Competition competition) {

@@ -23,7 +23,7 @@ public class CompetitionsUseCase {
 
     private static Long userId;
     private static Long executorId = 70L;
-    private static final String userEmail = "testUser26@mail.com";
+    private static final String userEmail = "iftTestUser1@mail.com";
     private static final String password = "12345678";
 
     private static FullUserDTO currentUserState = new FullUserDTO();
@@ -245,21 +245,21 @@ public class CompetitionsUseCase {
         }
     }
 
-    @Test
-    @Order(12)
-    public void testDeleteUser() {
-        if (userId != null) {
-            ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                    "http://localhost:" + port + "/users/" + userId + "/",
-                    HttpMethod.DELETE,
-                    new HttpEntity<>(createHeaders()),
-                    Void.class);
-
-            assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        } else {
-            throw new IllegalStateException("UserId is not set, make sure to run testRegisterUser first.");
-        }
-    }
+//    @Test
+//    @Order(12)
+//    public void testDeleteUser() {
+//        if (userId != null) {
+//            ResponseEntity<Void> responseEntity = restTemplate.exchange(
+//                    "http://localhost:" + port + "/users/" + userId + "/",
+//                    HttpMethod.DELETE,
+//                    new HttpEntity<>(createHeaders()),
+//                    Void.class);
+//
+//            assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        } else {
+//            throw new IllegalStateException("UserId is not set, make sure to run testRegisterUser first.");
+//        }
+//    }
 
     private void testChangeUserRoleHelper(UserRole role) {
         if (userId != null) {

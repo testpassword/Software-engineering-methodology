@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,6 +63,12 @@ public class User {
     @OneToMany(mappedBy="executor", fetch= FetchType.LAZY)
     private Collection<Task> tasks; // задания, назначенные на пользователя | //исполнитель задания - у одного задания один испонитель, у исполнителя - много заданий
 
+    @OneToMany (mappedBy="groom", fetch=FetchType.LAZY)
+    private Collection<LoveRequest> myLoveRequests; // запуски стрел/заявки на поиск пары, созданные пользователем
+
+    @OneToMany (mappedBy="matchmaker", fetch=FetchType.LAZY)
+    private Collection<LoveRequest> assignedLoveRequests; // запуски стрел/заявки на поиск пары, созданные пользователем
+
     @ManyToMany
     @JoinTable(
             name = "follows",
@@ -89,5 +96,46 @@ public class User {
         this.password = password;
         this.phone = phone;
         this.roles.add(role);
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public Collection<Competition> getCreatedCompetitions() {
+        return createdCompetitions;
+    }
+
+    public Collection<Task> getTasks() {
+        return tasks;
+    }
+
+    public Collection<LoveRequest> getMyLoveRequests() {
+        return myLoveRequests;
+    }
+
+    public Collection<LoveRequest> getAssignedLoveRequests() {
+        return assignedLoveRequests;
+    }
+
+    public Collection<Competition> getFollowedCompetitions() {
+        return followedCompetitions;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setMyLoveRequests(Collection<LoveRequest> myLoveRequests) {
+        this.myLoveRequests = myLoveRequests;
+    }
+    public void addLoveRequests(LoveRequest loveRequests) {
+        if (this.myLoveRequests == null)
+            this.myLoveRequests = new ArrayList<>();
+        this.myLoveRequests.add(loveRequests);
     }
 }

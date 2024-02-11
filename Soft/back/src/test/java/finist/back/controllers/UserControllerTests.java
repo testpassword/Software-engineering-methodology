@@ -105,8 +105,8 @@ public class UserControllerTests {
     @Test
     void testGetUser_Successful() throws UserNotFoundException {
         Long userId = 1L;
-        FullUserDTO userDTO = new FullUserDTO(); // Создайте экземпляр FullUserDTO с данными пользователя
-        when(userService.getUser(userId)).thenReturn(Optional.of(userDTO));
+        FullUserDTO userDTO = new FullUserDTO();
+        when(userService.getUserAsDTO(userId)).thenReturn(Optional.of(userDTO));
 
         ResponseEntity<FullUserDTO> response = userController.getUser(userId);
 
@@ -117,7 +117,7 @@ public class UserControllerTests {
     @Test
     void testGetUser_NotFound() throws UserNotFoundException {
         Long userId = 1L;
-        when(userService.getUser(userId)).thenReturn(Optional.empty());
+        when(userService.getUserAsDTO(userId)).thenReturn(Optional.empty());
 
         ResponseEntity<FullUserDTO> response = userController.getUser(userId);
 
@@ -129,8 +129,8 @@ public class UserControllerTests {
     void testUpdateUser_Successful() throws UserNotFoundException, ScenarioException {
         // Arrange
         Long userId = 1L;
-        FullUserDTO userDTO = new FullUserDTO(); // Создайте экземпляр FullUserDTO с данными пользователя
-        UserDetails userDetails = mock(UserDetails.class); // Подставьте UserDetails при необходимости
+        FullUserDTO userDTO = new FullUserDTO();
+        UserDetails userDetails = mock(UserDetails.class);
         when(userService.updateUser(userId, userDTO, userDetails)).thenReturn(Optional.of(userDTO));
 
         // Act
@@ -145,8 +145,8 @@ public class UserControllerTests {
     void testUpdateUser_NotFound() throws UserNotFoundException, ScenarioException {
         // Arrange
         Long userId = 1L;
-        FullUserDTO userDTO = new FullUserDTO(); // Создайте экземпляр FullUserDTO с данными пользователя
-        UserDetails userDetails = mock(UserDetails.class); // Подставьте UserDetails при необходимости
+        FullUserDTO userDTO = new FullUserDTO();
+        UserDetails userDetails = mock(UserDetails.class);
         when(userService.updateUser(userId, userDTO, userDetails)).thenReturn(Optional.empty());
 
         // Act
@@ -158,56 +158,44 @@ public class UserControllerTests {
 
     @Test
     void testDeleteUser_Successful() throws UserNotFoundException, ScenarioException {
-        // Arrange
         Long userId = 1L;
-        UserDetails userDetails = mock(UserDetails.class); // Подставьте UserDetails при необходимости
+        UserDetails userDetails = mock(UserDetails.class);
 
-        // Act
         ResponseEntity<Void> response = userController.deleteUser(userId, userDetails);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     void testDeleteUser_NotFound() throws UserNotFoundException, ScenarioException {
-        // Arrange
         Long userId = 1L;
         UserDetails userDetails = mock(UserDetails.class); // Подставьте UserDetails при необходимости
         doThrow(UserNotFoundException.class).when(userService).deleteUser(userId, userDetails);
 
-        // Act
         ResponseEntity<Void> response = userController.deleteUser(userId, userDetails);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
     void testGetArrowsAmount_Successful() {
-        // Arrange
         Long userId = 1L;
-        Integer arrowsAmount = 10; // Установите ожидаемое количество стрелок
+        Integer arrowsAmount = 10;
         when(userService.getArrowsAmount(userId)).thenReturn(Optional.of(arrowsAmount));
 
-        // Act
         ResponseEntity<Integer> response = userController.getArrowsAmount(userId);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(arrowsAmount, response.getBody());
     }
 
     @Test
     void testGetArrowsAmount_NotFound() {
-        // Arrange
         Long userId = 1L;
         when(userService.getArrowsAmount(userId)).thenReturn(Optional.empty());
 
-        // Act
         ResponseEntity<Integer> response = userController.getArrowsAmount(userId);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 

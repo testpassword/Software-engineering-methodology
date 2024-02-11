@@ -120,20 +120,16 @@ public class UserServiceImplTests {
     @ParameterizedTest
     @MethodSource("testDataForTestGetAllUsersSuccessful")
     void testGetAllUsersSuccessful(List<User> users) {
-        // Arrange
         when(userRepository.findAll()).thenReturn(users);
 
-        // Act
         List<FullUserDTO> userDTOList = userService.getAllUsers().orElseThrow();
 
-        // Assert
         assertEquals(users.size(), userDTOList.size());
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             FullUserDTO userDTO = userDTOList.get(i);
             assertEquals(user.getId(), userDTO.getId());
             assertEquals(user.getEmail(), userDTO.getEmail());
-            // Добавьте другие проверки, если необходимо
         }
     }
 
@@ -143,16 +139,13 @@ public class UserServiceImplTests {
             "2, test2@example.com"
     })
     void testGetUserSuccessful(long userId, String userEmail) throws UserNotFoundException {
-        // Arrange
         User user = new User();
         user.setId(userId);
         user.setEmail(userEmail);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        // Act
-        FullUserDTO userDTO = userService.getUser(userId).orElseThrow();
+        FullUserDTO userDTO = userService.getUserAsDTO(userId).orElseThrow();
 
-        // Assert
         assertEquals(user.getId(), userDTO.getId());
         assertEquals(user.getEmail(), userDTO.getEmail());
     }
@@ -160,7 +153,6 @@ public class UserServiceImplTests {
 
     static Stream<Arguments> getUserDTOCombinationsForUpdate() {
         String userEmail = "test@example.com";
-        // Создаем разные комбинации полей FullUserDTO для обновления
         return Stream.of(
                 arguments(new FullUserDTO(userEmail, 1L).withName("John")),
                 arguments(new FullUserDTO(userEmail, 1L).withPhone("1234567890")),
@@ -177,7 +169,6 @@ public class UserServiceImplTests {
     @ParameterizedTest
     @MethodSource("getUserDTOCombinationsForUpdate")
     void testUpdateUserSuccessful(FullUserDTO userDTO) throws UserNotFoundException, ScenarioException {
-        // Arrange
         long userId = 1L;
         String userEmail = "test@example.com";
         UserDetails userDetails = mock(UserDetails.class);
@@ -188,16 +179,13 @@ public class UserServiceImplTests {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0)); // сохраняем переданный пользователь без изменений
 
-        // Act
         FullUserDTO updatedUserDTO = userService.updateUser(userId, userDTO, userDetails).orElseThrow();
 
-        // Assert
         assertEquals(userDTO, updatedUserDTO);
     }
 
     @Test
     void testUpdateUserUnsuccessfulnoPermissions() throws UserNotFoundException, ScenarioException {
-        // Arrange
         long userId = 1L;
         String userEmail = "test@example.com";
         FullUserDTO userDTO = new FullUserDTO();
@@ -209,7 +197,6 @@ public class UserServiceImplTests {
         when(userRepository.save(any(User.class))).thenReturn(user);
 
 
-        // Assert
         ScenarioException exception = assertThrows(ScenarioException.class, () -> userService.updateUser(userId, userDTO, userDetails));
         assertEquals("пользователь может редактировать только свой аккаунт", exception.getMessage());
 
@@ -217,7 +204,6 @@ public class UserServiceImplTests {
 
     @Test
     void testDeleteUser_Successful() throws UserNotFoundException, ScenarioException {
-        // Arrange
         long userId = 1L;
         String userEmail = "test@example.com";
         UserDetails userDetails = mock(UserDetails.class);
@@ -227,27 +213,23 @@ public class UserServiceImplTests {
         user.setEmail(userEmail);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        // Act
         userService.deleteUser(userId, userDetails);
 
-        // Assert
         verify(userRepository, times(1)).delete(user);
     }
 
     @Test
     void testDeleteUser_unsuccessful_no_permissions() {
-        // Arrange
         long userId = 1L;
         String userDetailsEmail = "test@example.com";
         String userToDeleteEmail = "test1@example.com";
         UserDetails userDetails = mock(UserDetails.class);
-        when(userDetails.getUsername()).thenReturn(userDetailsEmail); // Возвращаем правильный идентификатор пользователя
+        when(userDetails.getUsername()).thenReturn(userDetailsEmail);
         User user = new User();
         user.setId(userId);
         user.setEmail(userToDeleteEmail);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        // Act & Assert
         ScenarioException exception = assertThrows(ScenarioException.class, () -> userService.deleteUser(userId, userDetails));
         assertEquals("пользователь может редактировать только свой аккаунт", exception.getMessage());
     }
@@ -259,16 +241,13 @@ public class UserServiceImplTests {
             "2, 20"
     })
     void testGetArrowsAmount_Successful(long userId, int arrowsAmount) {
-        // Arrange
         User user = new User();
         user.setId(userId);
         user.setArrowsAmount(arrowsAmount);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        // Act
         Optional<Integer> result = userService.getArrowsAmount(userId);
 
-        // Assert
         assertTrue(result.isPresent());
         assertEquals(arrowsAmount, result.get());
     }
@@ -279,85 +258,68 @@ public class UserServiceImplTests {
             "2, 15"
     })
     void testAddArrows_Successful(long userId, int arrowsAmount) throws UserNotFoundException {
-        // Arrange
         User user = new User();
         user.setId(userId);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        // Act
         userService.addArrows(userId, arrowsAmount);
 
-        // Assert
         assertEquals(arrowsAmount, user.getArrowsAmount());
         verify(userRepository, times(1)).save(user);
     }
 
     @Test
     void testGetAllUsers_NoUsers() {
-        // Arrange
         when(userRepository.findAll()).thenReturn(Collections.emptyList());
 
-        // Act
         Optional<List<FullUserDTO>> result = userService.getAllUsers();
 
-        // Assert
         assertEquals(Optional.of(Collections.emptyList()), result);
     }
 
     @Test
     void testGetUser_UserNotFound() {
-        // Arrange
         long userId = 1L;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act & Assert
-        assertThrows(UserNotFoundException.class, () -> userService.getUser(userId));
+        assertThrows(UserNotFoundException.class, () -> userService.getUserAsDTO(userId));
     }
 
     @Test
     void testUpdateUser_UserNotFound() {
-        // Arrange
         long userId = 1L;
         FullUserDTO userDTO = new FullUserDTO();
         UserDetails userDetails = mock(UserDetails.class);
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(UserNotFoundException.class, () -> userService.updateUser(userId, userDTO, userDetails));
     }
 
     @Test
     void testDeleteUser_UserNotFound() {
-        // Arrange
         long userId = 1L;
         UserDetails userDetails = mock(UserDetails.class);
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(UserNotFoundException.class, () -> userService.deleteUser(userId, userDetails));
     }
 
     @Test
     void testGetArrowsAmount_UserNotFound() {
-        // Arrange
         long userId = 1L;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act
         Optional<Integer> result = userService.getArrowsAmount(userId);
 
-        // Assert
         assertTrue(result.isEmpty());
     }
 
     @Test
     void testAddArrows_UserNotFound() {
-        // Arrange
         long userId = 1L;
         int arrowsAmount = 10;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(UserNotFoundException.class, () -> userService.addArrows(userId, arrowsAmount));
     }
 

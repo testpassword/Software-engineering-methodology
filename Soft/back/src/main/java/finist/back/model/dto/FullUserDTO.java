@@ -107,14 +107,16 @@ public class FullUserDTO {
     }
 
     public FullUserDTO() {
-        this.tasks = Collections.emptyList(); // Если список задач равен null, используем пустой список
-        this.followsIds = Collections.emptyList(); // Если список задач равен null, используем пустой список
+        this.tasks = Collections.emptyList();
+        this.followsIds = Collections.emptyList();
         this.arrowsAmount = 0;
     }
     public FullUserDTO(String email, Long id) {
         this.id = id;
         this.email = email;
-        new FullUserDTO();
+        this.tasks = Collections.emptyList();
+        this.followsIds = Collections.emptyList();
+        this.arrowsAmount = 0;
     }
     public FullUserDTO(User user) {
         this.id = user.getId();

@@ -25,8 +25,8 @@ public class Competition {
     @Column(name = "city")
     private String city;
 
-    @OneToOne (optional=true, mappedBy="competition")
-    private Marriage marriage;
+//    @OneToOne (optional=true, mappedBy="competition")
+//    private Marriage marriage;
 
     @Column(name = "status")
     private CompetitionStatus status;
@@ -44,11 +44,16 @@ public class Competition {
     @OneToOne (mappedBy="competition")
     private BrideVote brideVote;
 
-    public Competition(User creator, String name, String city){
+    @OneToOne(optional=false, cascade= CascadeType.ALL)
+    @JoinColumn(name="love_request_id")
+    private LoveRequest loveRequest;
+
+    public Competition(User creator, String name, String city, LoveRequest loveRequest){
         this.creator = creator;
         this.name = name;
         this.city = city;
         this.status = CompetitionStatus.IN_PROGRESS;
+        this.loveRequest = loveRequest;
     }
 
     public void setId(Long id) {

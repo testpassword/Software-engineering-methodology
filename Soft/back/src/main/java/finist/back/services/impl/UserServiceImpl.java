@@ -65,11 +65,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<FullUserDTO> getUser(Long userId) throws UserNotFoundException {
+    public Optional<FullUserDTO> getUserAsDTO(Long userId) throws UserNotFoundException {
         return Optional.ofNullable(userRepository.findById(userId)
                 .map(this::convertUserToFullUserDTO)
                 .orElseThrow(() ->
                         new UserNotFoundException(userId)));
+    }
+
+    @Override
+    public User getUser(Long userId) throws UserNotFoundException {
+        return userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new UserNotFoundException(userId));
+    }
+
+    @Override
+    public User getUserByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UserNotFoundException(email));
     }
 
 

@@ -26,7 +26,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @SpringBootTest(classes = {BackApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class APISimpleUserLifecycle {
+public class SimpleUserLifecycle {
 
     private static Long userId;
     private static final String userEmail = "newUser@mail.com";
