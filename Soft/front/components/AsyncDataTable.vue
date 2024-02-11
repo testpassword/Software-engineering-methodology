@@ -7,9 +7,9 @@ const props = defineProps({
 
 const { apiFn, itemComponentName } = toRefs(props)
 
-useMountedApi(async () => {
-  items.value = await apiFn.value.get()
-})
+useMountedApi(async () => { await refresh() })
+
+const refresh = async () => { items.value = await apiFn.value.get() }
 
 const itemComponent = computed(() => (
   {
@@ -17,6 +17,8 @@ const itemComponent = computed(() => (
     'User': defineAsyncComponent(() => import('/components/card/User.vue')),
   }[itemComponentName.value])
 )
+
+defineExpose({ refresh })
 </script>
 
 <template>

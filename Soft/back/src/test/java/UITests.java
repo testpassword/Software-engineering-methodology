@@ -226,11 +226,11 @@ public class UITests {
     void showCompetitions() throws InterruptedException {
         login(MATCHMAKER);
         redirectWait();
-        assertFalse(DRIVER.findElements(By.id("competitionCard")).isEmpty());
+        assertFalse(DRIVER.findElements(By.className("competitionCard")).isEmpty());
     }
 
     @Test // UC18
-    void createCompetition() throws InterruptedException {
+    void createCompetitionTemplate() throws InterruptedException {
         login(MATCHMAKER);
         redirectWait();
         DRIVER.findElement(By.id("createCompetitionRooms")).click();
@@ -252,7 +252,10 @@ public class UITests {
         assertNotNull(getActiveModal());
     }
 
-    // todo: 22
+    @Test // UC22
+    void createMarriageReport() throws InterruptedException {
+        // todo
+    }
 
     @Test // UC23
     void banUser() throws InterruptedException {
@@ -269,7 +272,20 @@ public class UITests {
         assertEquals(before + 1, after);
     }
 
-    // todo: 24
+    @Test // UC24
+    void assignCompetitors() throws InterruptedException {
+        createCompetitionTemplate();
+        var oldNumOfComps = DRIVER.findElements(By.className("competitionCard")).size();
+        var task = new Faker().lorem().characters(14);
+        js(String.format("await window.assignDebug(['%s', '%s'])", task, task));
+        getActiveModal().findElement(By.id("acceptDialogBtn")).click();
+        redirectWait();
+        DRIVER.switchTo().alert().accept();
+        DRIVER.navigate().refresh();
+        redirectWait();
+        var newNumOfComps = DRIVER.findElements(By.className("competitionCard")).size();
+        assertEquals(oldNumOfComps + 1, newNumOfComps);
+    }
 
     /*@AfterAll
     static void shutdown() { DRIVER.quit(); }*/

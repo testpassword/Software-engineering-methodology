@@ -24,16 +24,17 @@ const isCandidateAssign = candidate =>
     .map( it => it?.name )
     ?.includes(candidate?.name)
 
-const swapAssigment = candidate =>
+const swapAssigment = candidate => {
   assignedUsers
     .value
     ?.[isCandidateAssign(candidate) ? 'remove' : 'push']
     ?.(candidate)
+}
 </script>
 
 <template>
   <div
-    class="collapse collapse-arrow border rounded-xl"
+    class="collapse collapse-arrow border rounded-xl formCandidateTask"
     :class="[ completed ? 'border-secondary' : 'border-error' ]"
   >
     <input type="checkbox" />
@@ -60,13 +61,16 @@ const swapAssigment = candidate =>
         v-model:value="task"
         v-if="!emptyTask"
       />
-      <CardUser
+      <div
         v-for="u in filteredUsers"
-        :item="u"
         @click="swapAssigment(u)"
-        horizontal
-        :class="{ 'bg-primary hover:bg-primary': isCandidateAssign(u) }"
-      />
+      >
+        <CardUser
+          :item="u"
+          horizontal
+          :class="{ 'bg-primary hover:bg-primary': isCandidateAssign(u) }"
+        />
+      </div>
     </div>
   </div>
 </template>
