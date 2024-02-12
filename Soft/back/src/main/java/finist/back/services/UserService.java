@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 public interface UserService {
     Optional<UserRegistrationResponseDTO> registerNewUser(UserAuthRequestDTO userAuthRequestDTO) throws InvalidEmailException;
@@ -26,4 +27,6 @@ public interface UserService {
     Optional<Integer> getArrowsAmount(Long userId);
     void addArrows(Long userId, Integer arrowsAmount) throws UserNotFoundException;
     Optional<FullUserDTO> login(UserAuthRequestDTO userAuthRequestDTO) throws AuthUserException;
+
+    Optional<List<FullUserDTO>> getFreeBrides(UserDetails userDetails);
 }
