@@ -5,7 +5,7 @@ const deleteAccount = async () => {
   const res = confirm('Удалить аккаунт: вы уверены?')
   if (res) {
     // todo: не хватает id пользователя
-    await api.users.for().del()
+    //await api.users.for().del()
     navigateTo('/login')
   }
 }
@@ -26,6 +26,7 @@ const logout = () => {
         <div class="flex flex-col w-full gap-4">
           <div class="divider">Стандартные</div>
           <button
+            id="settingsRooms"
             class="btn btn-info btn-outline btn-sm"
             @click="navigateTo('/account-settings')"
           >
@@ -33,6 +34,7 @@ const logout = () => {
             Настройки аккаунта
           </button>
           <button
+            id="deleteAccountRooms"
             class="btn btn-error btn-outline btn-sm"
             @click="deleteAccount"
           >
@@ -40,6 +42,7 @@ const logout = () => {
             Удалить аккаунт
           </button>
           <button
+            id="logout"
             class="btn text-black-100 btn-outline btn-sm"
             @click="logout"
           >

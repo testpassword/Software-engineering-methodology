@@ -37,7 +37,8 @@ defineExpose({ dialog })
         v-if="!hideAccept"
       >
         <button
-          class="btn btn-success"
+          id="acceptDialogBtn"
+          class="btn btn-success z-50"
           @click="emits('accept')"
         >
           <IconApply/>

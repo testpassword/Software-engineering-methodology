@@ -28,10 +28,12 @@ const bvDial = ref()
 const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
 
 const commentsDial = ref()
+
+const follow = () => alert('Вы подписались!')
 </script>
 
 <template>
-  <div class="flex flex-col card glass">
+  <div class="flex flex-col card glass competitionCard">
     <div class="flex flex-row gap-8 py-3 px-6 capitalize">
       <div class="info">
         <h3>{{ item.name }}</h3>
@@ -43,7 +45,7 @@ const commentsDial = ref()
       <div class="spacer"/>
       <div class="flex flex-row">
         <div
-          class="tooltip -ml-2 tooltip-secondary"
+          class="tooltip -ml-2 tooltip-secondary moreAboutUserBtn"
           v-for="m in members"
           :data-tip="m.name"
           @click="() => {
@@ -95,18 +97,22 @@ const commentsDial = ref()
         v-if="!hideActions"
       >
         <div class="flex flex-row gap-3">
-          <button class="btn text-purple-500 btn-outline w-fit hover:bg-purple-500 btn-sm">
+          <button
+            class="btn text-purple-500 btn-outline w-fit hover:bg-purple-500 btn-sm followCompetitionRooms"
+            @click="follow"
+          >
             <IconFollow/>
             Подписаться
           </button>
           <button
-            class="btn btn-outline text-purple-600 hover:bg-purple-600 btn-sm"
+            class="btn btn-outline text-purple-600 hover:bg-purple-600 btn-sm commentCompetitionRooms"
             @click="commentsDial.dialog.showModal"
           >
             <IconCommentary/>
             Комментарии
           </button>
           <button
+            id="participateRooms"
             class="btn btn-outline btn-sm text-red-600 hover:bg-red-600"
             data-tip="Принять участие на роли помощника или супостата"
           >

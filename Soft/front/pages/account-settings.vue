@@ -83,7 +83,8 @@ useMountedApi(async () => {
         max="100"
       />
       <button
-        class="btn btn-primary min-h-0 h-10"
+        id="nextSettings"
+        class="btn btn-primary min-h-0 h-10 z-50"
         :disabled="!pass"
         @click="completeRegister"
       >
@@ -94,10 +95,11 @@ useMountedApi(async () => {
       <h3>Роль</h3>
       <div class="flex flex-row overflow-scroll gap-3 w-full">
           <div
-            class="card glass my-8 mx-2 flex transition-all min-w-[13rem]"
+            class="card glass my-8 mx-2 flex transition-all min-w-[13rem] roleSettings"
             :class="{
               'bg-primary': form.role === r.name,
-              'hover:scale-110 hover:bg-gradient-to-r from-transparent via-secondary to-primary-focus': form.role !== r.name
+              'hover:scale-110 hover:bg-gradient-to-r from-transparent via-secondary to-primary-focus': form.role !== r.name,
+              [r.name]: true
             }"
             v-for="r in ROLES"
             @click="selectRole(r.name)"
@@ -111,7 +113,7 @@ useMountedApi(async () => {
             </div>
             <div class="card-body p-2">
               <h2
-                class="capitalize card-title justify-center"
+                class="capitalize card-title justify-center roleName"
                 :class="{ 'text-grey-100': form.role === r.name }"
               >
                 {{ r.label }}
@@ -131,6 +133,7 @@ useMountedApi(async () => {
         />
         <div class="flex flex-col gap-4">
           <input
+            id="nameSettings"
             type="text"
             placeholder="Имя"
             class="input input-bordered"
@@ -138,6 +141,7 @@ useMountedApi(async () => {
             v-model="form.name"
           />
           <select
+            id="citySettings"
             class="select select-bordered w-full max-w-xs"
             :class="{ 'select-error': errorFields?.city?.length }"
             v-model="form.city"
@@ -154,6 +158,7 @@ useMountedApi(async () => {
             </option>
           </select>
           <input
+            id="dateSettings"
             type="date"
             placeholder="Дата рождения (возраст 18+)"
             class="input input-bordered"
@@ -161,6 +166,7 @@ useMountedApi(async () => {
             v-model="form.dateOfBirth"
           />
           <select
+            id="eduSettings"
             class="select select-bordered w-full "
             :class="{ 'select-error': errorFields?.education?.length }"
             v-model="form.education"
@@ -177,12 +183,14 @@ useMountedApi(async () => {
           </select>
         </div>
         <textarea
+          id="aboutSelfSettings"
           class="textarea textarea-bordered"
           placeholder="О себе"
           :class="{ 'textarea-error': errorFields?.aboutSelf?.length }"
           v-model="form.aboutSelf"
         />
         <textarea
+          id="aboutPartnerSettings"
           class="textarea textarea-bordered"
           placeholder="О партнёре"
           :class="{ 'textarea-error': errorFields?.aboutPartner?.length }"

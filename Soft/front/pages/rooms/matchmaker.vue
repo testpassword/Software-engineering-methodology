@@ -5,6 +5,7 @@ definePageMeta({ middleware: ['role', 'auth'] })
 
 const cities = useRUCities()
 const users = ref([])
+const compsTable = ref()
 useMountedApi(async () => users.value = await api.users.get())
 
 const createCompetitionDial = ref()
@@ -50,7 +51,22 @@ const createCompetition = async () => {
     )
   })
   alert('Соревнование создано! Все участники получат приглашения в ближайшее время.')
+  await compsTable.value.refresh()
 }
+
+onMounted(() => window.assignDebug = async (tasks = []) => {
+  // DO NOT CALL THIS FUNC UNTIL YOU SET CITY OF FUTURE COMPETITION
+  const getTask = r => rolesTasks.value.filter(it => it.role === r)[0]
+  const filteredUsers = r => users.value.filter( it => it.city === form.value.city && it.role === r )
+  const brideTask = getTask('bride')
+  brideTask.task = tasks[0]
+  brideTask.users = filteredUsers('bride').slice(0, 1)
+  const groomTask = getTask('groom')
+  groomTask.task = tasks[1]
+  groomTask.users = filteredUsers('groom').slice(0, 3)
+  getTask('assistant').users = filteredUsers('assistant').slice(0, 1)
+  getTask('enemy').users = filteredUsers('enemy').slice(0, 1)
+})
 </script>
 
 <template>
@@ -61,6 +77,7 @@ const createCompetition = async () => {
     />
     <div class="flex flex-row mt-10 gap-8">
       <AsyncDataTable
+        ref="compsTable"
         :api-fn="api.competitions"
         item-component-name="Competition"
       >
@@ -79,6 +96,7 @@ const createCompetition = async () => {
       <ActionsPanel>
         <template #extra>
           <button
+            id="createCompetitionRooms"
             class="btn text-purple-500 btn-outline btn-sm"
             @click="createCompetitionDial.dialog.showModal"
           >
@@ -100,6 +118,7 @@ const createCompetition = async () => {
       <template #content>
         <div class="flex gap-3">
           <input
+            id="competitionCreationName"
             type="text"
             placeholder="Название"
             class="input input-bordered w-full"
@@ -107,6 +126,7 @@ const createCompetition = async () => {
             v-model="form.name"
           />
           <select
+            id="competitionCreationCity"
             class="select select-bordered w-full max-w-xs"
             :class="{ 'select-error': errorFields?.city?.length }"
             v-model="form.city"
@@ -123,7 +143,7 @@ const createCompetition = async () => {
             </option>
           </select>
         </div>
-        <FormCandidateTask
+        <LazyFormCandidateTask
           :users="users"
           v-for="{ role } in rolesTasks"
           :empty-task="['assistant', 'enemy'].includes(role)"

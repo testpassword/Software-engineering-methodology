@@ -7,9 +7,9 @@ const props = defineProps({
 
 const { apiFn, itemComponentName } = toRefs(props)
 
-useMountedApi(async () => {
-  items.value = await apiFn.value.get()
-})
+useMountedApi(async () => { await refresh() })
+
+const refresh = async () => { items.value = await apiFn.value.get() }
 
 const itemComponent = computed(() => (
   {
@@ -17,10 +17,15 @@ const itemComponent = computed(() => (
     'User': defineAsyncComponent(() => import('/components/card/User.vue')),
   }[itemComponentName.value])
 )
+
+defineExpose({ refresh })
 </script>
 
 <template>
-  <div class="stats bg-primary text-primary-content h-fit max-h-[80vh]">
+  <div
+    class="stats bg-primary text-primary-content h-fit max-h-[80vh]"
+    :class="`asyncDataTable${itemComponentName}`"
+  >
     <div class="stat bg-secondary gap-4">
       <h3>
         <slot name="title"/>

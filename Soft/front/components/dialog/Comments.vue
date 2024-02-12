@@ -57,11 +57,11 @@ const send = async () => {
     </div>
     <div class="flex flex-row gap-3">
       <input
-        class="input input-bordered input-primary w-full"
+        class="input input-bordered input-primary w-full newCommentInput"
         ref="newComment"
       />
       <button
-        class="btn btn-outline btn-primary"
+        class="btn btn-outline btn-primary h-50 newCommentBtn"
         @click="send"
       >
         <IconPush/>

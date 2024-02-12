@@ -20,6 +20,7 @@ const age = birthday => {
 const blockUser = async () => {
   const res = confirm('Заблокировать пользователя? Он больше не сможет участвовать в состязания и оставлять комментарии.')
   if (res) {
+    item.value.isBanned = true
     // todo: нет хватает вызова api
   }
 }
@@ -32,6 +33,10 @@ const blockUser = async () => {
         class="avatar rounded-full h-24"
         src="/avatar-placeholder.webp"
         alt="avatar"
+      />
+      <IconLockHeart
+        class="text-error -ml-4 -mt-16 z-10 isBanned"
+        v-if="item?.isBanned"
       />
     </div>
     <div
@@ -47,7 +52,7 @@ const blockUser = async () => {
           v-if="!hideActions"
         >
           <button
-            class="btn btn-secondary btn-xs tooltip tooltip-secondary"
+            class="btn btn-secondary btn-xs tooltip tooltip-secondary z-50 banUser"
             data-tip="заблокировать"
             @click="blockUser"
           >
@@ -55,7 +60,7 @@ const blockUser = async () => {
           </button>
           <button
             v-if="useRoles().isMatchmaker"
-            class="btn btn-secondary btn-xs tooltip tooltip-secondary"
+            class="btn btn-secondary btn-xs tooltip tooltip-secondary userInfoBtn"
             data-tip="подробнее"
             @click="moreDial.dialog.showModal"
           >
