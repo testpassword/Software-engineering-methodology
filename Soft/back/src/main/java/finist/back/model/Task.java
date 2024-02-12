@@ -42,5 +42,14 @@ public class Task {
         this.report = report;
         this.parentCompetition = competition;
         this.executor = user;
+        this.completed = false;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public Competition getParentCompetition() {
+        return parentCompetition;
     }
 }

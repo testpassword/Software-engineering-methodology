@@ -86,4 +86,11 @@ public class UserController {
         }
     }
 
+
+    @GetMapping("/users/brides/free/")
+    public ResponseEntity<List<FullUserDTO>> getFreeBrides(@AuthenticationPrincipal UserDetails userDetails){
+        return userService.getFreeBrides(userDetails).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
 }

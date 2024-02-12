@@ -5,11 +5,13 @@ import finist.back.exceptions.InvalidEmailException;
 import finist.back.exceptions.ScenarioException;
 import finist.back.exceptions.UserNotFoundException;
 import finist.back.model.Role;
+import finist.back.model.Task;
 import finist.back.model.User;
 import finist.back.model.dto.FullUserDTO;
 import finist.back.model.dto.UserAuthRequestDTO;
 import finist.back.model.dto.UserRegistrationResponseDTO;
 import finist.back.model.enums.EducationType;
+import finist.back.model.enums.MarriageStatus;
 import finist.back.model.enums.UserRole;
 import finist.back.repositories.RoleRepository;
 import finist.back.repositories.TaskRepository;
@@ -163,6 +165,27 @@ public class UserServiceImpl implements UserService {
         }
 
         throw new AuthUserException();
+    }
+
+    /**
+     * Проверить вернуть всех user с ролью bride, у которых:
+     * 1. Нет текущих tasks со статусом completed != true
+     * 2. Нет marriage, закончившихся успехом
+     * */
+    @Override
+    public Optional<List<FullUserDTO>> getFreeBrides(UserDetails userDetails) {
+        return Optional.of(userRepository.findAllBrides().stream()
+                .filter(this::isBrideFree)
+                .map(this::convertUserToFullUserDTO)
+                .collect(Collectors.toList()));
+    }
+
+    private boolean isBrideFree(User bride){
+        return bride.getTasks().stream().allMatch(Task::getCompleted)
+                && bride.getTasks().stream()
+                .map(task -> task.getParentCompetition().getMarriage())
+                .allMatch(marriage -> !marriage.getMarriageStatus().equals(MarriageStatus.FINISHED_SUCCESS) && marriage.getBride().equals(bride));
+
     }
 
     private FullUserDTO convertUserToFullUserDTO(User user) {

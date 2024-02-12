@@ -25,8 +25,8 @@ public class Competition {
     @Column(name = "city")
     private String city;
 
-//    @OneToOne (optional=true, mappedBy="competition")
-//    private Marriage marriage;
+    @OneToOne (optional=true, mappedBy="competition")
+    private Marriage marriage;
 
     @Column(name = "status")
     private CompetitionStatus status;
@@ -60,5 +60,8 @@ public class Competition {
         this.id = id;
     }
 
+    public Marriage getMarriage() {
+        return marriage;
+    }
 }
 
