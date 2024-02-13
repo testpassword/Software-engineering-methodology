@@ -4,10 +4,7 @@ import finist.back.exceptions.AuthUserException;
 import finist.back.exceptions.InvalidEmailException;
 import finist.back.exceptions.ScenarioException;
 import finist.back.exceptions.UserNotFoundException;
-import finist.back.model.dto.FullUserDTO;
-import finist.back.model.dto.UserArrowsDTO;
-import finist.back.model.dto.UserAuthRequestDTO;
-import finist.back.model.dto.UserRegistrationResponseDTO;
+import finist.back.model.dto.*;
 import finist.back.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,13 +74,18 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/arrows/")
-    public ResponseEntity<Void> getArrows(@PathVariable(name = "userId") Long userId, @RequestBody UserArrowsDTO amount){
+    public ResponseEntity<Void> addArrows(@PathVariable(name = "userId") Long userId, @RequestBody UserArrowsDTO amount){
         try {
             userService.addArrows(userId, amount.getAmount());
             return ResponseEntity.ok().build();
         } catch (UserNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/arrows/price/")
+    public ArrowPriceDTO getPrice() {
+        return new ArrowPriceDTO(100);
     }
 
 

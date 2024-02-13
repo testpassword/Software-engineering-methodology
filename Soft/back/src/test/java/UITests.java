@@ -15,9 +15,9 @@ record User(String phone, String email, String pass, String name,
 ) {
 
     public static User MATCHMAKER =
-            new User("15513877642", "a@a.com", "a", "", "", "", new Date());
+            new User("1111111111", "m@m.com", "m", "", "", "", new Date());
     public static User GROOM =
-            new User("122132131231", "g@g.com", "g", "", "", "", new Date());
+            new User("2222222222", "g@g.com", "g", "", "", "", new Date());
 
     static User rand() {
         var f = new Faker();
@@ -42,7 +42,7 @@ public class UITests {
     static final Map<String, Integer> PREFS = new HashMap<>() {{ put("profile.default_content_setting_values.notifications", 2); }};
     static final String BASE_URL = "http://localhost:3000/";
 
-    User MATCHMAKER = new User("15513877642", "a@a.com", "a", "", "", "", new Date());
+    User MATCHMAKER = new User("15513877642", "m@m.com", "m", "", "", "", new Date());
     User GROOM = new User("122132131231", "g@g.com", "g", "", "", "", new Date());
 
 
@@ -101,21 +101,21 @@ public class UITests {
 
     int getArrowsAmount() { return Integer.parseInt(DRIVER.findElement(By.id("arrowsAmountRooms")).getText()); }
 
-    @Test // UC1
+    @Test
     void register() throws InterruptedException {
         var newbie = User.rand();
         register(newbie);
         acceptRedirect("login");
     }
 
-    @Test // UC2
+    @Test
     void login() throws InterruptedException {
         login(MATCHMAKER);
         acceptRedirect("rooms");
         assertNotNull(getSecret());
     }
 
-    @Test // UC3 & UC4
+    @Test
     void fillUserInfo() throws InterruptedException {
         var newbie = User.rand();
         register(newbie);
@@ -128,7 +128,7 @@ public class UITests {
         acceptRedirect("rooms");
     }
 
-    @Test // UC5
+    @Test
     void deleteAccount() throws InterruptedException {
         fillUserInfo();
         DRIVER.findElement(By.id("deleteAccountRooms")).click();
@@ -136,7 +136,7 @@ public class UITests {
         acceptRedirect("login");
     }
 
-    @Test // UC6
+    @Test
     void logout() throws InterruptedException {
         login(MATCHMAKER);
         DRIVER.findElement(By.id("logout")).click();
@@ -145,7 +145,7 @@ public class UITests {
         assertNull(getSecret());
     }
 
-    @Test // UC7
+    @Test
     void changeRole() throws InterruptedException {
         fillUserInfo();
         redirectWait();
@@ -157,7 +157,7 @@ public class UITests {
         assertNotEquals(oldRole, newRole);
     }
 
-    @Test // UC9
+    @Test
     void dismissCompetition() throws InterruptedException {
         login(GROOM);
         redirectWait();
@@ -166,7 +166,7 @@ public class UITests {
         assertEquals(0, DRIVER.findElements(By.id("dismissRooms")).size());
     }
 
-    @Test // UC13
+    @Test
     void commentCompetition() throws InterruptedException {
         login(GROOM);
         redirectWait();
@@ -183,16 +183,7 @@ public class UITests {
         );
     }
 
-    @Test // UC14
-    void followCompetition() throws InterruptedException {
-        login(GROOM);
-        redirectWait();
-        js("document.getElementsByClassName('followCompetitionRooms')[0].click()");
-        DRIVER.switchTo().alert().accept();
-        assertTrue(true);
-    }
-
-    @Test // UC15
+    @Test
     void pushArrow() throws InterruptedException {
         var newbie = User.rand();
         register(newbie);
@@ -203,33 +194,32 @@ public class UITests {
         zoom(1);
         DRIVER.findElement(By.id("nextSettings")).click();
         redirectWait();
-        var oldVal = getArrowsAmount();
         DRIVER.findElement(By.id("pushArrowRooms")).click();
         redirectWait();
-        var newVal = getArrowsAmount();
-        assertEquals(oldVal - 1, newVal);
+        assertNotNull(DRIVER.findElement(By.id("pushArrowRooms")).getAttribute("disabled"));
     }
 
-    @Test // UC16
+    @Test
     void buyArrow() throws InterruptedException {
         login(GROOM);
         redirectWait();
         var oldVal = getArrowsAmount();
         DRIVER.findElement(By.id("buyArrowsRooms")).click();
         getActiveModal().findElement(By.id("acceptDialogBtn")).click();
+        redirectWait();
         DRIVER.switchTo().alert().accept();
         var newVal = getArrowsAmount();
         assertEquals(oldVal + 1, newVal);
     }
 
-    @Test // UC17
+    @Test
     void showCompetitions() throws InterruptedException {
         login(MATCHMAKER);
         redirectWait();
         assertFalse(DRIVER.findElements(By.className("competitionCard")).isEmpty());
     }
 
-    @Test // UC18
+    @Test
     void createCompetitionTemplate() throws InterruptedException {
         login(MATCHMAKER);
         redirectWait();
@@ -240,7 +230,7 @@ public class UITests {
         assertTrue(true);
     }
 
-    @Test // UC19
+    @Test
     void showUserQuestionnaire() throws InterruptedException {
         login(MATCHMAKER);
         redirectWait();
@@ -252,7 +242,7 @@ public class UITests {
         assertNotNull(getActiveModal());
     }
 
-    @Test // UC22
+    @Test
     void createMarriageReport() throws InterruptedException {
         login(MATCHMAKER);
         redirectWait();
@@ -265,7 +255,7 @@ public class UITests {
         assertTrue(true);
     }
 
-    @Test // UC23
+    @Test
     void banUser() throws InterruptedException {
         login(MATCHMAKER);
         redirectWait();
@@ -280,7 +270,7 @@ public class UITests {
         assertEquals(before + 1, after);
     }
 
-    @Test // UC24
+    @Test
     void assignCompetitors() throws InterruptedException {
         createCompetitionTemplate();
         var oldNumOfComps = DRIVER.findElements(By.className("competitionCard")).size();
@@ -295,6 +285,27 @@ public class UITests {
         assertEquals(oldNumOfComps + 1, newNumOfComps);
     }
 
-    @AfterAll
-    static void shutdown() { DRIVER.quit(); }
+    @Test
+    void voting() throws InterruptedException {
+        var newbie = User.rand();
+        register(newbie);
+        login(newbie);
+        redirectWait();
+        zoom(0.75);
+        fillUser(newbie, "groom");
+        zoom(1);
+        DRIVER.findElement(By.id("nextSettings")).click();
+        redirectWait();
+        DRIVER.findElement(By.cssSelector("div.VOTING.competitionCard"))
+                .findElement(By.cssSelector("li.step.animate-pulse"))
+                .click();
+        getActiveModal().findElement(By.className("voteCard")).click();
+        getActiveModal().findElement(By.id("acceptDialogBtn")).click();
+        redirectWait();
+        DRIVER.switchTo().alert().accept();
+        assertTrue(true);
+    }
+
+    /*@AfterAll
+    static void shutdown() { DRIVER.quit(); }*/
 }

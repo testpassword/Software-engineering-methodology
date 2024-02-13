@@ -28,8 +28,6 @@ const bvDial = ref()
 const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
 
 const commentsDial = ref()
-
-const follow = () => alert('Вы подписались!')
 </script>
 
 <template>
@@ -100,13 +98,6 @@ const follow = () => alert('Вы подписались!')
         v-if="!hideActions"
       >
         <div class="flex flex-row gap-3">
-          <button
-            class="btn text-purple-500 btn-outline w-fit hover:bg-purple-500 btn-sm followCompetitionRooms"
-            @click="follow"
-          >
-            <IconFollow/>
-            Подписаться
-          </button>
           <button
             class="btn btn-outline text-purple-600 hover:bg-purple-600 btn-sm commentCompetitionRooms"
             @click="commentsDial.dialog.showModal"

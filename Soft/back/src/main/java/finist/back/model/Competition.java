@@ -44,7 +44,7 @@ public class Competition {
     @OneToOne (mappedBy="competition")
     private BrideVote brideVote;
 
-    @OneToOne(optional=false, cascade= CascadeType.ALL)
+    @OneToOne(cascade= CascadeType.ALL)
     @JoinColumn(name="love_request_id")
     private LoveRequest loveRequest;
 

@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setArrowsAmount(arrowsAmount);
+            user.setArrowsAmount(user.getArrowsAmount() + arrowsAmount);
             userRepository.save(user);
         } else {
             throw new UserNotFoundException(userId);

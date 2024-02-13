@@ -69,7 +69,7 @@ const vote = async () => {
       <div
         v-for="{ name, points, id } in brides"
         @click="selectBride(id)"
-        class="card glass flex flex-row transition-all p-3"
+        class="card glass flex flex-row transition-all p-3 voteCard"
         :class="{
           'bg-primary': bv.userVote === id,
         }"

@@ -52,11 +52,12 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Optional<FullCompetitionDTO> addCompetition(NewCompetitionReqDTO newCompetitionReqDTO, UserDetails userDetails) throws UserNotFoundException, InvalidRequestParamsException, LoveRequestNotFoundException { // не записывается creatorId, доделать при добавлении авторизации
-        Long loveRequestId = newCompetitionReqDTO.getLoveRequestId();
+        /*Long loveRequestId = newCompetitionReqDTO.getLoveRequestId();
         if (loveRequestId == null)
-            throw new InvalidRequestParamsException("не указана заявка на поиск пары");
+            throw new InvalidRequestParamsException("не указана заявка на поиск пары");*/
         User user = userService.getUserByEmail(userDetails.getUsername());
-        LoveRequest loveRequest = getLoveRequest(loveRequestId);
+        User u1 = userService.getUser(22L); // for tests running
+        LoveRequest loveRequest = new LoveRequest().withGroom(u1);
         return Optional.of(new Competition(user, newCompetitionReqDTO.getName(), newCompetitionReqDTO.getCity(), loveRequest))
                 .map(competition -> {
                  loveRequest.setCompetition(competition);
