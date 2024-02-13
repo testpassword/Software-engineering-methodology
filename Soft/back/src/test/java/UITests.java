@@ -306,6 +306,6 @@ public class UITests {
         assertTrue(true);
     }
 
-    /*@AfterAll
-    static void shutdown() { DRIVER.quit(); }*/
+    @AfterAll
+    static void shutdown() { DRIVER.quit(); }
 }
