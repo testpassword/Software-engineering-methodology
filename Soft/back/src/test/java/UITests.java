@@ -254,7 +254,15 @@ public class UITests {
 
     @Test // UC22
     void createMarriageReport() throws InterruptedException {
-        // todo
+        login(MATCHMAKER);
+        redirectWait();
+        DRIVER.findElement(By.cssSelector("div.MARRIAGE.competitionCard"))
+                .findElement(By.cssSelector("li.step.animate-pulse"))
+                .click();
+        js(String.format("window.debugReport('%s')", new Faker().lorem().characters(14)));
+        getActiveModal().findElement(By.className("marriageReportBtn")).click();
+        DRIVER.switchTo().alert().accept();
+        assertTrue(true);
     }
 
     @Test // UC23
@@ -287,6 +295,6 @@ public class UITests {
         assertEquals(oldNumOfComps + 1, newNumOfComps);
     }
 
-    /*@AfterAll
-    static void shutdown() { DRIVER.quit(); }*/
+    @AfterAll
+    static void shutdown() { DRIVER.quit(); }
 }
