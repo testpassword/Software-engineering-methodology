@@ -1,6 +1,7 @@
 <script setup>
 // todo: норм данные запрашивать
 import api from '/api'
+import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 
 const groom = ref({})
 const bride = ref({})
@@ -10,8 +11,19 @@ useMountedApi(async () => {
   groom.value = await api.users[1].get()
   bride.value = await api.users[2].get()
   competition.value = await api.competitions[1].get()
-  competition.value.report = 'Рассказываю про свадьбу новой семьи: дед опять набухался и всё разнёс!'
+  competition.value.report = ''
 })
+
+const form = ref({ report: '' })
+
+const { pass } = useAsyncValidator(form, { report: { type: 'string', required: true, min: 10 } })
+
+const send = async () => {
+  // todo: send to api
+  alert('Счастье да мир молодожёнам!')
+}
+
+onMounted(() => { window.debugReport = report => { form.value.report = report } })
 </script>
 
 <template>
@@ -61,9 +73,18 @@ useMountedApi(async () => {
       <h3 class="pb-2 pr-2 flex items-center">
         {{ bride?.name }}
       </h3>
+      <div class="grow"/>
+      <button
+        :disabled="!pass"
+        class="btn btn-outline btn-primary h-50 marriageReportBtn"
+        @click="send"
+      >
+        <IconPush/>
+        Отправить
+      </button>
     </div>
     <Editor
-      v-model:value="competition.report"
+      v-model:value="form.report"
       :disabled="!useRoles().isMatchmaker"
     />
   </div>

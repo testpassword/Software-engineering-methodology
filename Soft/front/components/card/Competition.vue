@@ -33,7 +33,10 @@ const follow = () => alert('Вы подписались!')
 </script>
 
 <template>
-  <div class="flex flex-col card glass competitionCard">
+  <div
+    class="flex flex-col card glass competitionCard"
+    :class="[item.status]"
+  >
     <div class="flex flex-row gap-8 py-3 px-6 capitalize">
       <div class="info">
         <h3>{{ item.name }}</h3>
@@ -143,13 +146,11 @@ const follow = () => alert('Вы подписались!')
           :task="getTaskByUserId(useAuth().userId)"
           is-executor
         />
-        <div v-else>
-          Ваша роль не предусматривает задания
-        </div>
         <CardBrideVote
           v-if="item.status === 'VOTING'"
           :com-id="item.id"
         />
+        <CardMarriage v-if="item.status === 'MARRIAGE'"/>
       </template>
     </LazyDialogAccept>
     <LazyDialogAccept
