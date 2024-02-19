@@ -17,6 +17,8 @@ const form = ref({ report: '' })
 const { pass } = useAsyncValidator(form, {
   report: { type: 'string', required: true, min: 10 }
 })
+
+onMounted(() => window.report = async report => { form.value = report })
 </script>
 
 <template>
@@ -25,15 +27,6 @@ const { pass } = useAsyncValidator(form, {
     <p class="text-purple-600">
       {{ task?.text }}
     </p>
-    <div class="flex flex-row gap-4 justify-center p-4">
-      <input
-        disabled
-        type="checkbox"
-        :checked="task?.completed"
-        class="checkbox checkbox-primary"
-      />
-      Выполнено
-    </div>
     <h3>Отчёт</h3>
     <div
       v-if="isExecutor && !task?.report"
@@ -41,10 +34,10 @@ const { pass } = useAsyncValidator(form, {
     >
       <Editor v-model:value="form.report"/>
       <button
-        class="btn btn-primary"
+        class="btn btn-primary reportBtn"
         v-if="pass"
         @click="async () => {
-          await taskApi.update(form.value)
+          await taskApi.update({ report: form.report })
           emits('completed')
         }"
       >

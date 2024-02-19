@@ -34,7 +34,8 @@ const validated = computed(() =>
 const completed = computed(() => validated.value === rolesTasks.value.length)
 
 const createCompetition = async () => {
-  const comApi = api.competitions[(await api.competitions.create(form.value)).id]
+  const newCompId = (await api.competitions.create(form.value)).id
+  const comApi = api.competitions[newCompId]
   const rolesTasksWithUsers =
     rolesTasks
       .value
@@ -50,20 +51,25 @@ const createCompetition = async () => {
         .map(async it => (await comApi.tasks.create(it)).id)
     )
   })
-  alert('Соревнование создано! Все участники получат приглашения в ближайшее время.')
+  alert(`Соревнование создано! Все участники получат приглашения в ближайшее время. id=${newCompId}`)
   await compsTable.value.refresh()
 }
 
-onMounted(() => window.assignDebug = async (tasks = []) => {
+onMounted(() => window.assignDebug = async (tasks = [], brId = null, grId = null) => {
   // DO NOT CALL THIS FUNC UNTIL YOU SET CITY OF FUTURE COMPETITION
   const getTask = r => rolesTasks.value.filter(it => it.role === r)[0]
   const filteredUsers = r => users.value.filter( it => it.city === form.value.city && it.role === r )
   const brideTask = getTask('bride')
   brideTask.task = tasks[0]
-  brideTask.users = filteredUsers('bride').slice(0, 1)
+  const brides = filteredUsers('bride').slice(0, 3)
+  if (brId) {
+    brides.shift()
+    brides.push(users.value.find( it => it.id === brId ))
+  }
+  brideTask.users = brides
   const groomTask = getTask('groom')
   groomTask.task = tasks[1]
-  groomTask.users = filteredUsers('groom').slice(0, 3)
+  groomTask.users = grId ? [users.value.find( it => it.id === grId )] : filteredUsers('groom').slice(0, 1)
   getTask('assistant').users = filteredUsers('assistant').slice(0, 1)
   getTask('enemy').users = filteredUsers('enemy').slice(0, 1)
 })

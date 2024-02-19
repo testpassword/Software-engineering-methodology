@@ -1,6 +1,6 @@
 <script setup>
 import api from '/api'
-import Commentary from '../icon/Commentary.vue'
+import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 
 const { STATUSES } = useCompetitionsStatues()
 const props = defineProps({
@@ -8,13 +8,15 @@ const props = defineProps({
   hideActions: { type: Boolean, required: false, default: false },
 })
 
+let comApi = null
+
 const { item } = toRefs(props)
 const members = ref([])
 const tasks = ref([])
 const progress = computed(() => STATUSES.findIndex(it => it.name === item.value.status))
 
 await useMountedApi(async () => {
-  const comApi = api.competitions[item.value.id]
+  comApi = api.competitions[item.value.id]
   members.value = await comApi.members.get()
   try { tasks.value = await comApi.tasks.get() } catch { /* ignore if not exist */ }
 })
@@ -25,15 +27,24 @@ const showedMember = ref({})
 const getTaskByUserId = userId => tasks.value.find( it => it.executorId === userId )
 
 const bvDial = ref()
+const commentsDial = ref()
+const changeStatusDial = ref()
 const tomorrow = new Date(); tomorrow.setDate(new Date().getDate() + 1)
 
-const commentsDial = ref()
+const form = ref({ status: '' })
+const { pass } = useAsyncValidator(form, { status: { type: 'string', required: true } })
+
+const changeStatus = async () => {
+  const engSt = STATUSES.find(it => it.label === form.value.status).name
+  await comApi.update({ status: engSt })
+  item.value.status = engSt
+}
 </script>
 
 <template>
   <div
     class="flex flex-col card glass competitionCard"
-    :class="[item.status]"
+    :class="[item.status, `comp-${item.id}`]"
   >
     <div class="flex flex-row gap-8 py-3 px-6 capitalize">
       <div class="info">
@@ -69,6 +80,7 @@ const commentsDial = ref()
         ultrawide
       >
         <template #content>
+          {{ getTaskByUserId(showedMember.id) }}
           <CardUser :item="showedMember">
             <CardTask
               class="max-w-[350px]"
@@ -106,16 +118,45 @@ const commentsDial = ref()
             Комментарии
           </button>
           <button
-            id="participateRooms"
-            class="btn btn-outline btn-sm text-red-600 hover:bg-red-600"
-            data-tip="Принять участие на роли помощника или супостата"
+            class="btn btn-outline btn-sm text-red-600 hover:bg-red-600 changeCompStatus"
+            data-tip="Изменить статус"
+            @click="changeStatusDial.dialog.showModal"
           >
             <IconTakePart/>
-            Вписаться
+            Изменить статус
           </button>
         </div>
       </slot>
     </div>
+    <LazyDialogAccept
+      ref="changeStatusDial"
+      @accept="changeStatus"
+    >
+      <template #title>
+        Изменить статус
+      </template>
+      <template #content>
+        <select
+          class="select select-bordered w-full changeStatusSelect"
+          v-model="form.status"
+        >
+          <option
+            disabled
+            selected
+            value
+          >
+            Статус
+          </option>
+          <option
+            v-for="s in STATUSES"
+            :value="s.label"
+          >
+            {{ s.label }}
+          </option>
+        </select>
+      </template>
+    </LazyDialogAccept>
+
     <LazyDialogAccept
       ultrawide
       ref="bvDial"
@@ -131,10 +172,10 @@ const commentsDial = ref()
       </template>
       <template #content>
         <CardTask
-          v-if="item?.status === 'IN_PROGRESS' && ['bride, groom'].includes(useRoles().userRole.value)"
+          v-if="item?.status === 'IN_PROGRESS' && ['bride', 'groom'].includes(useRoles().userRole.value)"
           @completed="bvDial?.dialog?.close"
           :com-id="item.id"
-          :task="getTaskByUserId(useAuth().userId)"
+          :task="getTaskByUserId(parseInt(useAuth().userId.value))"
           is-executor
         />
         <CardBrideVote

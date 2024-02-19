@@ -6,60 +6,34 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-record User(String phone, String email, String pass, String name,
-            String city, String about,
-            Date dateOfBirth
-) {
+public class UCTests {
 
-    public static User MATCHMAKER =
-            new User("1111111111", "m@m.com", "m", "", "", "", new Date());
-    public static User GROOM =
-            new User("2222222222", "g@g.com", "g", "", "", "", new Date());
-
-    static User rand() {
-        var f = new Faker();
-        var about = f.lorem().characters(8);
-        return new User(
-                f.phoneNumber().cellPhone().replaceAll("[^0-9]", ""),
-                f.internet().emailAddress(),
-                f.internet().password(),
-                f.name().fullName(),
-                "Udomlya",
-                about,
-                new Faker().date().birthday(18, 55)
-        );
-    }
-}
-
-public class UITests {
-
-    static WebDriver DRIVER;
-    static final String DRIVER_PATH = "/usr/local/bin/chromedriver";
-    static final List<String> BROWSER_ARGS = Arrays.asList("--disable-web-security" , "--remote-allow-origins=*");
-    static final Map<String, Integer> PREFS = new HashMap<>() {{ put("profile.default_content_setting_values.notifications", 2); }};
-    static final String BASE_URL = "http://localhost:3000/";
-
-    User MATCHMAKER = new User("15513877642", "m@m.com", "m", "", "", "", new Date());
-    User GROOM = new User("122132131231", "g@g.com", "g", "", "", "", new Date());
+    public static WebDriver DRIVER;
+    public static final String DRIVER_PATH = "/usr/local/bin/chromedriver";
+    public static final List<String> BROWSER_ARGS = Arrays.asList("--disable-web-security" , "--remote-allow-origins=*");
+    public static final Map<String, Integer> PREFS = new HashMap<>() {{ put("profile.default_content_setting_values.notifications", 2); }};
+    public static final String BASE_URL = "http://localhost:3000/";
 
 
-    static void redirectWait() throws InterruptedException { Thread.sleep(2000); }
-    static String js(String script) { return (String) ((JavascriptExecutor) DRIVER).executeScript(script); }
-    String getSecret() { return js("return localStorage.getItem('secret');"); }
-    static void zoom(double factor) { js("document.body.style.zoom='" + factor + "'"); }
-    static void acceptRedirect(String urlToken) throws InterruptedException {
+    public static void redirectWait() throws InterruptedException { Thread.sleep(2000); }
+    public static String js(String script) { return (String) ((JavascriptExecutor) DRIVER).executeScript(script); }
+    public static String getSecret() { return js("return localStorage.getItem('secret');"); }
+    public static int getLoggedUserId() { return Integer.parseInt(js("return localStorage.getItem('userId');")); }
+    public static void zoom(double factor) { js("document.body.style.zoom='" + factor + "'"); }
+    public static void acceptRedirect(String urlToken) throws InterruptedException {
         redirectWait();
         assertTrue(DRIVER.getCurrentUrl().contains(urlToken));
     }
-    static WebElement getActiveModal() { return DRIVER.findElement(By.cssSelector("dialog[open]")); }
-    static String[] getElClasses(WebElement el) { return el.getAttribute("class").split(" "); }
+    public static WebElement getActiveModal() { return DRIVER.findElement(By.cssSelector("dialog[open]")); }
+    public static Stream<String> getElClasses(WebElement el) { return Arrays.stream(el.getAttribute("class").split(" ")); }
 
 
     @BeforeAll
-    static void setup() {
+    public static void setup() {
         System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
         ChromeOptions opts = new ChromeOptions();
         opts.setExperimentalOption("prefs", PREFS);
@@ -68,7 +42,7 @@ public class UITests {
         DRIVER.manage().window().maximize();
     }
 
-    void login(User u) throws InterruptedException {
+    public static void login(User u) throws InterruptedException {
         DRIVER.get(BASE_URL + "login");
         DRIVER.findElement(By.id("emailLogin")).sendKeys(u.email());
         DRIVER.findElement(By.id("passwordLogin")).sendKeys(u.pass());
@@ -76,7 +50,14 @@ public class UITests {
         redirectWait();
     }
 
-    void register(User u) throws InterruptedException {
+    public static void logout() throws InterruptedException {
+        DRIVER.findElement(By.id("logout")).click();
+        redirectWait();
+        acceptRedirect("login");
+        assertNull(getSecret());
+    }
+
+    public static void register(User u) throws InterruptedException {
         DRIVER.get(BASE_URL + "login");
         DRIVER.findElement(By.id("toRegister")).click();
         redirectWait();
@@ -88,18 +69,33 @@ public class UITests {
         redirectWait();
     }
 
-    void fillUser(User newbie, String role) {
-        if (role.isBlank()) DRIVER.findElements(By.className("roleSettings")).stream().findFirst().ifPresent(WebElement::click);
+    public static void fillUser(User newbie, String role) {
+        if (role.isBlank()) DRIVER
+                .findElements(By.className("roleSettings"))
+                .stream()
+                .findFirst()
+                .ifPresent(WebElement::click);
         else js("document.getElementsByClassName('" + role + "')[0].click()");
         DRIVER.findElement(By.id("nameSettings")).sendKeys(newbie.name());
         new Select(DRIVER.findElement(By.id("citySettings"))).selectByIndex(1);
         new Select(DRIVER.findElement(By.id("eduSettings"))).selectByIndex(1);
         DRIVER.findElement(By.id("aboutSelfSettings")).sendKeys(newbie.about());
-        DRIVER.findElement(By.id("aboutPartnerSettings")).sendKeys(newbie.email());
+        DRIVER.findElement(By.id("aboutPartnerSettings")).sendKeys(newbie.about());
         DRIVER.findElement(By.id("dateSettings")).sendKeys(new SimpleDateFormat("dd.MM.yyyy").format(newbie.dateOfBirth()));
     }
 
-    int getArrowsAmount() { return Integer.parseInt(DRIVER.findElement(By.id("arrowsAmountRooms")).getText()); }
+    public static int getArrowsAmount() {
+        return Integer.parseInt(DRIVER.findElement(By.id("arrowsAmountRooms")).getText());
+    }
+
+    public static WebElement findComp(int id) {
+        return DRIVER.findElement(By.className("comp-" + id));
+    }
+
+    public static void changeCompStatus(int id, String status) {
+        findComp(id).findElement(By.className("changeCompStatus")).click();
+        new Select(getActiveModal().findElement(By.className("changeStatusSelect"))).selectByValue(status);
+    }
 
     @Test
     void register() throws InterruptedException {
@@ -110,7 +106,7 @@ public class UITests {
 
     @Test
     void login() throws InterruptedException {
-        login(MATCHMAKER);
+        login(User.TEST_MATCHMAKER);
         acceptRedirect("rooms");
         assertNotNull(getSecret());
     }
@@ -137,12 +133,9 @@ public class UITests {
     }
 
     @Test
-    void logout() throws InterruptedException {
-        login(MATCHMAKER);
-        DRIVER.findElement(By.id("logout")).click();
-        redirectWait();
-        acceptRedirect("login");
-        assertNull(getSecret());
+    void exit() throws InterruptedException {
+        login(User.TEST_MATCHMAKER);
+        logout();
     }
 
     @Test
@@ -159,7 +152,7 @@ public class UITests {
 
     @Test
     void dismissCompetition() throws InterruptedException {
-        login(GROOM);
+        login(User.TEST_GROOM);
         redirectWait();
         DRIVER.findElement(By.id("dismissRooms")).click();
         DRIVER.switchTo().alert().accept();
@@ -168,7 +161,7 @@ public class UITests {
 
     @Test
     void commentCompetition() throws InterruptedException {
-        login(GROOM);
+        login(User.TEST_GROOM);
         redirectWait();
         var clickCmd = "document.getElementsByClassName('commentCompetitionRooms')[0].click()";
         js(clickCmd);
@@ -201,7 +194,7 @@ public class UITests {
 
     @Test
     void buyArrow() throws InterruptedException {
-        login(GROOM);
+        login(User.TEST_GROOM);
         redirectWait();
         var oldVal = getArrowsAmount();
         DRIVER.findElement(By.id("buyArrowsRooms")).click();
@@ -214,14 +207,14 @@ public class UITests {
 
     @Test
     void showCompetitions() throws InterruptedException {
-        login(MATCHMAKER);
+        login(User.TEST_MATCHMAKER);
         redirectWait();
         assertFalse(DRIVER.findElements(By.className("competitionCard")).isEmpty());
     }
 
     @Test
     void createCompetitionTemplate() throws InterruptedException {
-        login(MATCHMAKER);
+        login(User.TEST_MATCHMAKER);
         redirectWait();
         DRIVER.findElement(By.id("createCompetitionRooms")).click();
         var modal = getActiveModal();
@@ -232,7 +225,7 @@ public class UITests {
 
     @Test
     void showUserQuestionnaire() throws InterruptedException {
-        login(MATCHMAKER);
+        login(User.TEST_MATCHMAKER);
         redirectWait();
         DRIVER.findElement(By.className("asyncDataTableUser"))
                 .findElements(By.className("userInfoBtn"))
@@ -244,7 +237,7 @@ public class UITests {
 
     @Test
     void createMarriageReport() throws InterruptedException {
-        login(MATCHMAKER);
+        login(User.TEST_MATCHMAKER);
         redirectWait();
         DRIVER.findElement(By.cssSelector("div.MARRIAGE.competitionCard"))
                 .findElement(By.cssSelector("li.step.animate-pulse"))
@@ -257,7 +250,7 @@ public class UITests {
 
     @Test
     void banUser() throws InterruptedException {
-        login(MATCHMAKER);
+        login(User.TEST_MATCHMAKER);
         redirectWait();
         var before = DRIVER.findElements(By.className("isBanned")).size();
         DRIVER.findElement(By.className("asyncDataTableUser"))
@@ -307,5 +300,7 @@ public class UITests {
     }
 
     @AfterAll
-    static void shutdown() { DRIVER.quit(); }
+    public static void shutdown() {
+        DRIVER.quit();
+    }
 }

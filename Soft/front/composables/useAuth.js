@@ -4,7 +4,7 @@ const secret = useStorage('secret', null)
 const userId = useStorage('userId', null)
 
 export const useAuth = () => ({
-  userId,
+  userId, // REMEMBER THAT IS STRING!!!
   getRaw: () => secret.value,
   get: () => {
     if (!secret.value) return null
