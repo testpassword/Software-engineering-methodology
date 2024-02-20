@@ -17,22 +17,14 @@ const form = ref({ report: '' })
 const { pass } = useAsyncValidator(form, {
   report: { type: 'string', required: true, min: 10 }
 })
-
-onMounted(() => window.report = async report => { form.value = report })
+onMounted(() => window.report = async report => { form.value.report = report })
 </script>
 
 <template>
   <div>
-    <h3>Задание</h3>
-    <p class="text-purple-600">
-      {{ task?.text }}
-    </p>
-    <h3>Отчёт</h3>
-    <div
-      v-if="isExecutor && !task?.report"
-      class="flex flex-col gap-4"
-    >
-      <Editor v-model:value="form.report"/>
+    <div class="flex flex-row">
+      <h3>Задание</h3>
+      <div class="spacer"/>
       <button
         class="btn btn-primary reportBtn"
         v-if="pass"
@@ -44,6 +36,16 @@ onMounted(() => window.report = async report => { form.value = report })
         <IconTaskSave/>
         Отправить
       </button>
+    </div>
+    <p class="text-purple-600">
+      {{ task?.text }}
+    </p>
+    <h3>Отчёт</h3>
+    <div
+      v-if="isExecutor && !task?.report"
+      class="flex flex-col gap-4"
+    >
+      <Editor v-model:value="form.report"/>
     </div>
     <template v-else>
       <p v-if="task?.report">

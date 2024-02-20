@@ -3,15 +3,23 @@
 import api from '/api'
 import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
 
+const props = defineProps({
+  comId:      { type: Number,  required: true },
+})
+
+const { comId } = toRefs(props)
+
 const groom = ref({})
 const bride = ref({})
 const competition = ref({})
 
+const compApi = computed(() => api.competitions[comId.value])
+
 useMountedApi(async () => {
+  comId.value = await compApi.value.get()
+  // todo: correct users
   groom.value = await api.users[1].get()
   bride.value = await api.users[2].get()
-  competition.value = await api.competitions[1].get()
-  competition.value.report = ''
 })
 
 const form = ref({ report: '' })
@@ -19,8 +27,10 @@ const form = ref({ report: '' })
 const { pass } = useAsyncValidator(form, { report: { type: 'string', required: true, min: 10 } })
 
 const send = async () => {
-  // todo: send to api
-  alert('Счастье да мир молодожёнам!')
+  if (pass) {
+    await compApi.value.update({ report: form.value.report, status: 'COMPLETED' })
+    alert('Счастье да мир молодожёнам!')
+  }
 }
 
 onMounted(() => { window.debugReport = report => { form.value.report = report } })
@@ -83,7 +93,11 @@ onMounted(() => { window.debugReport = report => { form.value.report = report } 
         Отправить
       </button>
     </div>
+    <p v-if="competition.report">
+      {{ competition.report }}
+    </p>
     <Editor
+      v-else
       v-model:value="form.report"
       :disabled="!useRoles().isMatchmaker"
     />

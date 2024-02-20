@@ -20,22 +20,26 @@ public class BCTest {
         UCTests.setup();
     }
 
-    @Test void businessProcess() throws InterruptedException {
+    @Test
+    void businessProcess() throws InterruptedException {
         var br = User.rand();
         int brId = registerNewUser(br, "bride");
+        UCTests.logout();
         var gr = User.rand();
         int grId = registerNewUser(gr, "groom");
         pushArrow(gr);
+        UCTests.logout();
         createCompTemplate();
         int newCompId = assignCompetitors(brId, grId);
         report(br, newCompId);
         report(gr, newCompId);
         toVoting(newCompId);
         voting(newCompId);
-        /*toWaitingAgreement(newCompId);
-        agreement();
+        toWaitingAgreement(newCompId);
+        agreement(br, newCompId);
+        agreement(gr, newCompId);
         toMarriage(newCompId);
-        marriageReport(newCompId);*/
+        marriageReport(newCompId);
     }
 
     int registerNewUser(User u, String role) throws InterruptedException {
@@ -47,9 +51,7 @@ public class BCTest {
         UCTests.zoom(1);
         UCTests.DRIVER.findElement(By.id("nextSettings")).click();
         UCTests.redirectWait();
-        int id = UCTests.getLoggedUserId();
-        UCTests.logout();
-        return id;
+        return UCTests.getLoggedUserId();
     }
 
     void pushArrow(User u) throws InterruptedException {
@@ -59,8 +61,6 @@ public class BCTest {
     }
 
     void createCompTemplate() throws InterruptedException {
-        UCTests.logout();
-        UCTests.redirectWait();
         UCTests.login(User.TEST_MATCHMAKER);
         UCTests.DRIVER.findElement(By.id("createCompetitionRooms")).click();
         var modal = UCTests.getActiveModal();
@@ -84,6 +84,7 @@ public class BCTest {
 
     void report(User u, int compId) throws InterruptedException {
         UCTests.login(u);
+        Thread.sleep(6000);
         clickOnActiveStep(compId);
         UCTests.js(String.format("await window.report('%s')", new Faker().lorem().characters(14, 32)));
         UCTests.getActiveModal().findElement(By.className("reportBtn")).click();
@@ -100,7 +101,8 @@ public class BCTest {
     void voting(int compId) {
         Stream.of("assistant" , "enemy", "guest").forEach(it -> {
             try {
-                registerNewUser(User.rand(), "groom");
+                registerNewUser(User.rand(), it);
+                Thread.sleep(5000);
                 clickOnActiveStep(compId);
                 var modal = UCTests.getActiveModal();
                 modal.findElement(By.className("voteCard")).click();
@@ -119,8 +121,15 @@ public class BCTest {
         UCTests.logout();
     }
 
-    void agreement() {
-        // todo
+    void agreement(User u, int compId) throws InterruptedException {
+        UCTests.login(u);
+        Thread.sleep(3000);
+        clickOnActiveStep(compId);
+        var modal = UCTests.getActiveModal();
+        modal.findElement(By.className("marriageAgreementCheck")).click();
+        UCTests.DRIVER.switchTo().alert().accept();
+        modal.findElement(By.className("btn-modal-close")).click();
+        UCTests.logout();
     }
 
     void toMarriage(int compId) throws InterruptedException {
@@ -139,6 +148,6 @@ public class BCTest {
 
     @AfterAll
     static void shutdown() {
-        //UCTests.shutdown();
+        UCTests.shutdown();
     }
 }

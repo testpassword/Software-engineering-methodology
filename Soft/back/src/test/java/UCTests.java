@@ -92,9 +92,11 @@ public class UCTests {
         return DRIVER.findElement(By.className("comp-" + id));
     }
 
-    public static void changeCompStatus(int id, String status) {
+    public static void changeCompStatus(int id, String status) throws InterruptedException {
         findComp(id).findElement(By.className("changeCompStatus")).click();
         new Select(getActiveModal().findElement(By.className("changeStatusSelect"))).selectByValue(status);
+        getActiveModal().findElement(By.id("acceptDialogBtn")).click();
+        redirectWait();
     }
 
     @Test

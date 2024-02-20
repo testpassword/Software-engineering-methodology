@@ -12,7 +12,7 @@ export default function competitions(parentEndpoint = '') {
   return idEndpointGetter({
     ENDPOINT,
 
-    ...basicInterface(ENDPOINT, ['del', 'update']),
+    ...basicInterface(ENDPOINT, ['del']),
 
     create: async ({ name, city }) => await useApi(ENDPOINT, { body: { name, city }, method: 'POST' }),
 

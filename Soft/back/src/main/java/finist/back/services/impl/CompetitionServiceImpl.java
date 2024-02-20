@@ -84,6 +84,7 @@ public class CompetitionServiceImpl implements CompetitionService {
     public Optional<FullCompetitionDTO> updateCompetition(Long competitionId, FullCompetitionDTO competitionDTO) {
         Optional<Competition> wrappedComp = competitionRepository.findById(competitionId);
         return wrappedComp.map(comp -> {
+            Optional.ofNullable(competitionDTO.getReport()).ifPresent(comp::setReport);
             Optional.ofNullable(competitionDTO.getName()).ifPresent(comp::setName);
             Optional.ofNullable(competitionDTO.getCity()).ifPresent(comp::setCity);
             Optional.ofNullable(competitionDTO.getStatus()).ifPresent(newStatus -> {
@@ -168,7 +169,7 @@ public class CompetitionServiceImpl implements CompetitionService {
         if(!competitionRepository.existsById(competitionId)) {
             throw new CompetitionNotFoundException(competitionId);
         }
-        else if (!userRepository.existsById(updatedTask.getExecutorId())){
+        else if (updatedTask.getExecutorId() != null && !userRepository.existsById(updatedTask.getExecutorId())){
             throw new UserNotFoundException(updatedTask.getExecutorId());
         }
         else {

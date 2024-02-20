@@ -182,7 +182,14 @@ const changeStatus = async () => {
           v-if="item.status === 'VOTING'"
           :com-id="item.id"
         />
-        <CardMarriage v-if="item.status === 'MARRIAGE'"/>
+        <CardAgreement
+          v-if="item?.status === 'WAITING_AGREEMENT' && ['bride', 'groom'].includes(useRoles().userRole.value)"
+          :com-id="item.id"
+        />
+        <CardMarriage
+          v-if="item.status === 'MARRIAGE' && useRoles().userRole.value === 'matchmaker'"
+          :com-id="item.id"
+        />
       </template>
     </LazyDialogAccept>
     <LazyDialogAccept

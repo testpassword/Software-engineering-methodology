@@ -18,6 +18,7 @@ public class FullCompetitionDTO {
     private Long id;
     private String name;
     private String city;
+    private String report;
     private String status;
     private Collection<Long> tasksIds = new ArrayList<>();
 //    Collection<User> followers;
@@ -29,6 +30,7 @@ public class FullCompetitionDTO {
       this.id = competition.getId();
       this.name = competition.getName();
       this.city = competition.getCity();
+      this.report = competition.getReport();
       this.status = (competition.getStatus() != null) ? competition.getStatus().getCode() : null;
       this.loveRequestId = (competition.getLoveRequest() != null) ? competition.getLoveRequest().getId() : null;
 

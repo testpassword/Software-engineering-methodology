@@ -25,6 +25,9 @@ public class Competition {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "report")
+    private String report;
+
     @OneToOne (optional=true, mappedBy="competition")
     private Marriage marriage;
 
